@@ -45,13 +45,16 @@
 				<div class="form-group col-sm-2 control-label">
 					<button type="submit" class="btn btn-default">Submit</button>
 				</div>
+                                
 			</form>
 			<form class="form-horizontal login">
 				<div class="form-group col-sm-2 control-label">
 				<a type="submit" class="btn btn-default" href="forgotpassword">Forgot Password</a>
 				</div>
 			</form>
+                       
 		</div>
+                <p>New user? <a href="signup.jsp">Sign up here</a> 
 	</div>
 	<!-- FOOTER -->
 	<div class="container marketing">
