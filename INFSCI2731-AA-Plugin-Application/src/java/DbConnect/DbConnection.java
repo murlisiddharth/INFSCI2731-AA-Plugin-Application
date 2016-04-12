@@ -23,7 +23,7 @@ public class DbConnection {
             try {
                 //connect db
                 String driver = "com.mysql.jdbc.Driver";
-                String url = "jdbc:mysql://localhost:8889/INFSCI2731";
+                String url = "jdbc:mysql://localhost:3306/INFSCI2731";
                 String user= "root";
                 String password = "root";
                 Class.forName(driver);

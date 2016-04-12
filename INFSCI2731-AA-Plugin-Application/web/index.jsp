@@ -3,7 +3,9 @@
     Created on : Mar 30, 2016, 7:38:49 PM
     Author     : Siwei Jiao
 --%>
-
+<%
+    response.sendRedirect("login.jsp");
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

@@ -21,6 +21,7 @@ import java.sql.Timestamp;
  */
 public class NonceDao {
     private Connection connection;
+    private String nonceval = "";
     Statement st = null;
     ResultSet rs = null;
 
@@ -35,7 +36,7 @@ public class NonceDao {
     /**
      * create a new nonce that related to a user account
      * @param accoutInfoID
-     * @return int Nonce id
+     * @return String Nonce
      */
     public int createNewNonce(int accoutInfoID) {
         SecureRandom srnd = new SecureRandom();
@@ -58,19 +59,19 @@ public class NonceDao {
                 preparedStatement.setLong(2, timeStampsID);               
                 preparedStatement.setInt(3, accoutInfoID);               
                 preparedStatement.executeUpdate();
-
+                
                 ResultSet rs = preparedStatement.getGeneratedKeys();
-                if(rs.next())
-                return autoKey = rs.getInt(1);
+                if(rs.next()) {
+                    nonceval = nonceValue.toPlainString();
+                    return autoKey = rs.getInt(1);
+                }
                 else
                     return 0;
                 
 		} catch (SQLException e) {
 			e.printStackTrace();
-                    return -1;              
-		}      
-        
-             
+                    return -1;            
+		}                 
     }
     
     /**
@@ -102,6 +103,10 @@ public class NonceDao {
         }    
                
         return nonce;
+    }
+    
+    public String getNonceValue() {
+        return nonceval;
     }
     
     
