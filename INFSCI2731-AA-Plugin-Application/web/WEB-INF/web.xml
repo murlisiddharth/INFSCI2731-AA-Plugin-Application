@@ -4,6 +4,10 @@
         <servlet-name>Test</servlet-name>
         <servlet-class>controller.Test</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>controller.ResetPassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
         <url-pattern>/Test</url-pattern>
@@ -24,9 +28,9 @@
         <servlet-name>questions</servlet-name>
         <url-pattern>/questions</url-pattern>
     </servlet-mapping>
-     <servlet>
+    <servlet>
         <servlet-name>resetpassword</servlet-name>
-        <jsp-file>/resetpassword.jsp</jsp-file>
+        <servlet-class>controller.ResetPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>resetpassword</servlet-name>
