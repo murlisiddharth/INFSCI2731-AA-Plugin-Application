@@ -17,7 +17,9 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link href="/stylesheets/carousel.css" rel="stylesheet">
 </head>
-<body>
+<body> 
+         <!--<a href="Test?action=getNonce">Get Nonce</a>-->
+
 	<div class="container">
 		<div class="jumbotron">
 			<div class="form-group"></div>

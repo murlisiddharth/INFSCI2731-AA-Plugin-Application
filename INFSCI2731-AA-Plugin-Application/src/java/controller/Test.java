@@ -44,8 +44,8 @@ public class Test extends HttpServlet {
 
             if(action.equalsIgnoreCase("getNonce")) {
                 int accoutInfoID = 1;
-                int nonceId = nonceDao.createNewNonce(accoutInfoID);
-                nonce = nonceDao.getNonceById(nonceId);
+                String n = nonceDao.getNewNonce(accoutInfoID);
+                nonce = nonceDao.getNonceByNonceValue(n);
                 
             response.setContentType("text/html;charset=UTF-8");
             try (PrintWriter out = response.getWriter()) {

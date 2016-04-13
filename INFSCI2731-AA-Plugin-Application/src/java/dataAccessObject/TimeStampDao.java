@@ -41,11 +41,11 @@ public class TimeStampDao {
             
             try {
                 sql = "INSERT INTO INFSCI2731.timestamps (create_time) values (?)";
-                PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
                 // Parameters start with 1
-                preparedStatement.setTimestamp(1, new Timestamp(dateTime.getTime()));               
-                preparedStatement.executeUpdate();
-                ResultSet rs = preparedStatement.getGeneratedKeys();
+                ps.setTimestamp(1, new Timestamp(dateTime.getTime()));               
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
 
                 if(rs.next())
                     return autoKey = rs.getLong(1);
@@ -55,9 +55,26 @@ public class TimeStampDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
                     return -1;
+		}          
+        }
+        
+        /**
+         * delete timestamp by its id
+         * @param id 
+         */
+        public void deleteTimeStampByID(int id) {
+        
+            try{
+                //prepare and execute search query
+                sql = "DELETE FROM INFSCI2731.timestamps WHERE id = ?"; 
+                PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setInt(1,id);                
+                    ps.executeUpdate() ;
 
-		}
-           
+            } catch (SQLException e) {
+                    e.printStackTrace();
+            }   
+
         }
         
 }

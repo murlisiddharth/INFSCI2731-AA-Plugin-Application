@@ -78,8 +78,7 @@ public class AnswerQuestions extends HttpServlet {
             
             if (resetPasswordObj.userID.equals(checkUserID)) {
                 NonceDao nonce = new NonceDao();
-                nonce.createNewNonce(Integer.parseInt(resetPasswordObj.userID));
-                String userNonce = nonce.getNonceValue();
+                String userNonce = nonce.getNewNonce(Integer.parseInt(resetPasswordObj.userID));
                 if(!userNonce.equals("")) {
                     printEmail(request, response, userNonce);
                 }
