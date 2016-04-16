@@ -15,16 +15,13 @@
 <title>Login Page</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-<link href="/stylesheets/carousel.css" rel="stylesheet">
-</head>
-<body> 
-         <!--<a href="Test?action=getNonce">Get Nonce</a>-->
 
+</head>
+<body>
 	<div class="container">
 		<div class="jumbotron">
 			<div class="form-group"></div>
-			<form class="form-horizontal login" method="post"
-				action="authenticate">
+			<form name="loginForm" class="form-horizontal login" method="post">
 
 				<div class="form-group">
 
@@ -35,7 +32,6 @@
 							name="username" required placeholder="Enter Username Name">
 					</div>
 				</div>
-
 				<div class="form-group">
 					<label for="password" class="col-sm-2 control-label">Password</label>
 
@@ -44,19 +40,19 @@
 							name="password" required placeholder="Enter Password">
 					</div>
 				</div>
-				<div class="form-group col-sm-2 control-label">
-					<button type="submit" class="btn btn-default">Submit</button>
+				<div class="form-group col-sm-2 control-label" >
+				<h5 id="wrongCrendials"></h5>
 				</div>
-                                
+				<div class="form-group col-sm-2 control-label">
+					<button type="button" class="btn btn-default" onclick="authenticate()">Submit</button>
+				</div>
 			</form>
 			<form class="form-horizontal login">
 				<div class="form-group col-sm-2 control-label">
-				<a type="submit" class="btn btn-default" href="forgotpassword">Forgot Password</a>
+				<button type="submit" class="btn btn-default">Forgot Password</button>
 				</div>
 			</form>
-                       
 		</div>
-                <p>New user? <a href="signup.jsp">Sign up here</a> 
 	</div>
 	<!-- FOOTER -->
 	<div class="container marketing">
@@ -70,7 +66,29 @@
 
 	</div>
 	<!-- /.container -->
-
+	<script>
+        function validateForm() {
+        var x = document.forms["loginForm"]["username"].value;
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!re.test(x)){
+        	document.getElementById("wrongCrendials").innerHTML = "Enter A Correct Email Address";
+        	return false;
+        	}
+        return true;
+        }
+        
+        
+		function authenticate() {
+			if(!validateForm()){
+				document.getElementById("wrongCrendials").innerHTML = "Please Enter A Valid Email ID";
+			}else{
+				var xhttp = new XMLHttpRequest();		
+				xhttp.open("POST", "authenticationController", false);
+				xhttp.send();
+				document.getElementById("wrongCrendials").innerHTML = xhttp.responseText;
+			}
+		}
+	</script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script
