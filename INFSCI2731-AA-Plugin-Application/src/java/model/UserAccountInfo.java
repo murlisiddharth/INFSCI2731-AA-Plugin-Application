@@ -82,6 +82,7 @@ public class UserAccountInfo {
         //create new role and return id
         AccessRole role = new AccessRole();
         int roleID = role.getId();
+        System.out.println("==roleID=="+ roleID);
         //create a new account
         dao = new UserDao();
         System.out.println("===== bean " + firstName + "   " + emailAddress);

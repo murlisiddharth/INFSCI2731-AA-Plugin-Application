@@ -5,6 +5,8 @@
  */
 package model;
 
+import dataAccessObject.RoleDao;
+
 /**
  *
  * @author Carol
@@ -12,6 +14,7 @@ package model;
 public class AccessRole {
         private int id;
 	private String role;
+        private RoleDao dao;
  
         public int getId() {
 		return id;
@@ -27,8 +30,10 @@ public class AccessRole {
 	}
         
         //create a regular role
-        public int AccessRole(){
-           return this.id;
+        public AccessRole(){
+            dao = new RoleDao();
+            this.id = dao.getUserID();
+            System.out.println("== new role" + id);
         }
         
         //create a administrator

@@ -30,57 +30,65 @@ public class RoleDao {
      
      //get the id number for who is normal user
     public int getUserID(){
-        
-         try {
-                sql = "INSERT INTO INFSCI2731.account_info(first_name, last_name, email_addr, timestamps_id, access_role_id) values (?, ?, ?, ?, ?)";
-                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
-                // Parameters start with 1
-                ps.setString(1, firstName);               
-                ps.setString(2, lastName);               
-                ps.setString(3, emailAddress);  
-                ps.setLong(4, timeStampsID);
-                ps.setInt(5,access_role_id);
-                ps.executeUpdate();
-                
-                ResultSet rs = ps.getGeneratedKeys();
+            try{
+                //prepare and execute search query
+                sql = "SELECT id FROM INFSCI2731.access_role WHERE role = ?";
+                PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setString(1, "User") ;                
+                    rs = ps.executeQuery() ;
+
                 if(rs.next()) {
-                    long autoKey = rs.getLong(1);
-                    return autoKey;
-                } else
+                    return rs.getInt("id");
+                }else
+                    return 0 ;
+
+            } catch (SQLException e) {
+                    e.printStackTrace();
                     return -1;
-                
-        } catch (SQLException e) {
-                e.printStackTrace();
-            return -1;            
-        }      
-         
-        //get the id number for who is normal user
-        public long getAdminID(String role){
-        
-         try {
-                sql = "INSERT INTO INFSCI2731.account_info(first_name, last_name, email_addr, timestamps_id, access_role_id) values (?, ?, ?, ?, ?)";
-                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
-                // Parameters start with 1
-                ps.setString(1, firstName);               
-                ps.setString(2, lastName);               
-                ps.setString(3, emailAddress);  
-                ps.setLong(4, timeStampsID);
-                ps.setInt(5,access_role_id);
-                ps.executeUpdate();
-                
-                ResultSet rs = ps.getGeneratedKeys();
-                if(rs.next()) {
-                    long autoKey = rs.getLong(1);
-                    return autoKey;
-                } else
-                    return -1;
-                
-        } catch (SQLException e) {
-                e.printStackTrace();
-            return -1;            
-        }        
-       
+            }    
     }
-     
-    
+        //get the id number for who is administrator
+        public int getAdminID(){
+        
+         try{
+                //prepare and execute search query
+                sql = "SELECT id FROM INFSCI2731.access_role WHERE role = ?";
+                PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setString(1, "Administrator") ;                
+                    rs = ps.executeQuery() ;
+
+                if(rs.next()) {
+                    return rs.getInt("id");
+                }else
+                    return 0 ;
+
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    return -1;
+            }
+        }
+        
+         //get the id number for who is administrator
+        public int getSuperAdminID(){
+       
+         try{
+                //prepare and execute search query
+                sql = "SELECT id FROM INFSCI2731.access_role WHERE role = ?";
+                PreparedStatement ps = connection.prepareStatement(sql);
+                    ps.setString(1, "Super Administrator") ;                
+                    rs = ps.executeQuery() ;
+
+                if(rs.next()) {
+                    return rs.getInt("id");
+                }else
+                    return 0 ;
+
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    return -1;
+            }    
+         
+         }
+ 
 }
+     
