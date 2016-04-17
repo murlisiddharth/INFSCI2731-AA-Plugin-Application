@@ -1,5 +1,7 @@
 package model;
 
+import dataAccessObject.UserDao;
+
 public class UserAccountInfo {
 	
 	private int id;
@@ -8,6 +10,7 @@ public class UserAccountInfo {
 	private String emailAddress;
 	private long timeStampsID;
 	private int access_role_id;
+        private UserDao dao;
 	
 	public int getId() {
 		return id;
@@ -45,4 +48,13 @@ public class UserAccountInfo {
 	public void setAccess_role_id(int access_role_id) {
 		this.access_role_id = access_role_id;
 	}
+        
+        public UserDao getUserDao() {
+		return dao;
+	}
+	public void setUserDao(UserDao dao) {
+		this.dao = dao;
+	}
+        
+        P
 }
