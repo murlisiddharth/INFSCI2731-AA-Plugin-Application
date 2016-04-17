@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author shaoNPC
+ * @author shao dai
  */
 public class ResetPasswordObj {
     public String userID;
