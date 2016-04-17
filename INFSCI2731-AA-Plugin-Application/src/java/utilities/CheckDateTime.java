@@ -23,10 +23,7 @@ public class CheckDateTime {
         Date nonceDate = timestamp;
         long cDate = System.currentTimeMillis();
         long nDate = nonceDate.getTime();
-
-        System.out.println(cDate - nDate);
-        System.out.println(MAX_TIME_DIFF_MINS * 60000);
-
+        
         return (cDate - nDate) < (MAX_TIME_DIFF_MINS * 60000);
     }
     

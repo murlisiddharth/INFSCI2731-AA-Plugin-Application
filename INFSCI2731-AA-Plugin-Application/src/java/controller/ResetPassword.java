@@ -41,7 +41,7 @@ public class ResetPassword extends HttpServlet {
             throws ServletException, IOException {
         
         String nonce = request.getParameter("token");
-        boolean passwordMismatch = Boolean.getBoolean(request.getParameter("passwordMismatch"));
+        boolean passwordMismatch = Boolean.parseBoolean(request.getParameter("pmm"));
         Timestamp timestamp;
         NonceDao nonceDao = new NonceDao();
         
@@ -67,9 +67,9 @@ public class ResetPassword extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>ResetPassword</h1>");
-            out.println("<form name=\"resetform-password\" method=\"POST\" action=\"ResetPasswordService\">");
+            out.println("<form name=\"resetform-password\" method=\"POST\" action=\"resetpasswordservice\">");
             if (passwordMismatch) {
-                out.println("<p>Your passwords do not match</p>");
+                out.println("<p>Your passwords do not match, please re-enter your new password.</p>");
             }
             out.println("<input type=\"hidden\" name=\"token\" value=\"" + nonce +  " \">");
             out.println("Enter your new password: <input name=\"password\" type=\"password\" />");

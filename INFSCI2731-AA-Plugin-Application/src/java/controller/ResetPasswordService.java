@@ -61,10 +61,9 @@ public class ResetPasswordService extends HttpServlet {
     
     protected void redirectError(HttpServletRequest request, HttpServletResponse response, boolean passwordMatch, boolean tokenValid, String token) 
             throws ServletException, IOException {
-        String url = tokenValid ? "resetpassword?token" + token : "resetpassword";
-        request.setAttribute("passwordMismatch", !passwordMatch);
-        RequestDispatcher rd = request.getRequestDispatcher(url);
-        rd.forward(request, response);
+        String url = tokenValid ? "resetpassword?token=" + token.trim() : "resetpassword";
+        url += !passwordMatch ? "&pmm=" + !passwordMatch : "";
+        response.sendRedirect(url);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

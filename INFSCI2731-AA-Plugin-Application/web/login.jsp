@@ -49,7 +49,7 @@
 			</form>
 			<form class="form-horizontal login">
 				<div class="form-group col-sm-2 control-label">
-				<button type="submit" class="btn btn-default">Forgot Password</button>
+                                    <a type="button" href="forgotpassword"  class="btn btn-default">Forgot Password</a>
 				</div>
 			</form>
 		</div>
