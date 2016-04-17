@@ -5,7 +5,9 @@
  */
 package controller;
 
+import utilities.CheckDateTime;
 import DbConnect.DbConnection;
+import dataAccessObject.NonceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -22,12 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author shaoNPC
+ * @author shao dai
  */
-@WebServlet(name = "ResetPassword", urlPatterns = {"/ResetPassword"})
+@WebServlet(name = "ResetPassword", urlPatterns = {"/resetpassword"})
 public class ResetPassword extends HttpServlet {
-
-    private static final int MAX_TIME_DIFF_MINS = 20;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,59 +41,22 @@ public class ResetPassword extends HttpServlet {
             throws ServletException, IOException {
         
         String nonce = request.getParameter("token");
+        boolean passwordMismatch = Boolean.getBoolean(request.getParameter("passwordMismatch"));
         Timestamp timestamp;
+        NonceDao nonceDao = new NonceDao();
         
         if (nonce != null && !nonce.equals("")) {
-            timestamp = getIDFromNonceDB(nonce);
-            if (checkDateTime(timestamp)) {
-                printPasswordForm(request, response, nonce);
+            timestamp = nonceDao.getNonceCreatetime(nonce);
+            if (CheckDateTime.isValid(timestamp)) {
+                printPasswordForm(request, response, nonce, passwordMismatch);
             }
         }
         
         printError(request, response);
         
-    }
+    } 
     
-    protected Timestamp getIDFromNonceDB(String nonce) {
-        Connection connection;
-        PreparedStatement preparedStatement;
-        Timestamp timestamp = null;
-        
-        try {
-            connection = DbConnection.getConnection();
-            String selectSQL = "SELECT timestamps.create_time FROM nonce, timestamps WHERE nonce = ? AND nonce.timestamps_id = timestamps.id";
-            preparedStatement = connection.prepareStatement(selectSQL);  
-            preparedStatement.setString(1, nonce);
-            
-            ResultSet rs = preparedStatement.executeQuery();
-            
-            boolean val = rs.next();
-            if (val) {
-                timestamp = rs.getTimestamp("create_time");
-            }
-  
-        } catch (SQLException e) {
-                e.printStackTrace();
-        }   
-        
-        return timestamp;
-    }
-    
-    protected boolean checkDateTime(Timestamp timestamp) {
-        if (timestamp == null) {
-            return false;
-        }
-        Date nonceDate = timestamp;
-        long cDate = System.currentTimeMillis();
-        long nDate = nonceDate.getTime();
-
-        System.out.println(cDate - nDate);
-        System.out.println(MAX_TIME_DIFF_MINS * 60000);
-
-        return (cDate - nDate) < (MAX_TIME_DIFF_MINS * 60000);
-    }
-    
-    protected void printPasswordForm(HttpServletRequest request, HttpServletResponse response, String nonce) throws IOException {
+    protected void printPasswordForm(HttpServletRequest request, HttpServletResponse response, String nonce, boolean passwordMismatch) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -105,6 +68,9 @@ public class ResetPassword extends HttpServlet {
             out.println("<body>");
             out.println("<h1>ResetPassword</h1>");
             out.println("<form name=\"resetform-password\" method=\"POST\" action=\"ResetPasswordService\">");
+            if (passwordMismatch) {
+                out.println("<p>Your passwords do not match</p>");
+            }
             out.println("<input type=\"hidden\" name=\"token\" value=\"" + nonce +  " \">");
             out.println("Enter your new password: <input name=\"password\" type=\"password\" />");
             out.println("<br/><br/>");

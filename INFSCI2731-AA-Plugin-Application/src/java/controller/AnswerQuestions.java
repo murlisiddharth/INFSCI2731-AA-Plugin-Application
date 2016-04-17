@@ -25,7 +25,7 @@ import model.ResetPasswordObj;
 
 /**
  *
- * @author shaoNPC
+ * @author shao dai
  */
 @WebServlet(name = "AnswerQuestions", urlPatterns = {"/AnswerQuestions"})
 public class AnswerQuestions extends HttpServlet {
@@ -79,7 +79,7 @@ public class AnswerQuestions extends HttpServlet {
             if (resetPasswordObj.userID.equals(checkUserID)) {
                 NonceDao nonce = new NonceDao();
                 String userNonce = nonce.getNewNonce(Integer.parseInt(resetPasswordObj.userID));
-                if(!userNonce.equals("")) {
+                if(!userNonce.equals("error") && !userNonce.equals("")) {
                     printEmail(request, response, userNonce);
                 }
                 session.invalidate();

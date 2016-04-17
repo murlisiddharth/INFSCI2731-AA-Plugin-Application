@@ -1,7 +1,7 @@
 <%-- 
     Document   : resetpassword
     Created on : Apr 7, 2016, 2:03:51 AM
-    Author     : shaoNPC
+    Author     : shao dai
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

@@ -69,11 +69,11 @@ public class NonceDao {
                 if(rs.next()) {
                     return nonceValue.toPlainString();
                 }else
-                    return "db insert failed";
+                    return "error";
                 
         } catch (SQLException e) {
                 e.printStackTrace();
-            return "sql failed";            
+            return "error";            
         }         
                      
     }
