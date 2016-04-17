@@ -61,26 +61,26 @@
 		    			<!--firstname-->
 			    		<div class="col-md-6 input-group" style="padding-right:2px">
 				        	<span class="input-group-addon" id="firstName">First Name</span>
-					        <input type="text" name="firstname" class="form-control" placeholder="" aria-describedby="basic-addon1" value=""/>
+					        <input type="text" name="firstname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="carol"/>
 				      	</div>
 						
 					<!--lastname-->
 				      	<div class="col-md-6 input-group" style="padding-left:2px">
 				        	<span class="input-group-addon" id="lastName">Last Name</span>
-					        <input type="text" name="lastname" class="form-control" placeholder="" aria-describedby="basic-addon1" value=""/>
+					        <input type="text" name="lastname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="cheng"/>
 				      	</div>
 				</div> <!-- row -->
 
 			      	<!--email-->
 			      	<div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Email</span>
-                                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="john@gmail.com" required autofocus aria-describedby="basic-addon1">
+                                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="john@gmail.com" required autofocus aria-describedby="basic-addon1" value="carolcheng124@gmail.com">
 					</div>
 
 				<!--password-->
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon1">Password</span>
-					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required value="111">
 				</div>
 
 
@@ -105,7 +105,7 @@
 					<!-- answer 1-->
 					<div class="form-group">
 						<label class="control-label">Answer 1:</label>
-						<input type="text" name="answer1" class="form-control"  required placeholder="Input your answer for question 1">
+						<input type="text" name="answer1" class="form-control"  required placeholder="Input your answer for question 1" value="1">
 					</div>
 
 
@@ -131,7 +131,7 @@
 					<!-- answer 2-->
 					<div class="form-group">
 						<label class="control-label">Answer 2:</label>
-						<input type="text" name="answer2" class="form-control" required placeholder="Input your answer for question 2">
+						<input type="text" name="answer2" class="form-control" required placeholder="Input your answer for question 2" value="2">
 					</div>
 
 					
@@ -156,7 +156,7 @@
 					<!-- answer 3-->
 					<div class="form-group">
 						<label class="control-label">Answer 3:</label>
-						<input type="text" name="answer3" class="form-control"  required placeholder="Input your answer for question 3">
+						<input type="text" name="answer3" class="form-control"  required placeholder="Input your answer for question 3" value="3">
 					</div>
 					
 					<!--submit button-->

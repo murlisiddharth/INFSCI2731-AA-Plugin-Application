@@ -16,6 +16,8 @@ public class TimeStamp {
     private Date updateTime;
     private TimeStampDao dao;
     
+    //constructor to create a new TimeStamp
+    //by Hanwei
     public TimeStamp() {
         // interact with database
         // use Dao to create
@@ -31,6 +33,7 @@ public class TimeStamp {
         long id = dao.setUpTimeStamp(); // created
         this.timeStampsID = id;
     }
+    
     
     /**
      * @return the timeStampsID

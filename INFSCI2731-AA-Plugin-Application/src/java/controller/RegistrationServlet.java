@@ -32,7 +32,8 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        System.out.println("in servlet");
+        System.out.println("==" + request.getParameter("firstname"));
         UserAccountInfo user = new UserAccountInfo();
         user.setFirstName(request.getParameter("firstname"));
         user.setLastName(request.getParameter("lastname"));
@@ -40,7 +41,8 @@ public class RegistrationServlet extends HttpServlet {
         // user.setTimeStampsID();
         // setAccess_role_id();
         request.setAttribute("user", user);
-
+        
+        user.register();
         //forward server's request to jsp
         getServletContext().getRequestDispatcher("/signup.jsp").forward(request, response);
        
