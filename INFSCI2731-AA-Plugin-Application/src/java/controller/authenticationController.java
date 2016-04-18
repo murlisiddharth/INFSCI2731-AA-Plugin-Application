@@ -1,6 +1,5 @@
 package controller;
 
-import dataAccessObject.ActivityLogDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -11,14 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dataAccessObject.AuthenticationDao;
-import model.IPAddress;
 
 public class authenticationController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static Integer MAX_NUMBER_OF_ATTEMPTS = 3;
-        ActivityLogDao logDao = new ActivityLogDao();
-
 
 	public authenticationController() {
 		// TODO Auto-generated constructor stub
@@ -38,11 +34,6 @@ public class authenticationController extends HttpServlet {
 		Integer lastAttempt = (Integer) session.getAttribute("lastAttempt");
 		
 		System.out.println("Number of login attempts :" + lastAttempt);
-                
-                //get client ip addr and request URI for activity log
-                IPAddress ipAddress = new IPAddress();
-                String sysSource = req.getRequestURI();
-                String ipAddr = ipAddress.getClientIpAddress(req);
 		
 		if (lastAttempt == null) {
 			session.setAttribute("lastAttempt", 1);
@@ -55,11 +46,8 @@ public class authenticationController extends HttpServlet {
 			}
 		}
 		
-		Integer account_id = auth.validateUser(username, passwd);              
-		if (account_id != null && account_id != -1 && account_id != -2) {
-                    //log activity of succeed logon
-                    logDao.logSucceedLogon(ipAddr, sysSource, account_id);
-                    
+		Integer account_id = auth.validateUser(username, passwd);
+		if (account_id != null) {
 			// User authenticated successfully
 			// User account ID has been retrieved and
 			// can used in session attribute to track for access control module
@@ -68,14 +56,7 @@ public class authenticationController extends HttpServlet {
 			session.removeAttribute("lastAttempt");
 			// add account_id into session for access control
 			session.setAttribute("account_id", account_id);
-		} else {  
-                    //log failed login attempt according to the returned value of validateUser
-                    if(account_id == -1) {
-                        logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id);
-                    }else if(account_id == -2) {
-                        logDao.logUserNameFailedLoginAttempt(ipAddr, sysSource, username);
-                    }
-                    
+		} else {
 			// authentication failed
 			out.println("Username Or Password Is Incorrect");
 			if(lastAttempt==null){
