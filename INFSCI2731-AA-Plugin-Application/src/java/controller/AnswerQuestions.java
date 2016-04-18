@@ -9,7 +9,6 @@ import DbConnect.DbConnection;
 import dataAccessObject.NonceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -111,11 +110,10 @@ public class AnswerQuestions extends HttpServlet {
             
             ResultSet rs = preparedStatement.executeQuery();
             
-            boolean val = rs.next();
-            if (!val) {
-                return "";
-            } else {
+            if (rs.next()) {
                 return rs.getString("account_info_id"); 
+            } else {
+                return "";
             }
   
         } catch (SQLException e) {

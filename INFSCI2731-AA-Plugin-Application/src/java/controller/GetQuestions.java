@@ -116,11 +116,10 @@ public class GetQuestions extends HttpServlet {
             
             ResultSet rs = preparedStatement.executeQuery();
             
-            boolean val = rs.next();
-            if (!val) {
-                return "";
-            } else {
+            if (rs.next()) {
                 return rs.getString("id"); 
+            } else {
+                return "";
             }
   
         } catch (SQLException e) {
