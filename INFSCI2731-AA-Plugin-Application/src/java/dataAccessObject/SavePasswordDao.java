@@ -6,8 +6,6 @@
 package dataAccessObject;
 
 import DbConnect.DbConnection;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

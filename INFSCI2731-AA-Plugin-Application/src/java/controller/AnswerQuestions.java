@@ -69,7 +69,8 @@ public class AnswerQuestions extends HttpServlet {
                     ipAddress = request.getRemoteAddr();  
             }
             //hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
-            response.sendRedirect("hostile");
+            Hostile hostile = new Hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
+            hostile.redirectHostile(request, response);
         } else {
             String securityAnswer = request.getParameter("security_answer");
             ResetPasswordObj resetPasswordObj = (ResetPasswordObj)session.getAttribute("resetPasswordObj"); 
