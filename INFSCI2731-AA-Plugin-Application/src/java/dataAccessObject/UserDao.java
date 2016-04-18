@@ -31,7 +31,7 @@ public class UserDao {
     }
     
     //create account by passing variable value from user instance
-    public long createAccount(String firstName,String lastName, String emailAddress,long timeStampsID,int access_role_id){
+    public int createAccount(String firstName,String lastName, String emailAddress,long timeStampsID,int access_role_id){
         
          try {
                 sql = "INSERT INTO INFSCI2731.account_info(first_name, last_name, email_addr, timestamps_id, access_role_id) values (?, ?, ?, ?, ?)";
@@ -46,7 +46,7 @@ public class UserDao {
                 
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()) {
-                    long autoKey = rs.getLong(1);
+                    int autoKey = rs.getInt(1);
                     return autoKey;
                 } else
                     return -1;
