@@ -37,7 +37,7 @@ public class AuthenticationDao {
 	    		account_info_id = rs.getInt("id");
 	    		System.out.println("Account ID: "+account_info_id);
 	    		
-	    		sqlCallForHash = "Select hash, salt "
+	    		sqlCallForHash = "Select hash, password_salt "
 		    			+ "from authentication "
 		    			+ "where account_info_id = ?";
 	    		
@@ -48,7 +48,7 @@ public class AuthenticationDao {
 		    	
 		    	if(rs.next()){
 		    		retrievedHash = rs.getBytes("hash");
-		    		retrievedSalt = rs.getString("salt");
+		    		retrievedSalt = rs.getString("password_salt");
 		    		byte[] calculatedHash = computeHash(passwd, retrievedSalt);
 		    		if(MessageDigest.isEqual(calculatedHash, retrievedHash)){
 		    			//passwords matched

@@ -68,8 +68,9 @@ public class GetQuestions extends HttpServlet {
                     ipAddress = request.getRemoteAddr();  
             }
             //Hostile module redirect or object
-            //hostile(emailAttempts, ipAddress, SYSTEM_SOURCE);
-            response.sendRedirect("hostile");
+
+            Hostile hostile = new Hostile(emailAttempts, ipAddress, SYSTEM_SOURCE);
+            hostile.redirectHostile(request, response);
         } else {
             String email = request.getParameter("email");
             //Check if email exists
@@ -116,11 +117,10 @@ public class GetQuestions extends HttpServlet {
             
             ResultSet rs = preparedStatement.executeQuery();
             
-            boolean val = rs.next();
-            if (!val) {
-                return "";
-            } else {
+            if (rs.next()) {
                 return rs.getString("id"); 
+            } else {
+                return "";
             }
   
         } catch (SQLException e) {

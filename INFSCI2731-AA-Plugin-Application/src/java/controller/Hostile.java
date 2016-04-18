@@ -47,8 +47,7 @@ public class Hostile extends HttpServlet {
         //hostileEntry.setIPAddress(IPAddress);
         //hostileEntry.setSYSTEM_SOURCE(SYSTEM_SOURCE);
 
-        WriteHostileToDB(countAttempts, IPAddress, SYSTEM_SOURCE);
-        
+        WriteHostileToDB(countAttempts, IPAddress, SYSTEM_SOURCE);  
     }
     
     protected int WriteHostileToDB(int countAttempts, String IPAddress,  String SYSTEM_SOURCE) {
@@ -148,6 +147,25 @@ public class Hostile extends HttpServlet {
             }
         }
         
+        
+    }
+    
+    public void redirectHostile(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Hostile Redirect</title>");            
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Hostile Redirect Example Page</h1>");
+                out.println("</body>");
+                out.println("</html>");
+                    
+            }
         
     }
 

@@ -9,7 +9,6 @@ import DbConnect.DbConnection;
 import dataAccessObject.NonceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,7 +69,8 @@ public class AnswerQuestions extends HttpServlet {
                     ipAddress = request.getRemoteAddr();  
             }
             //hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
-            response.sendRedirect("hostile");
+            Hostile hostile = new Hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
+            hostile.redirectHostile(request, response);
         } else {
             String securityAnswer = request.getParameter("security_answer");
             ResetPasswordObj resetPasswordObj = (ResetPasswordObj)session.getAttribute("resetPasswordObj"); 
@@ -111,11 +111,10 @@ public class AnswerQuestions extends HttpServlet {
             
             ResultSet rs = preparedStatement.executeQuery();
             
-            boolean val = rs.next();
-            if (!val) {
-                return "";
-            } else {
+            if (rs.next()) {
                 return rs.getString("account_info_id"); 
+            } else {
+                return "";
             }
   
         } catch (SQLException e) {

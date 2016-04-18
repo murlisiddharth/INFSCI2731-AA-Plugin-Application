@@ -6,6 +6,7 @@
 package controller;
 
 import dataAccessObject.NonceDao;
+import dataAccessObject.SavePasswordDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -51,7 +52,11 @@ public class ResetPasswordService extends HttpServlet {
         }
         
         if (passwordMatch && tokenValid) {
-            Nonce nonce = nonceDao.getNonceByNonceValue(token);       
+            Nonce nonce = nonceDao.getNonceByNonceValue(token);
+            SavePasswordDao savePasswordDao = new SavePasswordDao();
+            savePasswordDao.savePassword(nonce.getAccountInfoID(), password);
+            nonceDao.deleteNonceByUserID(nonce.getAccountInfoID());
+            response.sendRedirect("login.jsp");
         } else {
             redirectError(request, response, passwordMatch, tokenValid, token);
         }

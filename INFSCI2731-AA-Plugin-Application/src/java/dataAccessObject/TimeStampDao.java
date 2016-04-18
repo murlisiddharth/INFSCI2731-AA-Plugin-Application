@@ -40,10 +40,11 @@ public class TimeStampDao {
 //            String createTime = sdf.format(dateTime);
             
             try {
-                sql = "INSERT INTO INFSCI2731.timestamps (create_time) values (?)";
+                sql = "INSERT INTO INFSCI2731.timestamps (create_time, update_time) values (?, ?)";
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
                 // Parameters start with 1
-                ps.setTimestamp(1, new Timestamp(dateTime.getTime()));               
+                ps.setTimestamp(1, new Timestamp(dateTime.getTime()));
+                ps.setTimestamp(2, new Timestamp(dateTime.getTime())); 
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
 
