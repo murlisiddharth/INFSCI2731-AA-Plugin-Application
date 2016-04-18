@@ -39,7 +39,7 @@ public class AuthenticationDao {
 	    		
 	    		sqlCallForHash = "Select hash, password_salt "
 		    			+ "from authentication "
-		    			+ "where account_info_id = ?";
+		    			+ "where account_info_id = ? and active = 1";
 	    		
 	    		preparedStatement = connection.prepareStatement(sqlCallForHash);  
 		    	preparedStatement.setInt(1, account_info_id);

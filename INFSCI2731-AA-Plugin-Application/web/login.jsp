@@ -44,12 +44,12 @@
 				<h5 id="wrongCrendials"></h5>
 				</div>
 				<div class="form-group col-sm-2 control-label">
-					<button type="button" class="btn btn-default" onclick="authenticate()">Submit</button>
+					<button type="button" class="btn btn-default" onclick="authenticate();">Submit</button>
 				</div>
 			</form>
 			<form class="form-horizontal login">
 				<div class="form-group col-sm-2 control-label">
-                                    <a type="button" href="forgotpassword"  class="btn btn-default">Forgot Password</a>
+                <a type="button" href="forgotpassword"  class="btn btn-default">Forgot Password</a>
 				</div>
 			</form>
 		</div>
@@ -82,10 +82,17 @@
 			if(!validateForm()){
 				document.getElementById("wrongCrendials").innerHTML = "Please Enter A Valid Email ID";
 			}else{
-				var xhttp = new XMLHttpRequest();		
-				xhttp.open("POST", "authenticationController", false);
-				xhttp.send();
-				document.getElementById("wrongCrendials").innerHTML = xhttp.responseText;
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+			    	if (xhttp.readyState == 4 && xhttp.status == 200) {
+			    		document.getElementById("wrongCrendials").innerHTML = xhttp.responseText;
+			    	}
+			  	};
+			  	var username = document.forms["loginForm"]["username"].value;
+			  	var password = document.forms["loginForm"]["password"].value;
+				xhttp.open("POST", "authenticationController", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send("username="+username+"&password="+password);	
 			}
 		}
 	</script>
