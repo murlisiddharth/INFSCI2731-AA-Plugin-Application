@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dataAccessObject.ActivityLogDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.IPAddress;
 import model.Question_Answer;
 import model.SecurityQuestion;
 import model.UserAccountInfo;
@@ -42,7 +44,18 @@ public class RegistrationServlet extends HttpServlet {
         //return to the page for testing purpose
         request.setAttribute("user", user); 
         
-        user.register();
+        int accountId = user.register(); //modified by Siwei in order to get the new generated account id
+        
+        
+        //log activity of new created account, by Siwei
+        IPAddress ipAddress = new IPAddress();
+//        String sysSource = request.getRequestURL().toString();
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+        ActivityLogDao logDao = new ActivityLogDao();
+        logDao.logNewAccountCreated(ipAddr, sysSource, accountId);
+        
+        
         
         //set security Question &answer 1
         Question_Answer qa1 = new Question_Answer();
