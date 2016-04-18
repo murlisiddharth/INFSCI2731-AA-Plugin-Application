@@ -39,7 +39,7 @@ public class AuthenticationDao {
 	    		
 	    		sqlCallForHash = "Select hash, password_salt "
 		    			+ "from authentication "
-		    			+ "where account_info_id = ?";
+		    			+ "where account_info_id = ? and active = 1";
 	    		
 	    		preparedStatement = connection.prepareStatement(sqlCallForHash);  
 		    	preparedStatement.setInt(1, account_info_id);
@@ -53,10 +53,10 @@ public class AuthenticationDao {
 		    		if(MessageDigest.isEqual(calculatedHash, retrievedHash)){
 		    			//passwords matched
 		    			return account_info_id;
-		    		}else{
+		    		}else{                                   
 		    			//Password does not match..
 		    			System.out.print("Passwd does not match");
-		    			return null;
+		    			return -1; //-1 means pw does not match
 		    		}
 		    	}else{
 		    		//Password does not exist
@@ -67,7 +67,7 @@ public class AuthenticationDao {
 	    	}else{
 	    		//User name does not exist
 	    		System.out.print("Username does not exist");
-	    		return null;
+	    		return -2; //user entered email does not exist
 	    	}
 	    }catch(Exception e){
 	    	e.printStackTrace();
