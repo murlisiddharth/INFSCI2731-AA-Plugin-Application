@@ -56,17 +56,12 @@
         <servlet-name>Hostile</servlet-name>
         <servlet-class>controller.Hostile</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Hostile</servlet-name>
-        <url-pattern>/Hostile</url-pattern>
-    </servlet-mapping>
-
     <session-config>
         <session-timeout>120</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>
-            login.jsp
+            index.jsp
         </welcome-file>
     </welcome-file-list>
 </web-app>

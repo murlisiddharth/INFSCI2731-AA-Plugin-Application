@@ -4,7 +4,7 @@
     Author     : Siwei Jiao
 --%>
 <%
-    //response.sendRedirect("login.jsp");
+    response.sendRedirect("login.jsp");
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

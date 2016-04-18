@@ -1,11 +1,9 @@
 <%-- 
-    Document   : index
-    Created on : Mar 30, 2016, 7:38:49 PM
-    Author     : Siwei Jiao
+    Document   : RBACtest
+    Created on : Apr 17, 2016, 9:53:13 PM
+    Author     : Zhirun Tian
 --%>
-<%
-    //response.sendRedirect("login.jsp");
-%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <a href="Test?action=getNonce">Get Nonce</a>
+        <h1>Hello World!</h1>
     </body>
 </html>
