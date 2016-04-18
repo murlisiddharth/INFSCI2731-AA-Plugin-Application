@@ -1,17 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package model;
 
 import dataAccessObject.RoleDao;
 
 /**
- *
- * @author Carol
+ * This class is to create bean for role
+ * @author Hanwei Cheng
  */
-public class AccessRole {
+
+public class Role {
         private int id;
 	private String role;
         private RoleDao dao;
@@ -30,7 +27,7 @@ public class AccessRole {
 	}
         
         //create a regular role
-        public AccessRole(){
+        public Role(){
             dao = new RoleDao();
             this.id = dao.getUserID();
             System.out.println("== new role" + id);

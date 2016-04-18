@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dataAccessObject;
 
 import DbConnect.DbConnection;
@@ -13,8 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
- * @author Hanwei
+ *This class is to create a DAO for role
+ * @author Hanwei Cheng
  */
 public class RoleDao {
     private Connection connection;

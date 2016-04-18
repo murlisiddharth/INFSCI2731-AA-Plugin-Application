@@ -17,18 +17,8 @@ public class TimeStamp {
     private TimeStampDao dao;
     
     //constructor to create a new TimeStamp
-    //by Hanwei
+    //by Hanwei Cheng
     public TimeStamp() {
-        // interact with database
-        // use Dao to create
-        // After...
-        // ID, createTime, updataTime
-        // this.id = ID, this.createTime = createTime, ...
-        
-        // In AccountBean...
-        // TimeStamp ts = new TimeStamp();
-        // int timeStampId = ts.getTimeStampID();
-        
         dao = new TimeStampDao();
         long id = dao.setUpTimeStamp(); // created
         this.timeStampsID = id;

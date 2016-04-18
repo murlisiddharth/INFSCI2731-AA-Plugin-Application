@@ -88,17 +88,16 @@
 					<div>
 					<label class="control-label">Security Question 1</label>
 						<select name="secQue1" class="form-control">
-							<option selected disabled>Security Question</option>
-							<option>What is the name of your favorite book as a child?</option>
-							<option>What is the name of your 1st grade teacher?</option>
-							<option>What was the color of the first car you owned?</option>
-							<option>What was the name of the first pet you owned?</option>
-							<option>What is the name of the city where you got lost?</option>
-							<option>Where were you New Year's 2000?</option>
-							<option>Who was your childhood role model?</option>
-							<option>When you were young, what did you want to be be when you grew up?</option>
-							<option>What is the street name you lived in as a child?</option>
-							<option>In what town/city did your mother and father meet?</option>
+							<option value="1">What is the name of your favorite book as a child?</option>
+							<option value="2">What is the name of your 1st grade teacher?</option>
+							<option value="3">What was the color of the first car you owned?</option>
+							<option value="4">What was the name of the first pet you owned?</option>
+							<option value="5">What is the name of the city where you got lost?</option>
+							<option value="6">Where were you New Year's 2000?</option>
+							<option value="7">Who was your childhood role model?</option>
+							<option value="8">When you were young, what did you want to be be when you grew up?</option>
+							<option value="9">What is the street name you lived in as a child?</option>
+							<option value="10">In what town/city did your mother and father meet?</option>
 						</select>
 					</div>
 
@@ -114,17 +113,16 @@
 					<div class="dropdown">
 					<label class="control-label">Security Question 2</label>
 						<select name="secQue2" class="form-control">
-							<option selected disabled>Security Question</option>
-							<option>What is the name of your favorite book as a child?</option>
-							<option>What is the name of your 1st grade teacher?</option>
-							<option>What was the color of the first car you owned?</option>
-							<option>What was the name of the first pet you owned?</option>
-							<option>What is the name of the city where you got lost?</option>
-							<option>Where were you New Year's 2000?</option>
-							<option>Who was your childhood role model?</option>
-							<option>When you were young, what did you want to be be when you grew up?</option>
-							<option>What is the street name you lived in as a child?</option>
-							<option>In what town/city did your mother and father meet?</option>
+							<option value="1">What is the name of your favorite book as a child?</option>
+							<option value="2">What is the name of your 1st grade teacher?</option>
+							<option value="3">What was the color of the first car you owned?</option>
+							<option value="4">What was the name of the first pet you owned?</option>
+							<option value="5">What is the name of the city where you got lost?</option>
+							<option value="6">Where were you New Year's 2000?</option>
+							<option value="7">Who was your childhood role model?</option>
+							<option value="8">When you were young, what did you want to be be when you grew up?</option>
+							<option value="9">What is the street name you lived in as a child?</option>
+							<option value="10">In what town/city did your mother and father meet?</option>
 						</select>
 					</div>
 					
@@ -139,17 +137,16 @@
 					<div class="dropdown">
 					<label class="control-label">Security Question 3</label>
 						<select name="secQue3" class="form-control">
-							<option selected disabled>Security Question</option>
-							<option>What is the name of your favorite book as a child?</option>
-							<option>What is the name of your 1st grade teacher?</option>
-							<option>What was the color of the first car you owned?</option>
-							<option>What was the name of the first pet you owned?</option>
-							<option>What is the name of the city where you got lost?</option>
-							<option>Where were you New Year's 2000?</option>
-							<option>Who was your childhood role model?</option>
-							<option>When you were young, what did you want to be be when you grew up?</option>
-							<option>What is the street name you lived in as a child?</option>
-							<option>In what town/city did your mother and father meet?</option>
+							<option value="1">What is the name of your favorite book as a child?</option>
+							<option value="2">What is the name of your 1st grade teacher?</option>
+							<option value="3">What was the color of the first car you owned?</option>
+							<option value="4">What was the name of the first pet you owned?</option>
+							<option value="5">What is the name of the city where you got lost?</option>
+							<option value="6">Where were you New Year's 2000?</option>
+							<option value="7">Who was your childhood role model?</option>
+							<option value="8">When you were young, what did you want to be be when you grew up?</option>
+							<option value="9">What is the street name you lived in as a child?</option>
+							<option value="10">In what town/city did your mother and father meet?</option>
 						</select>
 					</div>
 

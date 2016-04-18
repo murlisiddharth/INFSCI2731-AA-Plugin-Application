@@ -12,11 +12,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Question_Answer;
+import model.SecurityQuestion;
 import model.UserAccountInfo;
-
 /**
- *
- * @author Carol
+ *This class is the controller to deal with user information in signup page
+ * @author Hanwei
  */
 @WebServlet(name = "AccountInfoServlet", urlPatterns = {"/AccountInfoServlet"})
 public class RegistrationServlet extends HttpServlet {
@@ -38,11 +39,41 @@ public class RegistrationServlet extends HttpServlet {
         user.setFirstName(request.getParameter("firstname"));
         user.setLastName(request.getParameter("lastname"));
         user.setEmailAddress(request.getParameter("email"));
-        // user.setTimeStampsID();
-        // setAccess_role_id();
-        request.setAttribute("user", user);
+        //return to the page for testing purpose
+        request.setAttribute("user", user); 
         
         user.register();
+        
+        //set security Question &answer 1
+        Question_Answer qa1 = new Question_Answer();
+        qa1.setAccount_info_id(user.getId());
+        System.out.println("===== " + request.getParameter("secQue1"));
+        int question1 = Integer.parseInt(request.getParameter("secQue1"));
+        qa1.setSecurity_question_id(question1);
+        qa1.setAnswer(request.getParameter("answer1"));
+        
+ 
+        //set security question &answer 2
+        Question_Answer qa2 = new Question_Answer();
+        qa2.setAccount_info_id(user.getId());
+        int question2 = Integer.parseInt(request.getParameter("secQue2"));
+        qa2.setSecurity_question_id(question2);
+        qa2.setAnswer(request.getParameter("answer2"));
+        
+        
+        //set security question 3
+        Question_Answer qa3 = new Question_Answer();
+        qa3.setAccount_info_id(user.getId());
+        int question3 = Integer.parseInt(request.getParameter("secQue3")); //selector???? 
+        qa3.setSecurity_question_id(question3);
+        qa3.setAnswer(request.getParameter("answer3"));
+        
+
+        //create 3 question &answer records for one user
+        qa1.generateRecord();
+        qa2.generateRecord();
+        qa3.generateRecord();
+        
         //forward server's request to jsp
         getServletContext().getRequestDispatcher("/signup.jsp").forward(request, response);
        

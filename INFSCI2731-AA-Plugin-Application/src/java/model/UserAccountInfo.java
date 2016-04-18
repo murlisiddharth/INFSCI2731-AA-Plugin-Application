@@ -80,7 +80,7 @@ public class UserAccountInfo {
         TimeStamp time = new TimeStamp();
         long timeID = time.getTimeStampsID();
         //create new role and return id
-        AccessRole role = new AccessRole();
+        Role role = new Role();
         int roleID = role.getId();
         System.out.println("==roleID=="+ roleID);
         //create a new account
