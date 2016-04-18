@@ -7,7 +7,7 @@ package controller;
 
 /**
  *
- * @author Zhirun Tian
+ * @author Zhirun Tian, Hanwei Cheng
  */
 public class RBAC {
     
