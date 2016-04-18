@@ -60,7 +60,13 @@
         <servlet-name>Hostile</servlet-name>
         <url-pattern>/Hostile</url-pattern>
     </servlet-mapping>
-
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>controller.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/RegistrationServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>
     </session-config>

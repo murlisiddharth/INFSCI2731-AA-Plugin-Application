@@ -3,6 +3,7 @@
  */
 package model;
 
+import dataAccessObject.TimeStampDao;
 import java.util.Date;
 
 /**
@@ -13,7 +14,17 @@ public class TimeStamp {
     private long timeStampsID;
     private Date createTime;
     private Date updateTime;
-
+    private TimeStampDao dao;
+    
+    //constructor to create a new TimeStamp
+    //by Hanwei Cheng
+    public TimeStamp() {
+        dao = new TimeStampDao();
+        long id = dao.setUpTimeStamp(); // created
+        this.timeStampsID = id;
+    }
+    
+    
     /**
      * @return the timeStampsID
      */
@@ -55,4 +66,5 @@ public class TimeStamp {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+    
 }

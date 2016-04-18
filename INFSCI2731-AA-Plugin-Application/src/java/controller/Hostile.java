@@ -43,14 +43,25 @@ public class Hostile extends HttpServlet {
      */
     protected HostileStructure hostileEntry;
 
-    protected List<HostileStructure> HostileList =new ArrayList<HostileStructure>();;
+    protected List<HostileStructure> HostileList = new ArrayList<HostileStructure>();
 
     public HostileDao hostileDao = new HostileDao();
 
     public Hostile() {
         super();
+    }
 
-//        HostileList = new ArrayList<HostileStructure>();
+    /**
+     *
+     * @param countAttempts
+     * @param IPAddress
+     * @param SYSTEM_SOURCE
+     */
+    protected Hostile(int countAttempts, String IPAddress, String SYSTEM_SOURCE) {
+        super();
+        hostileEntry.setIPAddress(IPAddress);
+        hostileEntry.setSYSTEM_SOURCE(SYSTEM_SOURCE);
+
     }
 //
 //    public Hostile(int countAttempts, String IPAddress, String SYSTEM_SOURCE) {
@@ -81,28 +92,28 @@ public class Hostile extends HttpServlet {
 
             int count = Integer.valueOf(request.getParameter("CountAttempts"));
 
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Hostile entry list</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("write to db successful");
-                out.println("count=" + count2 + "ipaddress=" + IPaddress + "systemvariable=" + SystemValue);
-                out.println("</body>");
-                out.println("</html>");
-
-            }
+            //response.setContentType("text/html;charset=UTF-8");
+//            try (PrintWriter out = response.getWriter()) {
+//                /* TODO output your page here. You may use following sample code. */
+//                out.println("<!DOCTYPE html>");
+//                out.println("<html>");
+//                out.println("<head>");
+//                out.println("<title>Hostile entry list</title>");
+//                out.println("</head>");
+//                out.println("<body>");
+//                out.println("write to db successful");
+//                out.println("count=" + count2 + "ipaddress=" + IPaddress + "systemvariable=" + SystemValue);
+//                out.println("</body>");
+//                out.println("</html>");
+//
+//            }
 
         }
 
         String action = request.getParameter("action");
-        
+
         boolean i2 = action.equalsIgnoreCase("getHostile");
-        
+
         
         if (action.equalsIgnoreCase("getHostile")) {
             HostileList = hostileDao.GetHostileFromLogDB();
@@ -129,6 +140,25 @@ public class Hostile extends HttpServlet {
                 out.println("</html>");
 
             }
+        }
+
+    }
+
+    public void redirectHostile(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Hostile Redirect</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Hostile Redirect Example Page</h1>");
+            out.println("</body>");
+            out.println("</html>");
+
         }
 
     }

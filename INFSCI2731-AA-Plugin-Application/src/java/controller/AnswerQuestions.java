@@ -9,7 +9,6 @@ import DbConnect.DbConnection;
 import dataAccessObject.NonceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +24,7 @@ import model.ResetPasswordObj;
 
 /**
  *
- * @author shaoNPC
+ * @author shao dai
  */
 @WebServlet(name = "AnswerQuestions", urlPatterns = {"/AnswerQuestions"})
 public class AnswerQuestions extends HttpServlet {
@@ -70,7 +69,8 @@ public class AnswerQuestions extends HttpServlet {
                     ipAddress = request.getRemoteAddr();  
             }
             //hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
-            response.sendRedirect("hostile");
+            Hostile hostile = new Hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
+            hostile.redirectHostile(request, response);
         } else {
             String securityAnswer = request.getParameter("security_answer");
             ResetPasswordObj resetPasswordObj = (ResetPasswordObj)session.getAttribute("resetPasswordObj"); 
@@ -79,7 +79,7 @@ public class AnswerQuestions extends HttpServlet {
             if (resetPasswordObj.userID.equals(checkUserID)) {
                 NonceDao nonce = new NonceDao();
                 String userNonce = nonce.getNewNonce(Integer.parseInt(resetPasswordObj.userID));
-                if(!userNonce.equals("")) {
+                if(!userNonce.equals("error") && !userNonce.equals("")) {
                     printEmail(request, response, userNonce);
                 }
                 session.invalidate();
@@ -111,11 +111,10 @@ public class AnswerQuestions extends HttpServlet {
             
             ResultSet rs = preparedStatement.executeQuery();
             
-            boolean val = rs.next();
-            if (!val) {
-                return "";
-            } else {
+            if (rs.next()) {
                 return rs.getString("account_info_id"); 
+            } else {
+                return "";
             }
   
         } catch (SQLException e) {
