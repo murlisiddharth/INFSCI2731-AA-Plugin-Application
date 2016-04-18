@@ -15,10 +15,11 @@
 <title>Login Page</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link href="css/login.css" rel="stylesheet"/>
 
 </head>
 <body>
-	<div class="container">
+	<div class="container">           
 		<div class="jumbotron">
 			<div class="form-group"></div>
 			<form name="loginForm" class="form-horizontal login" method="post">
@@ -52,7 +53,13 @@
                 <a type="button" href="forgotpassword"  class="btn btn-default">Forgot Password</a>
 				</div>
 			</form>
-		</div>
+                        
+                        <div id="registerDiv">
+                            <br/>
+                            <br/>
+                           Register <a href="signup.jsp">here</a>.
+                        </div>
+		</div>                                                         
 	</div>
 	<!-- FOOTER -->
 	<div class="container marketing">
