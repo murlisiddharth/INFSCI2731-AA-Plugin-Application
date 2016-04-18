@@ -59,7 +59,12 @@ public class authenticationController extends HttpServlet {
 		} else {
 			// authentication failed
 			out.println("Username Or Password Is Incorrect");
-			session.setAttribute("lastAttempt", lastAttempt+1);
+			if(lastAttempt==null){
+				lastAttempt = 1; //if first failed login attempt
+				session.setAttribute("lastAttempt", lastAttempt);
+			}else{
+				session.setAttribute("lastAttempt", lastAttempt+1);
+			}
 			out.close();
 			out.flush();
 		}
