@@ -75,7 +75,7 @@ public class UserAccountInfo {
     }
 
     //create new account
-    public int register() {
+    public void register() {
         // create new timestamp and return id
         TimeStamp time = new TimeStamp();
         long timeID = time.getTimeStampsID();
@@ -86,9 +86,7 @@ public class UserAccountInfo {
         //create a new account
         dao = new UserDao();
         System.out.println("===== bean " + firstName + "   " + emailAddress);
-        
-        //create account and return the generated id
-        return this.id = dao.createAccount(firstName,lastName, emailAddress, timeID, roleID);
+        this.id =(int)dao.createAccount(firstName,lastName, emailAddress, timeID, roleID);
         
         
     }
