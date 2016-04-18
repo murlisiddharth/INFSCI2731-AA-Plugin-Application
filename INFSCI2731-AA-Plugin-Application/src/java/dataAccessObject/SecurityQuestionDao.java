@@ -24,6 +24,7 @@ public class SecurityQuestionDao {
     Statement st = null;
     ResultSet rs = null;
     String sql = "";
+    int recordNum;
     
      public SecurityQuestionDao() {
         //connect to database and select the record
@@ -31,6 +32,32 @@ public class SecurityQuestionDao {
         System.out.println("==SecurityQuestionDao connection==");
     }
     
+    //check whether if there are any records in the table
+     public boolean checkEmpty(){
+         try{
+             sql = "SELECT count(id) from INFSCI2731.security_question";
+             PreparedStatement ps = connection.prepareStatement(sql);
+             rs = ps.executeQuery() ;
+             if(rs.next()){
+                 recordNum = rs.getInt("count(id)");
+                 if(recordNum == 0){
+                     return true;
+                 }
+             }else
+                return false;
+         
+        } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+        }    
+         
+     }
+     
+     public void fillTable(){
+         if(checkEmpty()){
+             
+         }
+     }
     
     //get the content of the question according to the id
     public String getQuestionContent(int id) {

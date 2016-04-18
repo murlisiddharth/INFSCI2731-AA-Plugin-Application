@@ -180,7 +180,7 @@
 		   
 
 	    </div><!--container-->
-            <!--test-->
+            <!--testing-->
                   firstname:<jsp:getProperty name="user" property="firstName"/>
                     lastname:<jsp:getProperty name="user" property="lastName"/> 
                     email:<jsp:getProperty name="user" property="emailAddress"/>

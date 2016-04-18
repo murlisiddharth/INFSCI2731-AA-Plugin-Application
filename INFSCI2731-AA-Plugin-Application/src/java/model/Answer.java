@@ -12,7 +12,7 @@ import dataAccessObject.UserDao;
  *This class is to create bean for question_answer
  * @author Hanwei Cheng
  */
-public class Question_Answer {
+public class Answer {
     private int id;
     private String answer;
     private int account_info_id;
