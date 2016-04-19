@@ -75,7 +75,7 @@ public class authenticationController extends HttpServlet {
                     if(account_id == -1) {
                         logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id);
                     }else if(account_id == -2) {
-                        logDao.logUserNameFailedLoginAttempt(ipAddr, sysSource, username);
+                        logDao.logEmailFailedLoginAttempt(ipAddr, sysSource, username);
                     }
                     
 			// authentication failed

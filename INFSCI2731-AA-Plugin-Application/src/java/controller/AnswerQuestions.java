@@ -6,6 +6,7 @@
 package controller;
 
 import DbConnect.DbConnection;
+import dataAccessObject.ActivityLogDao;
 import dataAccessObject.NonceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.IPAddress;
 import model.ResetPasswordObj;
 
 /**
@@ -31,6 +33,8 @@ public class AnswerQuestions extends HttpServlet {
 
     private final int MAX_QUESTION_ATTEMPTS = 5;
     private final String SYSTEM_SOURCE = "QuestionForm";
+    ActivityLogDao logDao = new ActivityLogDao();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,6 +50,8 @@ public class AnswerQuestions extends HttpServlet {
         HttpSession session = request.getSession(false);
         int questionAttempts = 0;
         String questionString = "";
+        IPAddress ipAddress = new IPAddress();
+
         
         if (session == null) { //No session yet
             response.sendRedirect("login.jsp");
@@ -62,30 +68,45 @@ public class AnswerQuestions extends HttpServlet {
             }
         }  
         
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+        
         if(questionAttempts > MAX_QUESTION_ATTEMPTS) {
-            String ipAddress = request.getHeader("X-FORWARDED-FOR");
-            // if ip behind proxy
-            if (ipAddress == null) {  
-                    ipAddress = request.getRemoteAddr();  
-            }
+//            String ipAddress = request.getHeader("X-FORWARDED-FOR");
+//            // if ip behind proxy
+//            if (ipAddress == null) {  
+//                    ipAddress = request.getRemoteAddr();  
+//            }
             //hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
-            Hostile hostile = new Hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
+            Hostile hostile = new Hostile(questionAttempts, ipAddr, SYSTEM_SOURCE);
             hostile.redirectHostile(request, response);
         } else {
             String securityAnswer = request.getParameter("security_answer");
             ResetPasswordObj resetPasswordObj = (ResetPasswordObj)session.getAttribute("resetPasswordObj"); 
             String checkUserID = checkValidAnswerDB(securityAnswer, resetPasswordObj.securityAnswerID);
             
-            if (resetPasswordObj.userID.equals(checkUserID)) {
+            if (resetPasswordObj.userID.equals(checkUserID)) {                
                 NonceDao nonce = new NonceDao();
                 String userNonce = nonce.getNewNonce(Integer.parseInt(resetPasswordObj.userID));
                 if(!userNonce.equals("error") && !userNonce.equals("")) {
+                    //check if previous sent link record exist, if it does, update the record description
+                    int logID = logDao.checkResetPwSentLink(Integer.parseInt(resetPasswordObj.userID));
+                    if(logID > 0){
+                        logDao.updatePreResetPwRecord("new link generated", logID);
+                    }               
+                    //log pre reset pw activity, once user reset pw successfully, or reset link has expired or a new link generated, will also update this record description
+                    logDao.logPreResetPwOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
+                
                     printEmail(request, response, userNonce);
                 }
                 session.invalidate();
             } else {
                 questionAttempts++;
                 questionString += securityAnswer + ":" + SYSTEM_SOURCE + ";";
+                
+                //log answer security question failed activity on forgot pw
+                logDao.logAnswerSecurQuestFailedOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
                 
                 session.setAttribute("questionAttempts", questionAttempts);       
                 session.setAttribute("questionString", questionString);

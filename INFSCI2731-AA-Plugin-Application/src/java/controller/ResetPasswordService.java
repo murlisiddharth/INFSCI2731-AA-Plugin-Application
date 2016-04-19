@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dataAccessObject.ActivityLogDao;
 import dataAccessObject.NonceDao;
 import dataAccessObject.SavePasswordDao;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.IPAddress;
 import model.Nonce;
 import utilities.CheckDateTime;
 
@@ -41,6 +43,13 @@ public class ResetPasswordService extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm_password");
         NonceDao nonceDao = new NonceDao();
+        ActivityLogDao logDao = new ActivityLogDao();
+        IPAddress ipAddress = new IPAddress();
+        
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+
         
         boolean passwordMatch = password.equals(confirmPassword);
         boolean tokenValid = false;
@@ -55,6 +64,15 @@ public class ResetPasswordService extends HttpServlet {
             Nonce nonce = nonceDao.getNonceByNonceValue(token);
             SavePasswordDao savePasswordDao = new SavePasswordDao();
             savePasswordDao.savePassword(nonce.getAccountInfoID(), password);
+            
+            //log activity of successfully reset pw, and update previoud reset pw record description
+            int logID = logDao.logExpiredLinkOnForgotPw(ipAddr, sysSource, nonce.getAccountInfoID());
+            //check if previous sent link record exist, if it does, update the record description
+            int id = logDao.checkResetPwSentLink(nonce.getAccountInfoID());
+            if(logID > 0 && id > 0){
+                logDao.updatePreResetPwRecord("succeeded(logid " + logID + ")", id);
+            }
+            
             nonceDao.deleteNonceByUserID(nonce.getAccountInfoID());
             response.sendRedirect("login.jsp");
         } else {

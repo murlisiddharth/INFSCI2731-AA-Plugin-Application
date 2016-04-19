@@ -4,9 +4,19 @@
     Author     : shao dai
 --%>
 
+<%@page import="dataAccessObject.ActivityLogDao"%>
+<%@page import="model.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <% 
+    ActivityLogDao logDao = new ActivityLogDao();
+    IPAddress ipAddress = new IPAddress();
+    String sysSource = request.getRequestURI();
+    String ipAddr = ipAddress.getClientIpAddress(request);
     if(session.getAttribute("resetPasswordObj") == null) {
+        //log accesss attempt to this page without session attribute resetPasswordObj set
+        logDao.logAccessAttempt(ipAddr, sysSource, "attempt to access question.jsp without session attribute resetPasswordObj set");
+        
         response.sendRedirect("login.jsp");
     }
 %>

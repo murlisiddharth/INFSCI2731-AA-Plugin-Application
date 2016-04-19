@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dataAccessObject.ActivityLogDao;
 import utilities.CheckDateTime;
 import dataAccessObject.NonceDao;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.IPAddress;
+import model.Nonce;
 
 /**
  *
@@ -38,6 +41,13 @@ public class ResetPassword extends HttpServlet {
         boolean passwordMismatch = Boolean.parseBoolean(request.getParameter("pmm"));
         Timestamp timestamp;
         NonceDao nonceDao = new NonceDao();
+        ActivityLogDao logDao = new ActivityLogDao();
+        IPAddress ipAddress = new IPAddress();
+        
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+
         
         if (nonce != null && !nonce.equals("")) {
             timestamp = nonceDao.getNonceCreatetime(nonce);
@@ -45,6 +55,16 @@ public class ResetPassword extends HttpServlet {
                 printPasswordForm(request, response, nonce, passwordMismatch);
             }
         }
+        
+        //log activity of expired link on reset pw, and update previoud reset pw record description
+        Nonce n = nonceDao.getNonceByNonceValue(nonce);
+        int logID = logDao.logExpiredLinkOnForgotPw(ipAddr, sysSource, n.getAccountInfoID());
+        //check if previous sent link record exist, if it does, update the record description
+        int id = logDao.checkResetPwSentLink(n.getAccountInfoID());
+        if(logID > 0 && id > 0){
+            logDao.updatePreResetPwRecord("expired(logid " + logID + ")", id);           
+        }
+               
         
         printError(request, response);
         

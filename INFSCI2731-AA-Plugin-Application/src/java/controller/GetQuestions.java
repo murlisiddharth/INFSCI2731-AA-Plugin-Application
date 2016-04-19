@@ -13,12 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import DbConnect.DbConnection;
+import dataAccessObject.ActivityLogDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
+import model.IPAddress;
 
 import model.ResetPasswordObj;
 
@@ -32,6 +34,8 @@ public class GetQuestions extends HttpServlet {
     
     private final int MAX_EMAIL_ATTEMPTS = 5;
     private final String SYSTEM_SOURCE = "EmailForm";
+    ActivityLogDao logDao = new ActivityLogDao();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,6 +51,7 @@ public class GetQuestions extends HttpServlet {
         HttpSession session = request.getSession(false);
         int emailAttempts = 0;
         String emailString = "";
+        IPAddress ipAddress = new IPAddress();
         
         if (session == null) { //No session yet
             session = request.getSession();
@@ -61,15 +66,21 @@ public class GetQuestions extends HttpServlet {
             }
         }  
         
+        //get client ip addr and request URI for activity log
+            String sysSource = request.getRequestURI();
+            String ipAddr = ipAddress.getClientIpAddress(request);
+            
+        
         if(emailAttempts > MAX_EMAIL_ATTEMPTS) {
-            String ipAddress = request.getHeader("X-FORWARDED-FOR");
-            // if ip behind proxy
-            if (ipAddress == null) {  
-                    ipAddress = request.getRemoteAddr();  
-            }
+//            String ipAddress = request.getHeader("X-FORWARDED-FOR");
+//            // if ip behind proxy
+//            if (ipAddress == null) {  
+//                    ipAddress = request.getRemoteAddr();  
+//            }
+                       
             //Hostile module redirect or object
 
-            Hostile hostile = new Hostile(emailAttempts, ipAddress, SYSTEM_SOURCE);
+            Hostile hostile = new Hostile(emailAttempts, ipAddr, SYSTEM_SOURCE);
             hostile.redirectHostile(request, response);
         } else {
             String email = request.getParameter("email");
@@ -81,6 +92,9 @@ public class GetQuestions extends HttpServlet {
             if (account_info_id.equals("")) { //if no email match
                 emailAttempts++;
                 emailString += email + ":" + SYSTEM_SOURCE + ";";
+                
+                //log email failed activity on forgot pw form
+                logDao.logEmailFailedOnForgotPw(ipAddr, sysSource, email);
                 
                 session.setAttribute("emailAttempts", emailAttempts);       
                 session.setAttribute("emailString", emailString);
