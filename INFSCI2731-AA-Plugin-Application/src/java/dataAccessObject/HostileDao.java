@@ -41,9 +41,7 @@ public class HostileDao {
         connection = DbConnection.getConnection();
     }
 
-    public List<HostileStructure> ReadHostileFromLog() {
 
-    }
 
     public List<HostileStructure> GetHostileFromLogDB() {
 
