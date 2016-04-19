@@ -55,7 +55,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="index.jsp">Home</a></li>
-            <li><a href="hostile.jsp">Hostile</a></li>
+            <li><a href="hostilelist.jsp">Hostile</a></li>
              <li class="active"><a href="RBACtest.jsp">RBACtest</a></li>
             <li><a href="RBACtest2.jsp">RBACtest2</a></li>
             <li><a href="RBACtest3.jsp">RBACtest3</a></li>
