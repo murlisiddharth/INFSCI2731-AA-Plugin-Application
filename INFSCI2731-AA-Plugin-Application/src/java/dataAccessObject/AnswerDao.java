@@ -33,7 +33,7 @@ public class AnswerDao {
         System.out.println("==AnswerDao connection==");
     }
     
-    public long createQuestionAnswer(String answer, int account_info_id, int security_question_id, long timestamps_id){
+    public int createQuestionAnswer(String answer, int account_info_id, int security_question_id, long timestamps_id){
         try {
                 sql = "INSERT INTO INFSCI2731.security_question_answer(answer, account_info_id, security_question_id, timestamps_id) values (?, ?, ?, ?)";
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
@@ -46,7 +46,7 @@ public class AnswerDao {
                 
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()) {
-                    long autoKey = rs.getLong(1);
+                    int autoKey = rs.getInt(1);
                     return autoKey;
                 } else
                     return -1;

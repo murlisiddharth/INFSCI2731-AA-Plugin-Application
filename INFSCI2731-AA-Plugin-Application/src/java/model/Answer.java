@@ -66,7 +66,7 @@ public class Answer {
         //create a new set question and answer
         dao = new AnswerDao();
         System.out.println("===== bean of question_answer ===" + " answer: " + answer + " accountID: " + account_info_id + " secQueID: "+ security_question_id);
-        this.id =(int)dao.createQuestionAnswer(answer, account_info_id, security_question_id,timeID);
+        this.id = dao.createQuestionAnswer(answer, account_info_id, security_question_id,timeID);
         
     }
     
