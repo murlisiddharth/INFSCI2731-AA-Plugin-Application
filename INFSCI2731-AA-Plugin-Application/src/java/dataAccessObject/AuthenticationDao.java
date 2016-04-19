@@ -57,7 +57,7 @@ public class AuthenticationDao {
 		    		}else{
 		    			//Password does not match..
 		    			System.out.print("Passwd does not match");
-		    			return null;
+		    			return -1; //-1 indicates pw does not match
 		    		}
 		    	}else{
 		    		//Password does not exist
@@ -68,7 +68,7 @@ public class AuthenticationDao {
 	    	}else{
 	    		//User name does not exist
 	    		System.out.print("Username does not exist");
-	    		return null;
+	    		return -2; //-2 indicates user entered email does not exist
 	    	}
 	    }catch(Exception e){
 	    	e.printStackTrace();
