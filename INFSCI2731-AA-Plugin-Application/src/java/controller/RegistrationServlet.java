@@ -5,6 +5,7 @@
  */
 package controller;
 
+import dataAccessObject.ActivityLogDao;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Answer;
 import model.Authentication;
+import model.IPAddress;
 import model.UserAccountInfo;
 /**
  *This class is the controller to deal with user information in signup page
@@ -41,7 +43,18 @@ public class RegistrationServlet extends HttpServlet {
         //return to the page for testing purpose
         request.setAttribute("user", user); 
         
-        user.register();
+        
+        int accountId = user.register(); //modified by Siwei in order to get the new generated account id
+        
+        
+        //log activity of new created account, by Siwei
+        IPAddress ipAddress = new IPAddress();
+//        String sysSource = request.getRequestURL().toString();
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+        ActivityLogDao logDao = new ActivityLogDao();
+        logDao.logNewAccountCreated(ipAddr, sysSource, accountId);
+        
         
         //transfer the password from the signup page
         Authentication aut = new Authentication();

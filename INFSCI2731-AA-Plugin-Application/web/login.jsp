@@ -15,6 +15,7 @@
 <title>Login Page</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link href="css/login.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -52,6 +53,11 @@
                 <a type="button" href="forgotpassword"  class="btn btn-default">Forgot Password</a>
 				</div>
 			</form>
+                        <div id="registerDiv">
+                            <br/>
+                            <br/>
+                           New user? Register <a href="signup.jsp">here</a>.
+                        </div>
 		</div>
 	</div>
 	<!-- FOOTER -->
