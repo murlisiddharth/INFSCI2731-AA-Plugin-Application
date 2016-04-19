@@ -13,5 +13,19 @@
     </head>
     <body>
         <a href="Hostile?action=getHostile">Get Hostile entry</a>
+        <h1>Get Hostile entry</h1>
     </body>
+    <form name="resetform-password" method="POST" action="Hostile">
+<!--        <input type="hidden" name="token" value="${param.token}">-->
+        Enter CountAttempts <input name="countAttempt" type="text" value="5" />
+        <br/><br/>
+        Enter IP address: <input name="IPAddress" type="text" value="192.168.32.11"/>
+        <br/><br/>
+        Enter SYSTEM_SOURCE: <input name="SYSTEM_SOURCE" type="text" value="from_security_question" />
+        <br/><br/>
+        
+        <input type="submit">
+    </form>
+    
+    
 </html>
