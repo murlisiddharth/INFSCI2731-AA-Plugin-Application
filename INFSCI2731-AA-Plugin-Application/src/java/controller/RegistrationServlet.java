@@ -5,16 +5,14 @@
  */
 package controller;
 
-import dataAccessObject.AuthenticationDao;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Answer;
-import model.SecurityQuestion;
+import model.Authentication;
 import model.UserAccountInfo;
 /**
  *This class is the controller to deal with user information in signup page
@@ -34,26 +32,25 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("in servlet");
-        System.out.println("==" + request.getParameter("firstname"));
+        System.out.println("==in servlet==");
         UserAccountInfo user = new UserAccountInfo();
         user.setFirstName(request.getParameter("firstname"));
         user.setLastName(request.getParameter("lastname"));
         user.setEmailAddress(request.getParameter("email"));
+        System.out.println("==in servlet==" + "firstname: "+ request.getParameter("firstname")+" lastname: "+request.getParameter("lastname"));
         //return to the page for testing purpose
         request.setAttribute("user", user); 
         
         user.register();
         
         //transfer the password from the signup page
-        String password = request.getParameter("password");
-//        AuthenticationDao dao = new AuthenticationDao();
-//        dao.computeHash(password,salt);
+        Authentication aut = new Authentication();
+        aut.setAccount_info_id(user.getId());
+        aut.createNewAuth(request.getParameter("password"));
         
         //set security Question &answer 1
         Answer qa1 = new Answer();
         qa1.setAccount_info_id(user.getId());
-        System.out.println("===== " + request.getParameter("secQue1"));
         int question1 = Integer.parseInt(request.getParameter("secQue1"));
         qa1.setSecurity_question_id(question1);
         qa1.setAnswer(request.getParameter("answer1"));
@@ -76,9 +73,9 @@ public class RegistrationServlet extends HttpServlet {
         
 
         //create 3 question &answer records for one user
-        qa1.generateRecord();
-        qa2.generateRecord();
-        qa3.generateRecord();
+        qa1.generateQARecord();
+        qa2.generateQARecord();
+        qa3.generateQARecord();
         
         //forward server's request to jsp
         getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);

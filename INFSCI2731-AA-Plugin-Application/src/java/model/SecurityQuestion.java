@@ -28,5 +28,11 @@ public class SecurityQuestion {
         this.question = question;
     }
     
+    public SecurityQuestion(){
+        dao = new SecurityQuestionDao();
+        if(dao.checkSecQueEmpty()){
+            dao.fillSecQueTable();
+        }
+    }
     
 }

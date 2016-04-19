@@ -27,7 +27,7 @@ public class UserDao {
      public UserDao() {
         //connect to database and select the record
         connection = DbConnection.getConnection();
-        System.out.println("UserDao connection");
+        System.out.println("==UserDao connection==");
     }
     
     //create account by passing variable value from user instance

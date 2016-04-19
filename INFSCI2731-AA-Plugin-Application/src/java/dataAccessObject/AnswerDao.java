@@ -30,7 +30,7 @@ public class AnswerDao {
      public AnswerDao() {
         //connect to database and select the record
         connection = DbConnection.getConnection();
-        System.out.println("UserDao connection");
+        System.out.println("==AnswerDao connection==");
     }
     
     public long createQuestionAnswer(String answer, int account_info_id, int security_question_id, long timestamps_id){

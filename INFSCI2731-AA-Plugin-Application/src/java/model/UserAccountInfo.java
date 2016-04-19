@@ -74,7 +74,7 @@ public class UserAccountInfo {
         this.dao = dao;
     }
 
-    //create new account
+    //create new account record in account_info table
     public void register() {
         // create new timestamp and return id
         TimeStamp time = new TimeStamp();
@@ -82,13 +82,12 @@ public class UserAccountInfo {
         //create new role and return id
         Role role = new Role();
         int roleID = role.getId();
-        System.out.println("==roleID=="+ roleID);
         //create a new account
         dao = new UserDao();
-        System.out.println("===== bean " + firstName + "   " + emailAddress);
+        System.out.println("===== user bean " + "firstname: " + firstName + " lastname: " + lastName+ "email: " +emailAddress + "====");
         this.id =(int)dao.createAccount(firstName,lastName, emailAddress, timeID, roleID);
-        
-        
     }
+    
+    
 
 }

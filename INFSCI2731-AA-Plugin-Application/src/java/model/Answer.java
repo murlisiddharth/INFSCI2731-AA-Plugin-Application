@@ -6,7 +6,6 @@
 package model;
 
 import dataAccessObject.AnswerDao;
-import dataAccessObject.UserDao;
 
 /**
  *This class is to create bean for question_answer
@@ -60,13 +59,13 @@ public class Answer {
         this.timestamps_id = timestamps_id;
     }
     
-    public void generateRecord(){
+    public void generateQARecord(){
         // create new timeStamp
         TimeStamp time = new TimeStamp();
         long timeID = time.getTimeStampsID();
         //create a new set question and answer
         dao = new AnswerDao();
-      System.out.println("===== bean of question_answer " + answer + account_info_id + security_question_id);
+        System.out.println("===== bean of question_answer ===" + " answer: " + answer + " accountID: " + account_info_id + " secQueID: "+ security_question_id);
         this.id =(int)dao.createQuestionAnswer(answer, account_info_id, security_question_id,timeID);
         
     }

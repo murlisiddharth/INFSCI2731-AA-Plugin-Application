@@ -12,6 +12,7 @@ public class AuthenticationDao {
     private Connection connection;
     Statement st = null;
     ResultSet rs = null;
+    String sql = "";
     String sqlCallforAccountID,sqlCallForHash;
     
     public AuthenticationDao(){
@@ -93,4 +94,35 @@ public class AuthenticationDao {
 			return null;
 		}
 	}
+        
+        
+ /**
+ *These method is to create a new record for authentication table
+ * @author: Hanwei Cheng
+ */
+        public long createAuthentication(String hash, String password_salt, int account_info_id, boolean active, long timestamps_id){
+             try {
+                sql = "INSERT INTO INFSCI2731.authentication(hash, password_salt, account_info_id, active, timestamps_id) values (?, ?, ?, ?, ?)";
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
+                // Parameters start with 1
+                ps.setString(1, hash);               
+                ps.setString(2, password_salt);               
+                ps.setInt(3, account_info_id); 
+                ps.setBoolean(4, active);
+                ps.setLong(5, timestamps_id);
+                ps.executeUpdate();
+                
+                ResultSet rs = ps.getGeneratedKeys();
+                if(rs.next()) {
+                    long autoKey = rs.getLong(1);
+                    return autoKey;
+                } else
+                    return -1;
+
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                return -1;            
+            }
+        }
+   
 }

@@ -30,6 +30,8 @@ public class authenticationController extends HttpServlet {
 		
 		String username = req.getParameter("username");
 		String passwd = req.getParameter("password");
+                
+                
 		
 		Integer lastAttempt = (Integer) session.getAttribute("lastAttempt");
 		
@@ -56,6 +58,7 @@ public class authenticationController extends HttpServlet {
 			session.removeAttribute("lastAttempt");
 			// add account_id into session for access control
 			session.setAttribute("account_id", account_id);
+                        
 		} else {
 			// authentication failed
 			out.println("Username Or Password Is Incorrect");

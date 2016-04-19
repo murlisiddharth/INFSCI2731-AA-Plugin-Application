@@ -6,7 +6,7 @@
 --%>
 
 <%
-    if(session.getAttribute("user") == null) {
+    if(session.getAttribute("account_id") == null) {
         response.sendRedirect("login.jsp");
     }
 %>
