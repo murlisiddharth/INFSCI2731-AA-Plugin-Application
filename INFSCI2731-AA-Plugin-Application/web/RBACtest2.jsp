@@ -1,23 +1,23 @@
 <%-- 
-    Document   : RBACtest
-    Created on : Apr 17, 2016, 9:53:13 PM
-    Author     : Zhirun Tian, Hanwei Cheng
+    Document   : RBACtest2
+    Created on : April 19, 2016, 7:38:49 PM
+    Author     : Hanwei Cheng
 --%>
+
 
 <%@page import="java.util.List"%>
 <%@ page import="controller.RBAC" %> 
 <%@ page import="dataAccessObject.RBACDao" %> 
 
-
 <%--
     //only for test, I set an attribute UserID here
-    session.setAttribute("UserID", 3);
+    session.setAttribute("RoleID", 3);//!!roleID
     
-    if (session.getAttribute("UserID") != null )
+    if (session.getAttribute("RoleID") != null )  //roleID
     {
         RBACDao accessControl = new RBACDao();
-        List<Integer> UserPool = accessControl.getRolebyPath("RBACtest.jsp");
-        if(!UserPool.contains(session.getAttribute("UserID")))
+        List<Integer> UserPool = accessControl.getRolebyPath("RBACtest.jsp"); //it should be roleID pool
+        if(!UserPool.contains(session.getAttribute("RoleID")))
         {
             response.sendRedirect("index.jsp");
         }
@@ -30,11 +30,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>RBACtest2</title>
+        <title>test4</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
     </head>
@@ -56,8 +57,8 @@
           <ul class="nav navbar-nav">
             <li><a href="index.jsp">Home</a></li>
             <li><a href="hostile.jsp">Hostile</a></li>
-             <li class="active"><a href="RBACtest.jsp">RBACtest</a></li>
-            <li><a href="RBACtest2.jsp">RBACtest2</a></li>
+           <li><a href="RBACtest.jsp">RBACtest</a></li>
+            <li class="active"><a href="RBACtest2.jsp">RBACtest2</a></li>
             <li><a href="RBACtest3.jsp">RBACtest3</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -67,11 +68,7 @@
       </div>
     </nav>
 
-                    
-                    
-                    
-
-
+                  
 
     
     <!-- Begin page content -->

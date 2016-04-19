@@ -88,7 +88,7 @@ public class Authentication {
             System.out.println("==hash: " + hash + "==");
             //create a new record
             System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
-            this.id =(int)dao.createAuthentication(hash, password_salt, account_info_id, true, timeID);
+            this.id = dao.createAuthentication(hash, password_salt, account_info_id, true, timeID);
         }
         
 }

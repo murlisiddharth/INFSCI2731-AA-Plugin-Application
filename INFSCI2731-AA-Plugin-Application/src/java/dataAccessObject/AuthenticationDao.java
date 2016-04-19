@@ -100,7 +100,7 @@ public class AuthenticationDao {
  *These method is to create a new record for authentication table
  * @author: Hanwei Cheng
  */
-        public long createAuthentication(String hash, String password_salt, int account_info_id, boolean active, long timestamps_id){
+        public int createAuthentication(String hash, String password_salt, int account_info_id, boolean active, long timestamps_id){
              try {
                 sql = "INSERT INTO INFSCI2731.authentication(hash, password_salt, account_info_id, active, timestamps_id) values (?, ?, ?, ?, ?)";
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
@@ -114,7 +114,7 @@ public class AuthenticationDao {
                 
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()) {
-                    long autoKey = rs.getLong(1);
+                    int autoKey = rs.getInt(1);
                     return autoKey;
                 } else
                     return -1;

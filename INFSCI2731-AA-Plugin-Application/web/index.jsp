@@ -2,14 +2,35 @@
     Document   : index
     Created on : Mar 30, 2016, 7:38:49 PM
     Author     : Siwei Jiao
-    Add more content: Hanwei Cheng
+    More content by: Hanwei Cheng
 --%>
 
-<%
-    if(session.getAttribute("account_id") == null) {
+
+
+<%@page import="java.util.List"%>
+<%@ page import="controller.RBAC" %> 
+<%@ page import="dataAccessObject.RBACDao" %> 
+
+<%--
+    //only for test, I set an attribute UserID here
+    session.setAttribute("RoleID", 3);//!!roleID
+    
+    if (session.getAttribute("RoleID") != null )  //roleID
+    {
+        RBACDao accessControl = new RBACDao();
+        List<Integer> UserPool = accessControl.getRolebyPath("RBACtest.jsp"); //it should be roleID pool
+        if(!UserPool.contains(session.getAttribute("RoleID")))
+        {
+            response.sendRedirect("index.jsp");
+        }
+    }
+    else
+    {
         response.sendRedirect("login.jsp");
     }
-%>
+//    response.sendRedirect("RBAC?action=Auth");
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -35,11 +56,11 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">Page 1</a></li>
-            <li><a href="#">Page 2</a></li>
-            <li><a href="#">Page 3</a></li>
-            <li><a href="#">Page 4</a></li>
+            <li class="active"><a href="index.jsp">Home</a></li>
+            <li><a href="hostile.jsp">Hostile</a></li>
+            <li><a href="RBACtest.jsp">RBACtest</a></li>
+            <li><a href="RBACtest2.jsp">RBACtest2</a></li>
+            <li><a href="RBACtest3.jsp">RBACtest3</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
                 <li id="user"><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
@@ -64,9 +85,9 @@
 
     
     <!-- Begin page content -->
-    <div class="container" style="margin-top:100px">
+    <div class="container" style="margin-top:100px; margin-bottom:250px;">
       <div class="page-header">
-        <h1>Authentification Project</h1>
+        <h1>Authentication Project</h1>
       </div>
         <a href="Test?action=getNonce">Get Nonce</a>
     </div>
