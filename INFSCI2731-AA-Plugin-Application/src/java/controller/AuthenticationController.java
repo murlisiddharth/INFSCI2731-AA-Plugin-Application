@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dataAccessObject.AuthenticationDao;
+import dataAccessObject.UserDao;
 import javax.servlet.RequestDispatcher;
 import model.IPAddress;
+import model.UserAccountInfo;
+import static sun.net.www.http.HttpClient.New;
 
 public class AuthenticationController extends HttpServlet {
 
@@ -70,8 +73,16 @@ public class AuthenticationController extends HttpServlet {
 			session.removeAttribute("lastAttempt");
 			// add account_id into session for access control
 			session.setAttribute("account_id", account_id);
+                        
+                        //testing
+//                          UserDao dao = new UserDao();
+//                          UserAccountInfo loginUser = new UserAccountInfo();
+//                          loginUser = dao.retrieveUserInfo(account_id);
+//                          session.setAttribute("loginUser", loginUser);
+                        
                         RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
                         rd.forward(req, resp);
+                
                         
 		} else {
                     //log failed login attempt according to the returned value of validateUser                    

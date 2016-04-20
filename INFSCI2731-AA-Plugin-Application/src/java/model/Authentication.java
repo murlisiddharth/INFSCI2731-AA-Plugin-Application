@@ -1,10 +1,7 @@
 
 package model;
 
-import dataAccessObject.AuthenticationDao;
 import dataAccessObject.SavePasswordDao;
-import java.security.SecureRandom;
-import java.util.Random;
 
 public class Authentication {
 	private int id;
@@ -13,11 +10,7 @@ public class Authentication {
 	private long timeStampsID;
         private String password_salt;
         private boolean active;
-        
-        //for generate salt use
-        private static final Random random = new SecureRandom();
-        private static final int ITERATIONS = 10000;
-        private static final int KEY_LENGTH = 256;
+
         
 
         public void setActive(boolean active) {
@@ -61,36 +54,17 @@ public class Authentication {
 		this.timeStampsID = timeStampsID;
 	}
 	
-
-  /**
-    *This method is to create a salt
-    * @author: Hanwei Cheng
-    */  
-    public static byte[] getNextSalt() {
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
-        
-    }
-    
+   
     /**
     *This method is to create a authentication table record for new user
     * @author: Hanwei Cheng
     */     
         public void createNewAuth(int accountID, String password){
-             TimeStamp time = new TimeStamp();
-            long timeID = time.getTimeStampsID();
-            System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
+//          System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
             SavePasswordDao savePasswordDao = new SavePasswordDao();
             Boolean res = savePasswordDao.savePassword(accountID, password);
+            //test
             System.out.println("==password&salt==" + res);
-                
-//                AuthenticationDao dao = new AuthenticationDao();
-//                bytesalt = getNextSalt();
-//                int salt = srnd.nextInt(90000000) + 10000000;
-//                this.password_salt = String.valueOf(salt);
-//                this.hash = dao.computeHash(password,password_salt);
-//                this.id = dao.createAuthentication(hash, password_salt, account_info_id, true, timeID);
     
         }
         

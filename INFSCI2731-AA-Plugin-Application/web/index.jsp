@@ -12,25 +12,21 @@
 <%@ page import="controller.RBAC" %> 
 <%@ page import="dataAccessObject.RBACDao" %> 
 
-<%--
-    //only for test, I set an attribute UserID here
-    session.setAttribute("RoleID", 3);//!!roleID
-    
-    if (session.getAttribute("RoleID") != null )  //roleID
-    {
-        RBACDao accessControl = new RBACDao();
-        List<Integer> UserPool = accessControl.getRolebyPath("RBACtest.jsp"); //it should be roleID pool
-        if(!UserPool.contains(session.getAttribute("RoleID")))
+<%
+    //check whether the role ID of the user has priviledge for current page
+    if(request.getSession().getAttribute("user")!=null){
+         UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
+         RBACDao accessControl = new RBACDao();
+         List<Integer> UserPool = accessControl.getRolebyPath("index.jsp");
+        if(!UserPool.contains(user.getAccess_role_id()))
         {
             response.sendRedirect("index.jsp");
         }
-    }
-    else
-    {
-        response.sendRedirect("login.jsp");
-    }
-//    response.sendRedirect("RBAC?action=Auth");
---%>
+    }else {
+            response.sendRedirect("login.jsp");
+        }
+        
+%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -59,40 +55,32 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="index.jsp">Home</a></li>
             <li><a href="hostilelist.jsp">Hostile</a></li>
-            <li><a href="RBACtest.jsp">RBACtest</a></li>
-            <li><a href="RBACtest2.jsp">RBACtest2</a></li>
-            <li><a href="RBACtest3.jsp">RBACtest3</a></li>
+            <li><a href="roleManage.jsp">Role Management</a></li>
+            <li><a href="admin.jsp">Admin Page</a></li>
+            <li><a href="RBACtest.jsp">RBAC Test</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="LogOut">Log Out</a></li>
-<!--                <li id="user" value= "><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>-->
-                        <%--
-//                            session.getAttribute("user", user);
-                              if(session.getAttribute("user")!= null){
-                                  UserAccountInfo newUser =(UserAccountInfo) session.getAttribute("user");
-                                   String newFirstName = newUser.getFirstName();
-                                   String newLastName = newUser.getLastName();
-                                 out.print("<a>" + newUser.getFirstName() + newUser.getLastName() +"</a>");
+<!--            <li><a href="LogOut">Log Out</a></li>-->
+            <!--<li id="user" value= "><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>-->
+            <!--put the name on the navigation bar-->
+                <br>
+                        <% 
+                                if(request.getSession().getAttribute("user")!=null){
+                                   UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
+                                 out.print("<a href='#'>" + user.getFirstName() + user.getLastName() +"</a>");
+                                 out.print("&nbsp;&nbsp;|&nbsp;&nbsp;");
+                                 out.print("<a href='#'>Log Out</a>");
+                              }else{
+                                 response.sendRedirect("login.jsp");
                               }
-                              else{
-                                  response.sendRedirect("login.jsp");
-                              }
-                        --%>
+                        %>
                   
             </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
    
-                    <%--if (user == null) {
-        //if user tries to bypass authorization check, it will redirect to the login page
-        //response.sendRedirect(request.getContextPath() + "/login.jsp"); 
-            --%>
-  <!--<button class="button" type="submit">Sign in</button>-->
-    <%--
-    } else {
-        out.print("<a>" + user.getFirstName() + user.getLastName()"</a>");
-    --%>
+               
                     
                     
                     

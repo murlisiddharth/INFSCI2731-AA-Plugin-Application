@@ -36,20 +36,22 @@ public class RegistrationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("==in servlet==");
-        UserAccountInfo user = new UserAccountInfo();
-        user.setFirstName(request.getParameter("firstname"));
-        user.setLastName(request.getParameter("lastname"));
-        user.setEmailAddress(request.getParameter("email"));
-        user.setAccess_role_id(1);
+        UserAccountInfo newUser = new UserAccountInfo();
+        newUser.setFirstName(request.getParameter("firstname"));
+        newUser.setLastName(request.getParameter("lastname"));
+        newUser.setEmailAddress(request.getParameter("email"));
+        newUser.setAccess_role_id(1);
         System.out.println("==in servlet==" + "firstname: "+ request.getParameter("firstname")+" lastname: "+request.getParameter("lastname"));
-        request.setAttribute("user", user); 
+//        request.setAttribute("user", user); 
+        
+
+        int accountId = newUser.register(); //modified by Siwei in order to get the new generated account id
         
         //create a session?
         HttpSession session = request.getSession();
-        session.setAttribute("user", user);
-        
-        int accountId = user.register(); //modified by Siwei in order to get the new generated account id
-        
+        session.setAttribute("user", newUser);
+        UserAccountInfo testUser = (UserAccountInfo)session.getAttribute("user");
+        System.out.println("==test user bean in session ==" +testUser.getEmailAddress());
         
         //log activity of new created account, by Siwei
         IPAddress ipAddress = new IPAddress();
@@ -64,9 +66,10 @@ public class RegistrationServlet extends HttpServlet {
         Authentication aut = new Authentication();
         aut.createNewAuth(accountId, request.getParameter("password"));
         
-        //set security Question &answer 1
+        //need modification!!!!!
+        //set security Question &answer 1 
         Answer qa1 = new Answer();
-        qa1.setAccount_info_id(user.getId());
+        qa1.setAccount_info_id(newUser.getId());
         int question1 = Integer.parseInt(request.getParameter("secQue1"));
         qa1.setSecurity_question_id(question1);
         qa1.setAnswer(request.getParameter("answer1").toLowerCase());
@@ -74,7 +77,7 @@ public class RegistrationServlet extends HttpServlet {
  
         //set security question &answer 2
         Answer qa2 = new Answer();
-        qa2.setAccount_info_id(user.getId());
+        qa2.setAccount_info_id(newUser.getId());
         int question2 = Integer.parseInt(request.getParameter("secQue2"));
         qa2.setSecurity_question_id(question2);
         qa2.setAnswer(request.getParameter("answer2").toLowerCase());
@@ -82,7 +85,7 @@ public class RegistrationServlet extends HttpServlet {
         
         //set security question 3
         Answer qa3 = new Answer();
-        qa3.setAccount_info_id(user.getId());
+        qa3.setAccount_info_id(newUser.getId());
         int question3 = Integer.parseInt(request.getParameter("secQue3")); //selector???? 
         qa3.setSecurity_question_id(question3);
         qa3.setAnswer(request.getParameter("answer3").toLowerCase());

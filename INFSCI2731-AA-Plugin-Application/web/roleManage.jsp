@@ -1,41 +1,38 @@
 <%-- 
-    Document   : RBACtest2
+    Document   : RBACtest3
     Created on : April 19, 2016, 7:38:49 PM
     Author     : Hanwei Cheng
 --%>
 
 
+
+<%@page import="model.UserAccountInfo"%>
 <%@page import="java.util.List"%>
 <%@ page import="controller.RBAC" %> 
 <%@ page import="dataAccessObject.RBACDao" %> 
 
-<%--
-    //only for test, I set an attribute UserID here
-    session.setAttribute("RoleID", 3);//!!roleID
-    
-    if (session.getAttribute("RoleID") != null )  //roleID
-    {
-        RBACDao accessControl = new RBACDao();
-        List<Integer> UserPool = accessControl.getRolebyPath("RBACtest.jsp"); //it should be roleID pool
-        if(!UserPool.contains(session.getAttribute("RoleID")))
+<%
+    //check whether the role ID of the user has priviledge for current page
+    if(request.getSession().getAttribute("user")!=null){
+         UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
+         RBACDao accessControl = new RBACDao();
+         List<Integer> UserPool = accessControl.getRolebyPath("roleManage.jsp");
+        if(!UserPool.contains(user.getAccess_role_id()))
         {
             response.sendRedirect("index.jsp");
         }
-    }
-    else
-    {
-        response.sendRedirect("login.jsp");
-    }
-//    response.sendRedirect("RBAC?action=Auth");
---%>
+    }else {
+            response.sendRedirect("login.jsp");
+        }
+        
+%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>test4</title>
+        <title>test3</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
     </head>
@@ -55,11 +52,11 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.jsp">Home</a></li>
-            <li><a href="hostilelist.jsp">Hostile</a></li>
-           <li><a href="RBACtest.jsp">RBACtest</a></li>
-            <li class="active"><a href="RBACtest2.jsp">RBACtest2</a></li>
-            <li><a href="RBACtest3.jsp">RBACtest3</a></li>
+             <li><a href="index.jsp">Home</a></li>
+             <li><a href="hostilelist.jsp">Hostile</a></li>
+            <li class="active"><a href="roleManage.jsp">Role Management</a></li>
+            <li><a href="admin.jsp">Admin Page</a></li>
+            <li><a href="RBACtest.jsp">RBAC Test</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
                 <li id="user"><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
@@ -68,15 +65,14 @@
       </div>
     </nav>
 
-                  
-
     
     <!-- Begin page content -->
-    <div class="container" style="margin-top:100px; margin-bottom:250px; ">
+    <div class="container" style="margin-top:100px; margin-bottom:250px;">
       <div class="page-header">
         <h1>Authentication Project</h1>
       </div>
         <p> You have privilege to access the page!</p>
+        <p> For Super Admin</p>
     </div>
 
     <footer class="footer">
