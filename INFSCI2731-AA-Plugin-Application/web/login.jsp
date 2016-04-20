@@ -96,7 +96,7 @@
 			  	};
 			  	var username = document.forms["loginForm"]["username"].value;
 			  	var password = document.forms["loginForm"]["password"].value;
-				xhttp.open("POST", "authenticationController", true);
+				xhttp.open("POST", "AuthenticationController", true);
 				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xhttp.send("username="+username+"&password="+password);	
 			}
