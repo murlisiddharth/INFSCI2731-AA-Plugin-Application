@@ -1,6 +1,5 @@
 package controller;
 
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import dataAccessObject.ActivityLogDao;
 import java.io.IOException;
 import java.io.PrintWriter;
