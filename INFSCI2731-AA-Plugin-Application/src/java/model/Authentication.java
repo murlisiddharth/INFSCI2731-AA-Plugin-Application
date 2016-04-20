@@ -82,7 +82,7 @@ public class Authentication {
             long timeID = time.getTimeStampsID();
             System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
             SavePasswordDao savePasswordDao = new SavePasswordDao();
-            Boolean res = savePasswordDao.setNewPassword(accountID, password);
+            Boolean res = savePasswordDao.savePassword(accountID, password);
             System.out.println("==password&salt==" + res);
                 
 //                AuthenticationDao dao = new AuthenticationDao();

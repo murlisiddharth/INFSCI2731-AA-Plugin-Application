@@ -53,6 +53,7 @@ public class ResetPasswordService extends HttpServlet {
         
         boolean passwordMatch = password.equals(confirmPassword);
         boolean tokenValid = false;
+        boolean passwordUsedBefore = false;
         
         if (token != null && !token.equals("")) {
             if (CheckDateTime.isValid(nonceDao.getNonceCreatetime(token))) {
@@ -63,29 +64,36 @@ public class ResetPasswordService extends HttpServlet {
         if (passwordMatch && tokenValid) {
             Nonce nonce = nonceDao.getNonceByNonceValue(token);
             SavePasswordDao savePasswordDao = new SavePasswordDao();
-            savePasswordDao.savePassword(nonce.getAccountInfoID(), password);
             
-            //log activity of successfully reset pw, and update previoud reset pw record description
-            int logID = logDao.logExpiredLinkOnForgotPw(ipAddr, sysSource, nonce.getAccountInfoID());
-            //check if previous sent link record exist, if it does, update the record description
-            int id = logDao.checkResetPwSentLink(nonce.getAccountInfoID());
-            if(logID > 0 && id > 0){
-                logDao.updatePreResetPwRecord("succeeded(logid " + logID + ")", id);
+            passwordUsedBefore = savePasswordDao.checkPastPassword(nonce.getAccountInfoID(), password);
+            if (passwordUsedBefore) {
+                redirectError(request, response, passwordMatch, passwordUsedBefore, tokenValid, token);
+            } else {
+                savePasswordDao.savePassword(nonce.getAccountInfoID(), password);
+
+                //log activity of successfully reset pw, and update previoud reset pw record description
+                int logID = logDao.logExpiredLinkOnForgotPw(ipAddr, sysSource, nonce.getAccountInfoID());
+                //check if previous sent link record exist, if it does, update the record description
+                int id = logDao.checkResetPwSentLink(nonce.getAccountInfoID());
+                if(logID > 0 && id > 0){
+                    logDao.updatePreResetPwRecord("succeeded(logid " + logID + ")", id);
+                }
+
+                nonceDao.deleteNonceByUserID(nonce.getAccountInfoID());
+                response.sendRedirect("login.jsp");
             }
-            
-            nonceDao.deleteNonceByUserID(nonce.getAccountInfoID());
-            response.sendRedirect("login.jsp");
         } else {
-            redirectError(request, response, passwordMatch, tokenValid, token);
+            redirectError(request, response, passwordMatch,  passwordUsedBefore, tokenValid, token);
         }
         
         
     }
     
-    protected void redirectError(HttpServletRequest request, HttpServletResponse response, boolean passwordMatch, boolean tokenValid, String token) 
+    protected void redirectError(HttpServletRequest request, HttpServletResponse response, boolean passwordMatch, boolean passwordUsedBefore, boolean tokenValid, String token) 
             throws ServletException, IOException {
         String url = tokenValid ? "resetpassword?token=" + token.trim() : "resetpassword";
         url += !passwordMatch ? "&pmm=" + !passwordMatch : "";
+        url += passwordUsedBefore ? "&pub=" + passwordUsedBefore : "";
         response.sendRedirect(url);
     }
 

@@ -17,7 +17,7 @@
         <p>That username does not exist</p>
         <% } %>
         <form name="resetform-email" method="POST" action="GetQuestions">
-            Enter your email: <input name="email" type="email" /> 
+            Enter your email: <input name="email" type="email" autofocus/> 
             <input type="submit" value="Submit" />
         </form>
     </body>

@@ -34,7 +34,7 @@
         <% } %>
         <form name="resetform-question" method="POST" action="AnswerQuestions">
             <div>${requestScope.question_string}</div>
-            <input name="security_answer" placeholder="Your answer" />
+            <input name="security_answer" placeholder="Your answer" autofocus/>
             <input type="submit">
         </form>
     </body>

@@ -39,6 +39,7 @@ public class ResetPassword extends HttpServlet {
         
         String nonce = request.getParameter("token");
         boolean passwordMismatch = Boolean.parseBoolean(request.getParameter("pmm"));
+        boolean passwordUsedBefore = Boolean.parseBoolean(request.getParameter("pub"));
         Timestamp timestamp;
         NonceDao nonceDao = new NonceDao();
         ActivityLogDao logDao = new ActivityLogDao();
@@ -52,7 +53,7 @@ public class ResetPassword extends HttpServlet {
         if (nonce != null && !nonce.equals("")) {
             timestamp = nonceDao.getNonceCreatetime(nonce);
             if (CheckDateTime.isValid(timestamp)) {
-                printPasswordForm(request, response, nonce, passwordMismatch);
+                printPasswordForm(request, response, nonce, passwordMismatch, passwordUsedBefore);
             }
         }
         
@@ -70,7 +71,7 @@ public class ResetPassword extends HttpServlet {
         
     } 
     
-    protected void printPasswordForm(HttpServletRequest request, HttpServletResponse response, String nonce, boolean passwordMismatch) throws IOException {
+    protected void printPasswordForm(HttpServletRequest request, HttpServletResponse response, String nonce, boolean passwordMismatch, boolean passwordUsedBefore) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -85,8 +86,11 @@ public class ResetPassword extends HttpServlet {
             if (passwordMismatch) {
                 out.println("<p>Your passwords do not match, please re-enter your new password.</p>");
             }
+            if (passwordUsedBefore) {
+                out.println("<p>Choose a password you haven't previously used with this account.</p>");
+            }
             out.println("<input type=\"hidden\" name=\"token\" value=\"" + nonce +  " \">");
-            out.println("Enter your new password: <input name=\"password\" type=\"password\" />");
+            out.println("Enter your new password: <input name=\"password\" type=\"password\" autofocus/>");
             out.println("<br/><br/>");
             out.println("Confirm your new password: <input name=\"confirm_password\" type=\"password\"/><br/><br/><input type=\"submit\"></form>");
             out.println("</body>");
