@@ -29,7 +29,7 @@ public class SavePasswordDao {
         return setNewPassword(account_info_id, password);
     }
     
-    private boolean setNewPassword(int account_info_id, String password) {
+    public boolean setNewPassword(int account_info_id, String password) {
         SecureRandom srnd = new SecureRandom();
 
         int salt = srnd.nextInt(90000000) + 10000000;

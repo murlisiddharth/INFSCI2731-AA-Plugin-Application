@@ -55,9 +55,17 @@
     <servlet-mapping>
         <servlet-name>AuthenticationController</servlet-name>
         <url-pattern>/AuthenticationController</url-pattern>
+    </servlet-mapping>   
+    <servlet>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>controller.LogOut</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/LogOut</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>120</session-timeout>       
+        <session-timeout>120</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>
