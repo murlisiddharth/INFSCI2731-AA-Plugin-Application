@@ -98,7 +98,7 @@ public class AnswerQuestions extends HttpServlet {
                     //log pre reset pw activity, once user reset pw successfully, or reset link has expired or a new link generated, will also update this record description
                     logDao.logPreResetPwOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
                 
-                    printEmail(request, response, userNonce);
+                    printEmail(request, response, userNonce, getUserNameDB(resetPasswordObj.userID));
                 }
                 session.invalidate();
             } else {
@@ -127,7 +127,7 @@ public class AnswerQuestions extends HttpServlet {
             connection = DbConnection.getConnection();
             String selectSQL = "SELECT account_info_id FROM INFSCI2731.security_question_answer WHERE answer = ? AND id = ?";
             preparedStatement = connection.prepareStatement(selectSQL);  
-            preparedStatement.setString(1, securityAnswer);
+            preparedStatement.setString(1, securityAnswer.toLowerCase());
             preparedStatement.setString(2, securityAnswerID);
             
             ResultSet rs = preparedStatement.executeQuery();
@@ -139,12 +139,34 @@ public class AnswerQuestions extends HttpServlet {
             }
   
         } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return "";
         }   
     }
     
-    protected void printEmail(HttpServletRequest request, HttpServletResponse response, String userNonce) throws IOException {
+    protected String getUserNameDB(String userID) {
+        Connection connection;
+        try {
+            connection = DbConnection.getConnection();
+            String selectSQL = "Select first_name from account_info where id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
+            preparedStatement.setString(1, userID);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            if(rs.next()){
+                String returnval = rs.getString("first_name");
+                return returnval.length() == 0 ? returnval : returnval.substring(0, 1).toUpperCase() + returnval.substring(1);
+            } else {
+                return "";
+            }
+                
+        } catch (SQLException e) {
+               // e.printStackTrace();
+                return "";
+        }  
+    }
+    
+    protected void printEmail(HttpServletRequest request, HttpServletResponse response, String userNonce, String firstName) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = request.getRequestURL() + "resetpassword?token=" + userNonce;
         url = url.replace("AnswerQuestions", "");
@@ -156,7 +178,7 @@ public class AnswerQuestions extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Reset Password Email Page</h1>");
-            out.println("<p><strong>Hi {User's name},</strong></p>");
+            out.println("<p><strong>Hi " + firstName + ",</strong></p>");
             out.println("<p>You're receiving this email because you requested a password reset.  "
                     + "If you did not request this change, you can safely ignore this email.</p>");
             out.println("<p>To choose a new password and complete your request, please follow the link below:</p>");

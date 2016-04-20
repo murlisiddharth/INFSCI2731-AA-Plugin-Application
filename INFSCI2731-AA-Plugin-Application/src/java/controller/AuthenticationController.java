@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dataAccessObject.AuthenticationDao;
+import javax.servlet.RequestDispatcher;
 import model.IPAddress;
 
 public class AuthenticationController extends HttpServlet {
@@ -69,6 +70,8 @@ public class AuthenticationController extends HttpServlet {
 			session.removeAttribute("lastAttempt");
 			// add account_id into session for access control
 			session.setAttribute("account_id", account_id);
+                        RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
+                        rd.forward(req, resp);
                         
 		} else {
                     //log failed login attempt according to the returned value of validateUser                    

@@ -64,6 +64,7 @@
             <li><a href="RBACtest3.jsp">RBACtest3</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="LogOut">Log Out</a></li>
 <!--                <li id="user" value= "><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>-->
                         <%--
 //                            session.getAttribute("user", user);

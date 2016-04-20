@@ -69,7 +69,7 @@ public class RegistrationServlet extends HttpServlet {
         qa1.setAccount_info_id(user.getId());
         int question1 = Integer.parseInt(request.getParameter("secQue1"));
         qa1.setSecurity_question_id(question1);
-        qa1.setAnswer(request.getParameter("answer1"));
+        qa1.setAnswer(request.getParameter("answer1").toLowerCase());
         
  
         //set security question &answer 2
@@ -77,7 +77,7 @@ public class RegistrationServlet extends HttpServlet {
         qa2.setAccount_info_id(user.getId());
         int question2 = Integer.parseInt(request.getParameter("secQue2"));
         qa2.setSecurity_question_id(question2);
-        qa2.setAnswer(request.getParameter("answer2"));
+        qa2.setAnswer(request.getParameter("answer2").toLowerCase());
         
         
         //set security question 3
@@ -85,7 +85,7 @@ public class RegistrationServlet extends HttpServlet {
         qa3.setAccount_info_id(user.getId());
         int question3 = Integer.parseInt(request.getParameter("secQue3")); //selector???? 
         qa3.setSecurity_question_id(question3);
-        qa3.setAnswer(request.getParameter("answer3"));
+        qa3.setAnswer(request.getParameter("answer3").toLowerCase());
         
 
         //create 3 question &answer records for one user

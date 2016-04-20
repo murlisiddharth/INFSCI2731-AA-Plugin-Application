@@ -6,6 +6,7 @@
 package dataAccessObject;
 
 import DbConnect.DbConnection;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +28,33 @@ public class SavePasswordDao {
         setOldPasswordInactive(account_info_id);
         deleteOldPasswords(account_info_id);
         return setNewPassword(account_info_id, password);
+    }
+    
+    public boolean checkPastPassword(int account_info_id, String password) {
+        try {
+            AuthenticationDao authDao = new AuthenticationDao();
+            connection = DbConnection.getConnection();
+            String insertSQL = "SELECT hash, password_salt FROM INFSCI2731.authentication WHERE account_info_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(insertSQL);  
+            preparedStatement.setInt(1, account_info_id);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+                
+            while(rs.next()) {
+                byte[] retrievedHash = rs.getBytes("hash");
+                String retrievedSalt = rs.getString("password_salt");
+                byte[] calculatedHash = authDao.computeHash(password, retrievedSalt);
+                if(MessageDigest.isEqual(calculatedHash, retrievedHash)){
+                    return true;
+                }            
+            }
+            
+            return false;
+            
+        } catch (SQLException e) {
+            //activity log
+            return false;
+        }     
     }
     
     private boolean setNewPassword(int account_info_id, String password) {
@@ -51,11 +79,12 @@ public class SavePasswordDao {
             preparedStatement.setLong(4, timeStampsID);
             preparedStatement.setInt(5, 1);
             
-            int j = preparedStatement.executeUpdate();
+            int count = preparedStatement.executeUpdate();
                 
-            return (j == 1);
+            return (count == 1);
             
         } catch (SQLException e) {
+            //activity log
             return false;
         }
             
@@ -71,7 +100,7 @@ public class SavePasswordDao {
             preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
-            
+            //activity log
         }
     }
     
@@ -92,7 +121,7 @@ public class SavePasswordDao {
             preparedStatement.executeUpdate();
             
         } catch (SQLException e) {
-            
+            //activity log
         }
     }
     
