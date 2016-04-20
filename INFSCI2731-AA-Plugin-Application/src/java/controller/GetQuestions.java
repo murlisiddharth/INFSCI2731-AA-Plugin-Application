@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import DbConnect.DbConnection;
 import dataAccessObject.ActivityLogDao;
+import dataAccessObject.HostileDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +33,7 @@ import model.ResetPasswordObj;
 public class GetQuestions extends HttpServlet {
 
     
-    private final int MAX_EMAIL_ATTEMPTS = 5;
+    private final int MAX_EMAIL_ATTEMPTS = 2;
     private final String SYSTEM_SOURCE = "EmailForm";
     ActivityLogDao logDao = new ActivityLogDao();
 
@@ -80,8 +81,18 @@ public class GetQuestions extends HttpServlet {
                        
             //Hostile module redirect or object
 
-            Hostile hostile = new Hostile(emailAttempts, ipAddr, SYSTEM_SOURCE);
-            hostile.redirectHostile(request, response);
+//            Hostile hostile = new Hostile(emailAttempts, ipAddr, SYSTEM_SOURCE);
+//            hostile.redirectHostile(request, response);
+//              request.setAttribute("EmailAttempts", emailAttempts);
+//              request.setAttribute("IPAddr", ipAddr );
+//              request.setAttribute("SystemResource",SYSTEM_SOURCE);
+////              response.sendRedirect("Hostile");
+            HostileDao hostileDao = new HostileDao();
+            hostileDao.WriteHostileToDB(emailAttempts, ipAddr, SYSTEM_SOURCE);
+            
+            
+                      
+    
         } else {
             String email = request.getParameter("email");
             //Check if email exists
@@ -95,7 +106,6 @@ public class GetQuestions extends HttpServlet {
                 
                 //log email failed activity on forgot pw form
                 logDao.logEmailFailedOnForgotPw(ipAddr, sysSource, email);
-                
                 session.setAttribute("emailAttempts", emailAttempts);       
                 session.setAttribute("emailString", emailString);
                 

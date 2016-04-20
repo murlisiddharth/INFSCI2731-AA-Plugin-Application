@@ -57,23 +57,12 @@ public class Hostile extends HttpServlet {
      * @param IPAddress
      * @param SYSTEM_SOURCE
      */
-    protected Hostile(int countAttempts, String IPAddress, String SYSTEM_SOURCE) {
+//
+    public Hostile(int countAttempts, String IPAddress, String SYSTEM_SOURCE) {
         super();
-        hostileEntry.setIPAddress(IPAddress);
-        hostileEntry.setSYSTEM_SOURCE(SYSTEM_SOURCE);
-
+  
+        hostileDao.WriteHostileToDB(countAttempts, IPAddress, SYSTEM_SOURCE);
     }
-//
-//    public Hostile(int countAttempts, String IPAddress, String SYSTEM_SOURCE) {
-//        super();
-//        hostileEntry.setIPAddress(IPAddress);
-//        hostileEntry.setSYSTEM_SOURCE(SYSTEM_SOURCE);
-//
-//        HostileList = new ArrayList<HostileStructure>();
-//
-//        hostileDao.WriteHostileToDB(countAttempts, IPAddress, SYSTEM_SOURCE);
-//
-//    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -90,23 +79,7 @@ public class Hostile extends HttpServlet {
 
             hostileDao.WriteHostileToDB(count2, IPaddress, SystemValue);
 
-            int count = Integer.valueOf(request.getParameter("CountAttempts"));
 
-            //response.setContentType("text/html;charset=UTF-8");
-//            try (PrintWriter out = response.getWriter()) {
-//                /* TODO output your page here. You may use following sample code. */
-//                out.println("<!DOCTYPE html>");
-//                out.println("<html>");
-//                out.println("<head>");
-//                out.println("<title>Hostile entry list</title>");
-//                out.println("</head>");
-//                out.println("<body>");
-//                out.println("write to db successful");
-//                out.println("count=" + count2 + "ipaddress=" + IPaddress + "systemvariable=" + SystemValue);
-//                out.println("</body>");
-//                out.println("</html>");
-//
-//            }
 
         }
 
