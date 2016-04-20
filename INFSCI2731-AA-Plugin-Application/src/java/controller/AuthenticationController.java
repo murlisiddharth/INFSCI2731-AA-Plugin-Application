@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import dataAccessObject.AuthenticationDao;
 import model.IPAddress;
 
-public class authenticationController extends HttpServlet {
+public class AuthenticationController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	private static Integer MAX_NUMBER_OF_ATTEMPTS = 3;
         ActivityLogDao logDao = new ActivityLogDao();
 
-	public authenticationController() {
+	public AuthenticationController() {
 		// TODO Auto-generated constructor stub
 		super();
 	}
@@ -58,7 +58,7 @@ public class authenticationController extends HttpServlet {
 		}
 		
 		Integer account_id = auth.validateUser(username, passwd);
-		if (account_id != null && account_id != -1 && account_id != -2) {
+		if (account_id != null && account_id != -1 && account_id != -2 && account_id != -3) {
                     //log activity of succeed logon
                     logDao.logSucceedLogon(ipAddr, sysSource, account_id);
                     
@@ -72,12 +72,20 @@ public class authenticationController extends HttpServlet {
 			session.setAttribute("account_id", account_id);
                         
 		} else {
-                    //log failed login attempt according to the returned value of validateUser
-                    if(account_id == -1) {
-                        logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id);
-                    }else if(account_id == -2) {
-                        logDao.logEmailFailedLoginAttempt(ipAddr, sysSource, username);
-                    }
+                    //log failed login attempt according to the returned value of validateUser                    
+                    switch (account_id) {
+                        case -1:                          
+                                logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id, "(login)unmatch password");
+                                 break;
+                        case -2:  
+                                logDao.logEmailFailedLoginAttempt(ipAddr, sysSource, username);                   
+                                 break;
+                        case -3:  
+                                logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id, "(login)non exist password");
+                                 break;                       
+                        default: 
+                                 break;
+        }
                     
 			// authentication failed
 			out.println("Username Or Password Is Incorrect");

@@ -62,7 +62,7 @@ public class AuthenticationDao {
 		    	}else{
 		    		//Password does not exist
 		    		System.out.print("Passwd does not exist");
-		    		return null;
+		    		return -3;
 		    	}
 	    		
 	    	}else{
@@ -72,7 +72,7 @@ public class AuthenticationDao {
 	    	}
 	    }catch(Exception e){
 	    	e.printStackTrace();
-	    	return null;
+	    	return -1;
 	    }
 		
 	}
