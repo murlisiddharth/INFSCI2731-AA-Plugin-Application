@@ -184,6 +184,7 @@
                   firstname:<jsp:getProperty name="user" property="firstName"/>
                     lastname:<jsp:getProperty name="user" property="lastName"/> 
                     email:<jsp:getProperty name="user" property="emailAddress"/>
+                    role: <jsp:getProperty name="user" property="access_role_id"/>
 		
 	<!--jQuery (necessary for Bootstrap's JavaScript plugins) -->
     	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

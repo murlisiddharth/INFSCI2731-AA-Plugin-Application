@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.Answer;
 import model.Authentication;
 import model.IPAddress;
@@ -39,10 +40,13 @@ public class RegistrationServlet extends HttpServlet {
         user.setFirstName(request.getParameter("firstname"));
         user.setLastName(request.getParameter("lastname"));
         user.setEmailAddress(request.getParameter("email"));
+        user.setAccess_role_id(1);
         System.out.println("==in servlet==" + "firstname: "+ request.getParameter("firstname")+" lastname: "+request.getParameter("lastname"));
-        //return to the page for testing purpose
         request.setAttribute("user", user); 
         
+        //create a session?
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
         
         int accountId = user.register(); //modified by Siwei in order to get the new generated account id
         
@@ -58,8 +62,7 @@ public class RegistrationServlet extends HttpServlet {
         
         //transfer the password from the signup page
         Authentication aut = new Authentication();
-        aut.setAccount_info_id(user.getId());
-        aut.createNewAuth(request.getParameter("password"));
+        aut.createNewAuth(accountId, request.getParameter("password"));
         
         //set security Question &answer 1
         Answer qa1 = new Answer();
@@ -91,7 +94,7 @@ public class RegistrationServlet extends HttpServlet {
         qa3.generateQARecord();
         
         //forward server's request to jsp
-        getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
        
 //        String firstname =(String)request.getParameter("firstname");
 //        String lastname =(String)request.getParameter("lastname");

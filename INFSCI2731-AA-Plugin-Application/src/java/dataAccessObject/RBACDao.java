@@ -22,7 +22,7 @@ import model.Role;
 
 /**
  *
- * @author Zhirun Tian
+ * @author Zhirun Tian Hanwei Cheng
  */
 public class RBACDao {
 

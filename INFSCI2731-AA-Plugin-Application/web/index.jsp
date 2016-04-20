@@ -7,6 +7,7 @@
 
 
 
+<%@page import="model.UserAccountInfo"%>
 <%@page import="java.util.List"%>
 <%@ page import="controller.RBAC" %> 
 <%@ page import="dataAccessObject.RBACDao" %> 
@@ -63,11 +64,25 @@
             <li><a href="RBACtest3.jsp">RBACtest3</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-                <li id="user"><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+<!--                <li id="user" value= "><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>-->
+                        <%--
+//                            session.getAttribute("user", user);
+                              if(session.getAttribute("user")!= null){
+                                  UserAccountInfo newUser =(UserAccountInfo) session.getAttribute("user");
+                                   String newFirstName = newUser.getFirstName();
+                                   String newLastName = newUser.getLastName();
+                                 out.print("<a>" + newUser.getFirstName() + newUser.getLastName() +"</a>");
+                              }
+                              else{
+                                  response.sendRedirect("login.jsp");
+                              }
+                        --%>
+                  
             </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+   
                     <%--if (user == null) {
         //if user tries to bypass authorization check, it will redirect to the login page
         //response.sendRedirect(request.getContextPath() + "/login.jsp"); 

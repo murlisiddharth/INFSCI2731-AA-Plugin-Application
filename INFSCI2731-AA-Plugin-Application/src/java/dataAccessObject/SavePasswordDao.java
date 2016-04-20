@@ -51,17 +51,14 @@ public class SavePasswordDao {
             preparedStatement.setLong(4, timeStampsID);
             preparedStatement.setInt(5, 1);
             
-            preparedStatement.executeUpdate();
+            int j = preparedStatement.executeUpdate();
                 
-            ResultSet rs = preparedStatement.getGeneratedKeys();
-            
-            return rs.next();
+            return (j == 1);
             
         } catch (SQLException e) {
-            
+            return false;
         }
             
-        return false;
     }
     
     private void setOldPasswordInactive(int account_info_id) {

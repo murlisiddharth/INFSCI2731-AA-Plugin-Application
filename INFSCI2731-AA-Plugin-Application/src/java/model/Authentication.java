@@ -2,12 +2,13 @@
 package model;
 
 import dataAccessObject.AuthenticationDao;
+import dataAccessObject.SavePasswordDao;
 import java.security.SecureRandom;
 import java.util.Random;
 
 public class Authentication {
 	private int id;
-	private String hash;
+	private byte[] hash;
 	private int account_info_id;
 	private long timeStampsID;
         private String password_salt;
@@ -41,10 +42,10 @@ public class Authentication {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getHash() {
+	public byte[] getHash() {
 		return hash;
 	}
-	public void setHash(String hash) {
+	public void setHash(byte[] hash) {
 		this.hash = hash;
 	}
 	public int getAccount_info_id() {
@@ -76,19 +77,21 @@ public class Authentication {
     *This method is to create a authentication table record for new user
     * @author: Hanwei Cheng
     */     
-        public void createNewAuth(String password){
-            TimeStamp time = new TimeStamp();
+        public void createNewAuth(int accountID, String password){
+             TimeStamp time = new TimeStamp();
             long timeID = time.getTimeStampsID();
-            //salt ???
-            this.password_salt = new String(getNextSalt());
-            System.out.println("==salt: " + password_salt + "==");
-            AuthenticationDao dao = new AuthenticationDao();
-            //hash ???
-            this.hash = new String(dao.computeHash(password, password_salt));
-            System.out.println("==hash: " + hash + "==");
-            //create a new record
             System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
-            this.id = dao.createAuthentication(hash, password_salt, account_info_id, true, timeID);
+            SavePasswordDao savePasswordDao = new SavePasswordDao();
+            Boolean res = savePasswordDao.savePassword(accountID, password);
+            System.out.println("==password&salt==" + res);
+                
+//                AuthenticationDao dao = new AuthenticationDao();
+//                bytesalt = getNextSalt();
+//                int salt = srnd.nextInt(90000000) + 10000000;
+//                this.password_salt = String.valueOf(salt);
+//                this.hash = dao.computeHash(password,password_salt);
+//                this.id = dao.createAuthentication(hash, password_salt, account_info_id, true, timeID);
+    
         }
         
 }
