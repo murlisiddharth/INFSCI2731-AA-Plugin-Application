@@ -61,6 +61,14 @@
         <url-pattern>/AuthenticationController</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>CheckEmailAvailability</servlet-name>
+        <servlet-class>controller.CheckEmailAvailability</servlet-class>
+    </servlet>      
+    <servlet-mapping>
+        <servlet-name>CheckEmailAvailability</servlet-name>
+        <url-pattern>/CheckEmailAvailability</url-pattern>
+    </servlet-mapping>   
+    <servlet>
         <servlet-name>LogOut</servlet-name>
         <servlet-class>controller.LogOut</servlet-class>
     </servlet>
