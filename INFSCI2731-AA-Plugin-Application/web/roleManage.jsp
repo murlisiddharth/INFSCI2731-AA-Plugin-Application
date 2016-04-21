@@ -24,7 +24,8 @@
     }else {
             response.sendRedirect("login.jsp");
         }
-        
+    
+    request.setAttribute("isSuccces", false);
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -100,15 +101,16 @@
 
               <button type="submit" class="btn btn-default">Change</button>
           </form>
+          <div class="message">
+            <%
+            if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
+                  out.print("Change role successfully!");
+            }
+          %>
+          </div>
       </div><!--management area-->
       
-      <%
-          if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
-                out.print("Change role successfully!");
-          }else{
-              out.print("Fail to change role!");
-          }
-        %>
+ 
     </div><!--container-->
 
     <footer class="footer">
