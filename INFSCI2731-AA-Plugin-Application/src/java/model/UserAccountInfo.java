@@ -89,7 +89,5 @@ public class UserAccountInfo {
         //create account and return the generated id
         return this.id = dao.createAccount(firstName,lastName, emailAddress, timeID, roleID);
     }
-//    
-//    public 
 
 }

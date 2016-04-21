@@ -55,11 +55,14 @@ public class UserDao {
     
     public UserAccountInfo retrieveUserInfo(int accountID){
         try {
-                sql = "SELECT * INFSCI2731.account_info WHERE id =?";
-                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
+                sql = "SELECT * from INFSCI2731.account_info WHERE id=" + accountID;  
                 // Parameters start with 1
-                ps.setInt(1, accountID);               
-                ResultSet rs = ps.executeQuery(sql);
+                System.out.println("Account " + accountID);
+                PreparedStatement ps = connection.prepareStatement(sql);
+//              ps.setInt(1, accountID);     
+                System.out.println(ps);
+
+                rs = ps.executeQuery(sql);
                 String firstName = "";
                 String lastName = "";
                 String emailAddress = "";
