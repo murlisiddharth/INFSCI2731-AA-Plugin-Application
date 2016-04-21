@@ -25,7 +25,6 @@
             response.sendRedirect("login.jsp");
         }
     
-    request.setAttribute("isSuccces", false);
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -102,11 +101,11 @@
               <button type="submit" class="btn btn-default">Change</button>
           </form>
           <div class="message">
-            <%
+            <%--bug!!!!!!!!!!!!!
             if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
                   out.print("Change role successfully!");
             }
-          %>
+          --%>
           </div>
       </div><!--management area-->
       

@@ -6,8 +6,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.System.out;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +36,6 @@ public class RoleManageServlet extends HttpServlet {
          System.out.println("userID: " + Integer.parseInt(request.getParameter("userID")));
          System.out.println("roleChoice" + Integer.parseInt(request.getParameter("roleChoice")));
          Boolean isSuccess = user.roleUpdate(Integer.parseInt(request.getParameter("userID")), Integer.parseInt(request.getParameter("roleChoice")));
-         System.out.println("isSuccess:" + isSuccess);
          request.setAttribute("isSuccess", isSuccess);
           //forward server's request to jsp
         getServletContext().getRequestDispatcher("/roleManage.jsp").forward(request, response);  
