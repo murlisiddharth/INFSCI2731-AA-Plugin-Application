@@ -3,70 +3,160 @@
     Created on : Apr 20, 2016, 6:05:11 PM
     Author     : shaoNPC
 --%>
-
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.Connection"%>
+<%@page import="dataAccessObject.ActivityLogDao"%>
+<%@page import="java.sql.ResultSetMetaData"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="DbConnect.DbConnection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
         <style>
-            table { border-collapse:collapse; }
+            .container { width:100%; }
+            table { border-collapse:collapse; padding-bottom:1em; }
             tr.columnname { border-bottom:1px #000 solid; }
             tr.columnname td { text-align:center; }
-            td { border: 1px #000 solid; }
+            td { border: 1px #000 solid; padding:0 1em 0 1em; white-space:nowrap; }
             td.center { text-align:center; }
         </style>
-        <title>JSP Page</title>
+        <title>Activity Log</title>
     </head>
     <body>
-        <h1>Activity log</h1>
-        <table style="border-collapse:collapse;">
-            <tr class="columnname">
-                <td>ID</td>
-                <td>IP Address</td>
-                <td>System Source</td>
-                <td>Activity Count</td>
-                <td>Description</td>
-                <td>Account ID</td>
-                <td>Created</td>
-                <td>Updated</td>
-            </tr>
-        <%
-            try {
-                Connection connection = DbConnection.getConnection();
-                String selectSQL = "SELECT * FROM INFSCI2731.activity_log, INFSCI2731.timestamps WHERE INFSCI2731.activity_log.timestamps_id = INFSCI2731.timestamps.id ORDER BY INFSCI2731.activity_log.id DESC";
-                PreparedStatement preparedStatement = connection.prepareStatement(selectSQL);
-                ResultSet rs = preparedStatement.executeQuery();
-                while(rs.next()) {
+        <div class="container">
+            <h1>Activity Log</h1>
+            <%
+                String queryterm = request.getParameter("term"); 
+                String querycolumn = request.getParameter("column"); 
+                String querysort = request.getParameter("sort"); 
+                String querylimit = request.getParameter("limit"); 
+                
+                int limit = 20;
+                String displaysearch = "";
+                String method = "LIKE";
+                
+                ResultSet rs;
+                ActivityLogDao ald = new ActivityLogDao();
+                if (queryterm == null || querycolumn == null || querysort == null || querylimit == null) {
+                    rs = ald.getActivityLog(limit);
+                } else {
+                    if (querycolumn.equals("id")) {
+                        querycolumn = "activity_log.id";
+                        method = "=";
+                    }
+                    if (querycolumn.equals("activity_count") || querycolumn.equals("account_info_id")) {
+                        method = "=";
+                    }
+                    rs = ald.getActivityLog(queryterm, querycolumn, querysort, querylimit, method);
+                    displaysearch = "Searched '" + queryterm + "' on '" + querycolumn + "', sort '" + querysort + "', limit '" + querylimit + "'";
+                }
 
-        %>
-                    <tr>
-                        <td class="center"><%=rs.getInt("id")%></td>
-                        <td><%=rs.getString("ip_addr")%></td>
-                        <td><%=rs.getString("system_source")%></td>
-                        <td class="center"><%=rs.getInt("activity_count")%></td>
-                        <td><%=rs.getString("description")%></td>
-                        <td class="center"><%=rs.getInt("account_info_id")%></td>
-                        <td><%=rs.getTimestamp("create_time")%></td>
-                        <td><%=rs.getTimestamp("update_time")%></td>
-                    </tr>
-        <%
+                if (rs != null) {
 
+                    ResultSetMetaData rsmd = rs.getMetaData();
+            %>         
+            <h3><%=displaysearch%></h3>
+            <div style="display:table; padding-bottom:1em;">
+                <div style="display:table-cell;">Search Term: <input type="text" id="term"></div>
+                <div style="display:table-cell; padding-left:1em;">Column: <select id="column">
+            <%
+                    for(int i = 1; i < rsmd.getColumnCount() + 1; i++) {
+                        %>
+                        <option value="<%=rsmd.getColumnName(i)%>"><%=rsmd.getColumnName(i)%></option>
+                        <%
+                    }
+            %>
+                </select></div>
+                <div style="display:table-cell; padding-left:1em;">Limit: 
+                    <select id="limit">
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                    </select>
+                </div>
+                <div style="display:table-cell; padding-left:1em;">Sort: 
+                    <select id="sort">
+                        <option value="DESC">Descending</option>
+                        <option value="ASC">Ascending</option>
+
+                    </select>
+                </div>
+                <div style="display:table-cell; padding-left:1em;">
+                    <a type="button" href="#" id="btnSearchLog" class="btn btn-default" onclick="searchLog();">Search</a>
+                </div>
+                <div style="display:table-cell; padding-left:1em;">
+                    <a type="button" href="#" id="btnSearchLog" class="btn btn-default" onclick="resetLog();">Reset</a>
+                </div>
+            </div>
+            <table class="data-table">
+                <tr class="columnname">
+            <%
+                    for(int i = 1; i < rsmd.getColumnCount() + 1; i++) {
+                        %>
+                        <td><%=rsmd.getColumnName(i)%></td>
+                        <%
+                    }
+            %>
+
+                </tr>
+            <%
+                    while(rs.next()) {
+
+            %>
+                        <tr>
+                            <td class="center"><%=rs.getInt("id")%></td>
+                            <td><%=rs.getString("ip_addr")%></td>
+                            <td><%=rs.getString("system_source")%></td>
+                            <td class="center"><%=rs.getInt("activity_count")%></td>
+                            <td><%=rs.getString("description")%></td>
+                            <td class="center"><%=rs.getInt("account_info_id")%></td>
+                            <td><%=rs.getTimestamp("create_time")%></td>
+                            <td><%=rs.getTimestamp("update_time")%></td>
+                        </tr>
+            <%
+
+                    }
+            } else {
+                %> 
+                <h3><%=displaysearch%></h3>
+                <p>There has been an error with data retrieval.</p> 
+                <div style="display:table-cell; padding-left:1em;">
+                    <a type="button" href="#" id="btnSearchLog" class="btn btn-default" onclick="resetLog();">Reset</a>
+                </div>
+                <%
             }
-        %>
-        </table>
-        <%
-                //rs.close();
-                //preparedStatement.close();
-                //connection.close();
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        %>
+            %>
+            </table>
+            <!-- FOOTER -->
+            <br/>
+	<div class="container marketing">
+
+            <footer>
+                    <p>
+                            &copy; 2016 E-Commerce Security &middot; <a href="#">Privacy</a>
+                            &middot; <a href="#">Terms</a>
+                    </p>
+            </footer>
+
+	</div>
+	<!-- /.container -->
+        </div>
+            <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+            <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script>
+                function searchLog() {
+                    var term = document.getElementById("term").value;
+                    var column = document.getElementById("column").value;
+                    var limit = document.getElementById("limit").value;
+                    var sort = document.getElementById("sort").value;
+                    
+                    var url = "activitylog.jsp?term=" + term + "&column=" + column + "&limit=" + limit + "&sort=" + sort;
+                    window.location = url;
+                }
+                function resetLog() {
+                    window.location = "activitylog.jsp";
+                }
+            </script>
     </body>
 </html>
