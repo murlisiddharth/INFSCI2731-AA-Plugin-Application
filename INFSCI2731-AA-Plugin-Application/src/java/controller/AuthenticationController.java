@@ -75,11 +75,11 @@ public class AuthenticationController extends HttpServlet {
             
             //testing by Hanwei
             //retrieve user bean by userID, and 
-            UserDao dao = new UserDao();
-            UserAccountInfo loginUser = new UserAccountInfo();
-           loginUser = dao.retrieveUserInfo(account_id);
-           System.out.println("==retrieve user email by account_id: " + loginUser.getEmailAddress());
-            session.setAttribute("user", loginUser);
+//            UserDao dao = new UserDao();
+//            UserAccountInfo loginUser = new UserAccountInfo();
+//           loginUser = dao.retrieveUserInfo(account_id);
+//           System.out.println("==retrieve user email by account_id: " + loginUser.getEmailAddress());
+//            session.setAttribute("user", loginUser);
             //end testing
             
             RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
