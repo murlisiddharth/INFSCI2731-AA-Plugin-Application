@@ -101,10 +101,14 @@
               <button type="submit" class="btn btn-default">Change</button>
           </form>
           <div class="message">
+              <c:if test="${isSuccess}">
+                <p>Change role successfully!</p>
+            </c:if> 
             <%--bug!!!!!!!!!!!!!
             if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
                   out.print("Change role successfully!");
             }
+            
           --%>
           </div>
       </div><!--management area-->
