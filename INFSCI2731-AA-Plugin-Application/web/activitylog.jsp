@@ -37,7 +37,14 @@
                 
                 ResultSet rs;
                 ActivityLogDao ald = new ActivityLogDao();
-                if (queryterm == null || querycolumn == null || querysort == null || querylimit == null) {
+                if (queryterm == null || queryterm.equals("") || querycolumn == null || querycolumn.equals("") || querysort == null || querysort.equals("") || querylimit == null || querylimit.equals("")) {
+                    if(querylimit != null) {
+                        try {
+                            limit = Integer.parseInt(querylimit);
+                        } catch (NumberFormatException e) {
+                            
+                        }
+                    }
                     rs = ald.getActivityLog(limit);
                 } else {
                     if (querycolumn.equals("id")) {
