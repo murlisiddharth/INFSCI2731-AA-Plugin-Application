@@ -77,13 +77,39 @@
 
     
     <!-- Begin page content -->
-    <div class="container" style="margin-top:100px; margin-bottom:250px;">
+    <div class="container" style="margin-top:100px;margin-bottom:250px;">
+      
       <div class="page-header">
-        <h1>Authentication Project</h1>
+        <h1>Role Management</h1>
       </div>
-        <p> You have privilege to access the page!</p>
-        <p> For Super Admin</p>
-    </div>
+
+      <!--management area-->
+      <div class="ManagementArea" style="margin-top:30px">
+          
+          <form class="form-inline" action="RoleManageServlet" method="post">
+              <div class="form-group">
+                <label for="userID">UserID</label>
+                <input name="userID" type="text" class="form-control"  placeholder="1" value="1">
+              </div>
+          
+              <select name="roleChoice" class="form-control">
+                  <option value="1">User</option>
+                  <option value ="2">Administrator</option>
+                  <option value ="3">Super Administrator</option>
+              </select>
+
+              <button type="submit" class="btn btn-default">Change</button>
+          </form>
+      </div><!--management area-->
+      
+      <%
+          if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
+                out.print("Change role successfully!");
+          }else{
+              out.print("Fail to change role!");
+          }
+        %>
+    </div><!--container-->
 
     <footer class="footer">
       <div class="container">

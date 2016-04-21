@@ -75,19 +75,24 @@ public class UserAccountInfo {
     }
 
     //create new account record in account_info table
-    public int register() {
-        // create new timestamp and return id
-        TimeStamp time = new TimeStamp();
-        long timeID = time.getTimeStampsID();
-        //create new role and return id
-        Role role = new Role();
-        int roleID = role.getId();
-        //create a new account
-        dao = new UserDao();
-        System.out.println("===== user bean " + "firstname: " + firstName + " lastname: " + lastName+ "email: " +emailAddress + "====");
+    public int register(String firstname, String lastname, String email, int roleID) {
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.emailAddress = email;
+        this.access_role_id = roleID;
         
+        UserDao user = new UserDao();
+        System.out.println("===== user bean " + "firstname: " + firstName + " lastname: " + lastName+ "email: " +emailAddress + "roleID: " + roleID + "====");
         //create account and return the generated id
-        return this.id = dao.createAccount(firstName,lastName, emailAddress, timeID, roleID);
+        return this.id = user.createAccount(firstName,lastName, emailAddress, access_role_id);
+    }
+    
+    //this method is to change the roleID for user
+    public Boolean roleUpdate(int accountID, int roleID) {
+       UserDao dao = new UserDao();
+       Boolean res = dao.roleIDChange(accountID, roleID);
+       System.out.println("role change successful? " + res);
+       return res;
     }
 
 }

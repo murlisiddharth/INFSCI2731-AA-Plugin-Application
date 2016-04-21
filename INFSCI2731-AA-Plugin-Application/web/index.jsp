@@ -13,15 +13,7 @@
 
 <%
     //check whether the role ID of the user has priviledge for current page
-    if(request.getSession().getAttribute("user")!=null){
-         UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
-         RBACDao accessControl = new RBACDao();
-         List<Integer> UserPool = accessControl.getRolebyPath("index.jsp");
-        if(!UserPool.contains(user.getAccess_role_id()))
-        {
-            response.sendRedirect("index.jsp");
-        }
-    }else {
+    if(request.getSession().getAttribute("user") == null){
             response.sendRedirect("login.jsp");
         }
         

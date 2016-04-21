@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import model.TimeStamp;
 import model.UserAccountInfo;
 
 /**
@@ -26,9 +27,12 @@ public class UserDao {
     }
     
     //create account by passing variable value from user instance
-    public int createAccount(String firstName,String lastName, String emailAddress,long timeStampsID,int access_role_id){
-        
-         try {
+    public int createAccount(String firstName,String lastName, String emailAddress, int access_role_id){
+        // create new timestamp and return id
+        TimeStamp time = new TimeStamp();
+        long timeStampsID = time.getTimeStampsID();
+         
+        try {
                 sql = "INSERT INTO INFSCI2731.account_info(first_name, last_name, email_addr, timestamps_id, access_role_id) values (?, ?, ?, ?, ?)";
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
                 // Parameters start with 1
@@ -56,11 +60,11 @@ public class UserDao {
     public UserAccountInfo retrieveUserInfo(int accountID){
         try {
                 sql = "SELECT * from INFSCI2731.account_info WHERE id=" + accountID;  
-                // Parameters start with 1
+                
                 System.out.println("Account " + accountID);
                 PreparedStatement ps = connection.prepareStatement(sql);
 //              ps.setInt(1, accountID);     
-                System.out.println(ps);
+               //System.out.println(ps);
 
                 rs = ps.executeQuery(sql);
                 String firstName = "";
@@ -90,7 +94,26 @@ public class UserDao {
           return null;
         } 
     }
+          
+    
+    //this method is to change the ID of role for user
+    public boolean roleIDChange(int accountID, int roleID){
+        try {
+                sql = "UPDATE INFSCI2731.account_info SET access_role_id = ? WHERE id = ?";  
         
+                System.out.println("Account: " + accountID);
+                System.out.println("required role id:" + roleID);
+                PreparedStatement ps = connection.prepareStatement(sql);
+                ps.setInt(1, roleID);
+                ps.setInt(2, accountID);
+                ps.executeUpdate();
+                return true;
+                
+        } catch (SQLException e) {
+                e.printStackTrace();
+          return false;
+        } 
+    }
         
 }
 

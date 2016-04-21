@@ -59,13 +59,12 @@ public class Authentication {
     *This method is to create a authentication table record for new user
     * @author: Hanwei Cheng
     */     
-        public void createNewAuth(int accountID, String password){
-//          System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
+        public void passwordProcess(int accountID, String password){
             SavePasswordDao savePasswordDao = new SavePasswordDao();
             Boolean res = savePasswordDao.savePassword(accountID, password);
+            //System.out.println("===== Authentication bean " + " hash: " + hash + " salt: " + password_salt + " account_info_id: "+ account_info_id +" ====");
             //test
             System.out.println("==password&salt==" + res);
-    
         }
         
 }

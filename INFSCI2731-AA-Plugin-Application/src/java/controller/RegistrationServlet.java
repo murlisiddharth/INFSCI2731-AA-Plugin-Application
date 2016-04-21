@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Answer;
+import model.QuestionAnswer;
 import model.Authentication;
 import model.IPAddress;
 import model.UserAccountInfo;
@@ -37,21 +37,24 @@ public class RegistrationServlet extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("==in servlet==");
         UserAccountInfo newUser = new UserAccountInfo();
-        newUser.setFirstName(request.getParameter("firstname"));
-        newUser.setLastName(request.getParameter("lastname"));
-        newUser.setEmailAddress(request.getParameter("email"));
-        newUser.setAccess_role_id(1);
+     
         System.out.println("==in servlet==" + "firstname: "+ request.getParameter("firstname")+" lastname: "+request.getParameter("lastname"));
 //        request.setAttribute("user", user); 
+
+        //create a normal user
+        int accountId = newUser.register(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), 1); //modified by Siwei in order to get the new generated account id
+        
+        //create a Super Admin user
+//        int accountId = newUser.register(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), 3);
         
 
-        int accountId = newUser.register(); //modified by Siwei in order to get the new generated account id
-        
-        //create a session?
+        //create a session and put user object in session
         HttpSession session = request.getSession();
         session.setAttribute("user", newUser);
+        //debug
         UserAccountInfo testUser = (UserAccountInfo)session.getAttribute("user");
         System.out.println("==test user bean in session ==" +testUser.getEmailAddress());
+        
         
         //log activity of new created account, by Siwei
         IPAddress ipAddress = new IPAddress();
@@ -62,56 +65,27 @@ public class RegistrationServlet extends HttpServlet {
         logDao.logNewAccountCreated(ipAddr, sysSource, accountId);
         
         
-        //transfer the password from the signup page
-        Authentication aut = new Authentication();
-        aut.createNewAuth(accountId, request.getParameter("password"));
+        //process the password and store it in database
+        Authentication auth = new Authentication();
+        auth.passwordProcess(accountId, request.getParameter("password"));
         
         //need modification!!!!!
         //set security Question &answer 1 
-        Answer qa1 = new Answer();
-        qa1.setAccount_info_id(newUser.getId());
-        int question1 = Integer.parseInt(request.getParameter("secQue1"));
-        qa1.setSecurity_question_id(question1);
-        qa1.setAnswer(request.getParameter("answer1").toLowerCase());
-        
+        QuestionAnswer qa1 = new QuestionAnswer();
+        qa1.questionAnswerProcess(accountId, Integer.parseInt(request.getParameter("secQue1")), request.getParameter("answer1").toLowerCase());
  
         //set security question &answer 2
-        Answer qa2 = new Answer();
-        qa2.setAccount_info_id(newUser.getId());
-        int question2 = Integer.parseInt(request.getParameter("secQue2"));
-        qa2.setSecurity_question_id(question2);
-        qa2.setAnswer(request.getParameter("answer2").toLowerCase());
+        QuestionAnswer qa2 = new QuestionAnswer();
+        qa2.questionAnswerProcess(accountId, Integer.parseInt(request.getParameter("secQue2")), request.getParameter("answer2").toLowerCase());
         
         
         //set security question 3
-        Answer qa3 = new Answer();
-        qa3.setAccount_info_id(newUser.getId());
-        int question3 = Integer.parseInt(request.getParameter("secQue3")); //selector???? 
-        qa3.setSecurity_question_id(question3);
-        qa3.setAnswer(request.getParameter("answer3").toLowerCase());
-        
-
-        //create 3 question &answer records for one user
-        qa1.generateQARecord();
-        qa2.generateQARecord();
-        qa3.generateQARecord();
+        QuestionAnswer qa3 = new QuestionAnswer();
+        qa3.questionAnswerProcess(accountId, Integer.parseInt(request.getParameter("secQue3")), request.getParameter("answer3").toLowerCase());
         
         //forward server's request to jsp
-        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
-       
-//        String firstname =(String)request.getParameter("firstname");
-//        String lastname =(String)request.getParameter("lastname");
-//        String email =(String)request.getParameter("email");
-//        
+        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);   
 		
-//        PrintWriter writer = response.getWriter();
-//        String htmlResponse = "<html>";
-//        htmlResponse += "<h2>Your name is: " + firstname + "</h2>";
-//        htmlResponse += "<h2>Your name is: " + lastname + "</h2>";
-//        htmlResponse += "<h2>Your mail is: " +email+ "</h2>";
-//        htmlResponse += "</html>";
-//
-//        writer.println(htmlResponse);
 
     }
 
