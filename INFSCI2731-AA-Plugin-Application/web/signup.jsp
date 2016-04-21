@@ -82,7 +82,13 @@
 					<span class="input-group-addon" id="basic-addon1">Password</span>
 					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required value="111">
 				</div>
-
+                                
+                                <!--upgrade role-->
+                                <div class="input-group">
+					<span class="input-group-addon" id="basic-addon1">Re-type Password</span>
+					<input type="password" id="inputPassword" name="retypepassword" class="form-control" placeholder="Password" required value="111">
+				</div>
+                                
 
 					<!--Security Question 1-->
 					<div>

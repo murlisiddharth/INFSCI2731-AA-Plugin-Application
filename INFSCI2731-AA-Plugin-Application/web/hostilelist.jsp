@@ -60,8 +60,18 @@
                     <li><a href="RBACtest.jsp">RBAC Test</a></li>
                  </ul>
                  <ul class="nav navbar-nav navbar-right">
-                       <li id="user"><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-                   </ul>
+                    <!--put the name on the navigation bar-->
+                  <br>
+                        <% 
+                                if(request.getSession().getAttribute("user")!=null){
+                                   UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
+                                 out.print("<a href='#'>" + user.getFirstName() + user.getLastName() +"</a>");
+                                 out.print("&nbsp;&nbsp;|&nbsp;&nbsp;");
+                                 out.print("<a href='LogOut'>Log Out</a>");
+                                }
+                        %>
+                  
+                  </ul> 
                </div><!--/.nav-collapse -->
              </div>
            </nav>

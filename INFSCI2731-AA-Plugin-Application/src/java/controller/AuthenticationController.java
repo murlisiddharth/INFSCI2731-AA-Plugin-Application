@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import dataAccessObject.AuthenticationDao;
 import dataAccessObject.HostileDao;
+import dataAccessObject.UserDao;
 import javax.servlet.RequestDispatcher;
 import model.IPAddress;
+import model.UserAccountInfo;
 
 public class AuthenticationController extends HttpServlet {
 
@@ -70,6 +72,16 @@ public class AuthenticationController extends HttpServlet {
             session.removeAttribute("lastAttempt");
             // add account_id into session for access control
             session.setAttribute("account_id", account_id);
+            
+            //testing by Hanwei
+            //retrieve user bean by userID, and 
+            UserDao dao = new UserDao();
+            UserAccountInfo loginUser = new UserAccountInfo();
+           loginUser = dao.retrieveUserInfo(account_id);
+           System.out.println("==retrieve user email by account_id: " + loginUser.getEmailAddress());
+            session.setAttribute("user", loginUser);
+            //end testing
+            
             RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
             rd.forward(req, resp);
 

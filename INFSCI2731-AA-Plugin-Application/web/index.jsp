@@ -6,7 +6,6 @@
 --%>
 
 
-
 <%@page import="model.UserAccountInfo"%>
 <%@page import="java.util.List"%>
 <%@ page import="controller.RBAC" %> 
@@ -69,10 +68,8 @@
                                    UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
                                  out.print("<a href='#'>" + user.getFirstName() + user.getLastName() +"</a>");
                                  out.print("&nbsp;&nbsp;|&nbsp;&nbsp;");
-                                 out.print("<a href='#'>Log Out</a>");
-                              }else{
-                                 response.sendRedirect("login.jsp");
-                              }
+                                 out.print("<a href='LogOut'>Log Out</a>");
+                                }
                         %>
                   
             </ul>
