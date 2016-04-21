@@ -487,4 +487,34 @@ public class ActivityLogDao {
             }        
     }
     
+    public ResultSet getActivityLog(String term, String column, String sort, String limit, String method) {
+        try{
+            sql = "SELECT activity_log.id, ip_addr, system_source, activity_count, description, account_info_id, create_time, update_time"
+                    + " FROM activity_log, timestamps WHERE activity_log.timestamps_id = timestamps.id";
+            sql += " AND " + column + " " + method + " ?"; 
+            sql += " ORDER BY activity_log.id " + sort + " LIMIT ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, (method.equals("LIKE") ? "%" + term + "%" : term));
+            ps.setInt(2, Integer.parseInt(limit));
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch(SQLException | NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public ResultSet getActivityLog(int limit) {
+        try{
+            sql = "SELECT activity_log.id, ip_addr, system_source, activity_count, description, account_info_id, create_time, update_time"
+                    + " FROM activity_log, timestamps WHERE activity_log.timestamps_id = timestamps.id ORDER BY activity_log.id DESC LIMIT ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, limit);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch(SQLException | NumberFormatException e) {;
+            return null;
+        }
+    }
+    
 }
