@@ -38,6 +38,15 @@
 			margin:20px auto;
 			
 		}
+                .errMsg {
+                    color: red;
+                }
+                .avaliable {
+                    color: green;
+                }
+                .checking {
+                    color: blue;
+                }
 		</style>
 
 	</head>
@@ -74,8 +83,9 @@
 			      	<!--email-->
 			      	<div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Email</span>
-                                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="john@gmail.com" required autofocus aria-describedby="basic-addon1" value="carolcheng124@gmail.com">
+                                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="john@gmail.com" autofocus aria-describedby="basic-addon1" value="carolcheng124@gmail.com" maxlength="254" onkeyup="checkEmail(); return false;" required>
 					</div>
+                                        <div id="emailMsg"></div>
 
 				<!--password-->
 				<div class="input-group">
@@ -86,8 +96,10 @@
                                 <!--upgrade role-->
                                 <div class="input-group">
 					<span class="input-group-addon" id="basic-addon1">Re-type Password</span>
-					<input type="password" id="inputPassword" name="retypepassword" class="form-control" placeholder="Password" required value="111">
+					<input type="password" id="inputRetypePassword" name="retypepassword" class="form-control" placeholder="Password" value="111" onblur="comfirmRetypePassword(); return false;" required>
 				</div>
+                                        <div id="errRetypePw" class="errMsg"></div>
+
                                 
 
 					<!--Security Question 1-->
@@ -197,6 +209,7 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
     	</script>
+        <script src="js/formCheck.js" type="text/javascript"></script>
 
 	</body>
 </html>
