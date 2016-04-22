@@ -90,8 +90,9 @@
 				<!--password-->
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon1">Password</span>
-					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required value="111">
+					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"  value="111" onblur="checkStrongOfPassword(); return false;" required>
 				</div>
+                                <div id="errStrongLevel" class="errMsg"></div>
                                 
                                 <!--upgrade role-->
                                 <div class="input-group">
@@ -99,6 +100,7 @@
 					<input type="password" id="inputRetypePassword" name="retypepassword" class="form-control" placeholder="Password" value="111" onblur="comfirmRetypePassword(); return false;" required>
 				</div>
                                         <div id="errRetypePw" class="errMsg"></div>
+                                        
 
                                 
 
