@@ -52,16 +52,21 @@ function checkEmail() {
  */
 function comfirmRetypePassword() {
     var inputPassword = $("#inputPassword").val();
-
+    var inputRetypePassword = $("#inputRetypePassword").val();
 
     if ($("#inputPassword").hasClass("has-error") || inputPassword === "") {
         $("#errRetypePw").html("Please enter a valid password above!");
     } else {
-        if (inputRetypePassword === inputPassword) {
-            $("#errRetypePw").parent().removeClass("has-error");
-            $("#errRetypePw").text("");
-        } else {
-            $("#errRetypePw").text("Password doesn't match!");
+        if(inputRetypePassword >=1) {
+            if (inputRetypePassword === inputPassword) {
+                $("#errRetypePw").parent().removeClass("has-error");
+                $("#errRetypePw").text("");
+            } else {
+                $("#errRetypePw").text("Password doesn't match!");
+            }           
+        }else {
+            $("#errRetypePw").text("Please type your password again.");
+            
         }
 
     }
@@ -100,7 +105,7 @@ function checkStrongOfPassword() {
         case 1:
         case 2:
             $("#inputPassword").addClass("has-error");
-            $("#errStrongLevel").html("Password must have 3 types of  Uppercase, Lowercase, number, Special Character");
+            $("#errStrongLevel").html("Password must have 3 types of Uppercase, Lowercase, number, Special Character");
             //return 1;
             break;
         case 3:
