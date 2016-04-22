@@ -67,62 +67,6 @@
                                 out.print("<a href='LogOut'>Log Out</a>");
                             }
                         %>
-<<<<<<< HEAD
-                  
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    
-    <!-- Begin page content -->
-    <div class="container" style="margin-top:100px;margin-bottom:250px;">
-      
-      <div class="page-header">
-        <h1>Role Management</h1>
-      </div>
-
-      <!--management area-->
-      <div class="ManagementArea" style="margin-top:30px">
-          
-          <form class="form-inline" action="RoleManageServlet" method="post">
-              <div class="form-group">
-                <label for="userID">UserID</label>
-                <input name="userID" type="text" class="form-control"  placeholder="1" value="1">
-              </div>
-          
-              <select name="roleChoice" class="form-control">
-                  <option value="1">User</option>
-                  <option value ="2">Administrator</option>
-                  <option value ="3">Super Administrator</option>
-              </select>
-
-              <button type="submit" class="btn btn-default">Change</button>
-          </form>
-          <div class="message">
-            <%--bug!!!!!!!!!!!!!
-            if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
-                  out.print("Change role successfully!");
-            }
-            
-          --%>
-          </div>
-      </div><!--management area-->
-      
- 
-    </div><!--container-->
-
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">&copy; 2016 E-Commerce Security &middot; <a href="#">Privacy</a>
-                            &middot; <a href="#">Terms</a></p>
-      </div>
-    </footer>
-    
-
-     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-=======
-
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -154,20 +98,12 @@
                     <button type="submit" class="btn btn-default">Change</button>
                 </form>
                 <div class="message">
-                    <%--bug!!!!!!!!!!!!!
-                    if((request.getAttribute("isSuccess"))!= null & (Boolean)request.getAttribute("isSuccess") == true ){
-                          out.print("Change role successfully!");
-                    }
-                    --%>
+                    <!--show message when change role successfully-->
                     <%
                         String StatusSymbol = "";
-                        if ((request.getAttribute("isSuccess")) != null & (Boolean) request.getAttribute("isSuccess") == true) {
-                            StatusSymbol = "we change the role successful";
+                        if ((request.getAttribute("isSuccess")) != null && (Boolean) request.getAttribute("isSuccess") == true) {
+                            StatusSymbol = "Change the role successfully!";
                         }
-//                        else
-//                        {
-//                            
-//                        }
                     %>
                     <%=StatusSymbol %>  
                    
@@ -186,7 +122,6 @@
 
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
->>>>>>> db76ea19c602513841fdaecf44aff0434f8ccd5e
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
