@@ -6,6 +6,7 @@
 package controller;
 
 import DbConnect.DbConnection;
+import dataAccessObject.ActivityLogDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -16,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.IPAddress;
 
 /**
  *
@@ -60,10 +62,19 @@ public class CheckEmailAvailability extends HttpServlet {
                 count = -1;
         } 
        
+       //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        IPAddress ipAddress = new IPAddress();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+        ActivityLogDao logDao = new ActivityLogDao();
+             
        if(count == 1 ){
+           //log the activity to track if user try to get info about registered email addresses
+           logDao.logAccessAttempt(ipAddr, sysSource, "check email availability: taken email " + email);
             response.setContentType("text/plain");
             response.getWriter().write("notAvailable"); 
         }else if(count == 0 ) {
+           logDao.logAccessAttempt(ipAddr, sysSource, "check email availability: available email " + email);
             response.setContentType("text/plain");
             response.getWriter().write("available");                 
         }

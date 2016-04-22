@@ -72,7 +72,7 @@ public class ResetPasswordService extends HttpServlet {
                 savePasswordDao.savePassword(nonce.getAccountInfoID(), password);
 
                 //log activity of successfully reset pw, and update previoud reset pw record description
-                int logID = logDao.logExpiredLinkOnForgotPw(ipAddr, sysSource, nonce.getAccountInfoID());
+                int logID = logDao.logForgotPwResult(ipAddr, sysSource, "(forgot pw)successfully reset pw", nonce.getAccountInfoID());
                 //check if previous sent link record exist, if it does, update the record description
                 int id = logDao.checkResetPwSentLink(nonce.getAccountInfoID());
                 if(logID > 0 && id > 0){

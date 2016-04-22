@@ -151,10 +151,11 @@ public class ActivityLogDao {
      * 
      * @param ip
      * @param sysSource
+     * @param desc
      * @param accoutInfoID
      * @return 
      */
-    public int logPwFailedLoginAttempt(String ip, String sysSource, int accoutInfoID, String desc) {
+    public int logPwFailedLoginAttempt(String ip, String sysSource, String desc, int accoutInfoID) {
          
         TimeStamp time = new TimeStamp();
         long timeStampsID = time.getTimeStampsID();
@@ -379,14 +380,14 @@ public class ActivityLogDao {
      * 
      * @param ip
      * @param sysSource
+     * @param desc
      * @param accoutInfoID
      * @return 
      */
-    public int logExpiredLinkOnForgotPw(String ip, String sysSource, int accoutInfoID) {
+    public int logForgotPwResult(String ip, String sysSource, String desc, int accoutInfoID) {
          
         TimeStamp time = new TimeStamp();
         long timeStampsID = time.getTimeStampsID();
-        String desc = "(forgot pw)expired reset pw link";
                 
         //prepare and execute search query
         try{   
@@ -515,6 +516,46 @@ public class ActivityLogDao {
         } catch(SQLException | NumberFormatException e) {;
             return null;
         }
+    }
+    
+    /**
+     * log activity such as profile, role changes 
+     * @param ip
+     * @param sysSource
+     * @param desc
+     * @param accoutInfoID
+     * @return 
+     */
+    public int logUpdateActivity(String ip, String sysSource, String desc, int accoutInfoID) {
+         
+        TimeStamp time = new TimeStamp();
+        long timeStampsID = time.getTimeStampsID();
+                
+        //prepare and execute search query
+        try{   
+                sql = "INSERT INTO INFSCI2731.activity_log (ip_addr, system_source, activity_count, timestamps_id, description, account_info_id) "
+                        + "values (?, ?, ?, ?, ?, ?)";
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);  
+                ps.setString(1, ip);          
+                ps.setString(2, sysSource);          
+                ps.setInt(3, 1); 
+                ps.setLong(4, timeStampsID);               
+                ps.setString(5, desc); 
+                ps.setInt(6, accoutInfoID); 
+                           
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
+
+                //check if query returns one valid result 
+                if(rs.next())
+                    return autoKey = rs.getInt(1);
+                else
+                    return 0;
+
+            }catch (Exception e) {
+                    System.out.println(e.getMessage()) ;
+                    return -1;
+            }        
     }
     
 }

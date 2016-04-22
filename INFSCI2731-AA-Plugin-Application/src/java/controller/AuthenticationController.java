@@ -89,13 +89,13 @@ public class AuthenticationController extends HttpServlet {
             //log failed login attempt according to the returned value of validateUser                    
             switch (account_id) {
                 case -1:
-                    logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id, "(login)unmatch password");
+                    logDao.logPwFailedLoginAttempt(ipAddr, sysSource,"(login)unmatch password", account_id);
                     break;
                 case -2:
                     logDao.logEmailFailedLoginAttempt(ipAddr, sysSource, username);
                     break;
                 case -3:
-                    logDao.logPwFailedLoginAttempt(ipAddr, sysSource, account_id, "(login)non exist password");
+                    logDao.logPwFailedLoginAttempt(ipAddr, sysSource, "(login)non exist password",account_id);
                     break;
                 default:
                     break;

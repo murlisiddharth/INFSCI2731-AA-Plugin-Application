@@ -82,7 +82,6 @@
       <div class="page-header">
         <h1>Authentication Project</h1>
       </div>
-        <a href="Test?action=getNonce">Get Nonce</a>
     </div>
 
     <footer class="footer">
