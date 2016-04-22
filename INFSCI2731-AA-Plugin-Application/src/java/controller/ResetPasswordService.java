@@ -16,8 +16,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.IPAddress;
 import model.Nonce;
+import model.UserAccountInfo;
 import utilities.CheckDateTime;
 
 /**
@@ -39,6 +41,7 @@ public class ResetPasswordService extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
         String token = request.getParameter("token");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm_password");
@@ -54,33 +57,50 @@ public class ResetPasswordService extends HttpServlet {
         boolean passwordMatch = password.equals(confirmPassword);
         boolean tokenValid = false;
         boolean passwordUsedBefore = false;
+        boolean loggedIn = false;
+        UserAccountInfo loginUser = null;
         
-        if (token != null && !token.equals("")) {
+        if (token != null && !token.equals("") && !token.equals("userLogged")) {
             if (CheckDateTime.isValid(nonceDao.getNonceCreatetime(token))) {
                 tokenValid = true;
             }
+        } else if (token != null && token.equals("userLogged")) {
+            if (session.getAttribute("user") != null) {
+                loginUser = (UserAccountInfo)session.getAttribute("user");
+                loggedIn = true;
+            }
         }
         
-        if (passwordMatch && tokenValid) {
-            Nonce nonce = nonceDao.getNonceByNonceValue(token);
+        if (passwordMatch && (tokenValid || loggedIn)) {
+            int userID = -1;
+            if (tokenValid) {
+                Nonce nonce = nonceDao.getNonceByNonceValue(token);
+                userID = nonce.getAccountInfoID();
+            } else if (loggedIn) {
+                userID = loginUser.getId();
+            }
+            
             SavePasswordDao savePasswordDao = new SavePasswordDao();
             
-            passwordUsedBefore = savePasswordDao.checkPastPassword(nonce.getAccountInfoID(), password);
+            passwordUsedBefore = savePasswordDao.checkPastPassword(userID, password);
             if (passwordUsedBefore) {
                 redirectError(request, response, passwordMatch, passwordUsedBefore, tokenValid, token);
             } else {
-                savePasswordDao.savePassword(nonce.getAccountInfoID(), password);
+                savePasswordDao.savePassword(userID, password);
 
                 //log activity of successfully reset pw, and update previoud reset pw record description
-                int logID = logDao.logForgotPwResult(ipAddr, sysSource, "(forgot pw)successfully reset pw", nonce.getAccountInfoID());
+                int logID = logDao.logForgotPwResult(ipAddr, sysSource, (loggedIn ? "(change pw)" : "(forgot pw)") + "successfully reset pw", userID);
                 //check if previous sent link record exist, if it does, update the record description
-                int id = logDao.checkResetPwSentLink(nonce.getAccountInfoID());
+                int id = logDao.checkResetPwSentLink(userID);
                 if(logID > 0 && id > 0){
                     logDao.updatePreResetPwRecord("succeeded(logid " + logID + ")", id);
                 }
-
-                nonceDao.deleteNonceByUserID(nonce.getAccountInfoID());
-                response.sendRedirect("login.jsp");
+                
+                if (tokenValid) {
+                    nonceDao.deleteNonceByUserID(userID);
+                }
+                
+                printPasswordSuccess(request, response, loggedIn);
             }
         } else {
             redirectError(request, response, passwordMatch,  passwordUsedBefore, tokenValid, token);
@@ -89,9 +109,30 @@ public class ResetPasswordService extends HttpServlet {
         
     }
     
+    protected void printPasswordSuccess(HttpServletRequest request, HttpServletResponse response, Boolean loggedIn) throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Reset Password Success</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Reset Password Success</h1>");
+            out.println("<p>You have successfully changed your password.</p>");
+            if (loggedIn) {
+                out.println("<p><a href=\"\">Click here</a> to return to the account page.</p>");
+            } else {
+                out.println("<p><a href=\"login.jsp\">Click here</a> to return to the login page.</p>");
+            }
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+    
     protected void redirectError(HttpServletRequest request, HttpServletResponse response, boolean passwordMatch, boolean passwordUsedBefore, boolean tokenValid, String token) 
             throws ServletException, IOException {
-        String url = tokenValid ? "resetpassword?token=" + token.trim() : "resetpassword";
+        String url = tokenValid ? "resetpassword?token=" + token.trim() : "resetpassword?";
         url += !passwordMatch ? "&pmm=" + !passwordMatch : "";
         url += passwordUsedBefore ? "&pub=" + passwordUsedBefore : "";
         response.sendRedirect(url);
