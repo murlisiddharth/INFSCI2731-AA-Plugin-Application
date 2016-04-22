@@ -26,6 +26,9 @@ public class SavePasswordDao {
     
     public boolean savePassword(int account_info_id, String password) {
         setOldPasswordInactive(account_info_id);
+        //update old pw timestamps
+        TimeStampDao timeStampDao = new TimeStampDao();
+        timeStampDao.updateOldPasswordTimestamp(account_info_id);
         deleteOldPasswords(account_info_id);
         return setNewPassword(account_info_id, password);
     }
