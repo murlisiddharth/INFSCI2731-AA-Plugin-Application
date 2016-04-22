@@ -53,18 +53,23 @@ function checkEmail() {
 function comfirmRetypePassword() {
     var inputPassword = $("#inputPassword").val();
     var inputRetypePassword = $("#inputRetypePassword").val();
+    $("#errRetypePw").parent().removeClass("has-error");
+    $("#errRetypePw").text("");
 
-    if ($("#inputPassword").hasClass("has-error") || inputPassword === "") {
-        $("#errRetypePw").html("Please enter a valid password above!");
+    if ($("#inputPassword").parent().hasClass("has-error") || inputPassword === "") {
+        $("#inputRetypePassword").parent().addClass("has-error");
+        $("#errRetypePw").html("Please enter a valid password first!");
     } else {
-        if(inputRetypePassword >=1) {
+        if(inputRetypePassword.length >=1) {
             if (inputRetypePassword === inputPassword) {
-                $("#errRetypePw").parent().removeClass("has-error");
+                $("#inputRetypePassword").parent().removeClass("has-error");
                 $("#errRetypePw").text("");
             } else {
+                $("#inputRetypePassword").parent().addClass("has-error");
                 $("#errRetypePw").text("Password doesn't match!");
             }           
         }else {
+            $("#inputRetypePassword").parent().addClass("has-error");
             $("#errRetypePw").text("Please type your password again.");
             
         }
@@ -79,11 +84,11 @@ function comfirmRetypePassword() {
 function checkStrongOfPassword() {
     var inputPassword = $("#inputPassword").val();
     var modes = 0;
-    $("#inputPassword").removeClass("has-error");
+    $("#inputPassword").parent().removeClass("has-error");
     $("#errStrongLevel").text("");
     if (inputPassword.length < 8)
     {
-        $("#inputPassword").addClass("has-error");
+        $("#inputPassword").parent().addClass("has-error");
         $("#errStrongLevel").html("Password must have 8 characters or more!");
         return 0;
     }
@@ -100,17 +105,17 @@ function checkStrongOfPassword() {
 
     switch (modes) {
         case 0:
-            $("#inputPassword").addClass("has-error");
+            $("#inputPassword").parent().addClass("has-error");
             $("#errStrongLevel").html("Password must have 8 characters or more!");
         case 1:
         case 2:
-            $("#inputPassword").addClass("has-error");
+            $("#inputPassword").parent().addClass("has-error");
             $("#errStrongLevel").html("Password must have 3 types of Uppercase, Lowercase, number, Special Character");
             //return 1;
             break;
         case 3:
         case 4:
-            $("#inputPassword").removeClass("has-error");
+            $("#inputPassword").parent().removeClass("has-error");
             $("#errStrongLevel").text("");
             //return 3;
             break;
