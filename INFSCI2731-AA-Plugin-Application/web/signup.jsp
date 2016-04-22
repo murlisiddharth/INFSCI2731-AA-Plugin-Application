@@ -107,7 +107,7 @@
 					<!--Security Question 1-->
 					<div>
 					<label class="control-label">Security Question 1</label>
-						<select name="secQue1" class="form-control">
+						<select id="Question1" name="secQue1" class="form-control" onblur="checkSecQuestionNotSame(); return false;" required>
 							<option value="1">What is the name of your favorite book as a child?</option>
 							<option value="2">What is the name of your 1st grade teacher?</option>
 							<option value="3">What was the color of the first car you owned?</option>
@@ -132,7 +132,7 @@
 					<!--Security Question 2-->
 					<div class="dropdown">
 					<label class="control-label">Security Question 2</label>
-						<select name="secQue2" class="form-control">
+						<select id="Question2" name="secQue2" class="form-control" onblur="checkSecQuestionNotSame(); return false;" required>
 							<option value="1">What is the name of your favorite book as a child?</option>
 							<option value="2">What is the name of your 1st grade teacher?</option>
 							<option value="3">What was the color of the first car you owned?</option>
@@ -156,7 +156,7 @@
 					<!--Security Question 3-->
 					<div class="dropdown">
 					<label class="control-label">Security Question 3</label>
-						<select name="secQue3" class="form-control">
+						<select id="Question3" name="secQue3" class="form-control" onblur="checkSecQuestionNotSame(); return false;" required>
 							<option value="1">What is the name of your favorite book as a child?</option>
 							<option value="2">What is the name of your 1st grade teacher?</option>
 							<option value="3">What was the color of the first car you owned?</option>
@@ -173,8 +173,10 @@
 					<!-- answer 3-->
 					<div class="form-group">
 						<label class="control-label">Answer 3:</label>
-						<input type="text" name="answer3" class="form-control"  required placeholder="Input your answer for question 3" value="3">
+						<input type="text" name="answer3" class="form-control"  required placeholder="Input your answer for question 3" value="3"  required>
 					</div>
+                                        
+                                        <div id="errQuestionChooseSame" class="errMsg"></div>
 					
 					<!--submit button-->
 					<div id="register">

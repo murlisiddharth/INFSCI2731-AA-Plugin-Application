@@ -68,7 +68,7 @@ public class CheckEmailAvailability extends HttpServlet {
         String ipAddr = ipAddress.getClientIpAddress(request);
         ActivityLogDao logDao = new ActivityLogDao();
              
-       if(count == 1 ){
+       if(count >= 1 ){
            //log the activity to track if user try to get info about registered email addresses
            logDao.logAccessAttempt(ipAddr, sysSource, "check email availability: taken email " + email);
             response.setContentType("text/plain");
