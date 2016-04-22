@@ -5,11 +5,13 @@
  */
 package controller;
 
+import dataAccessObject.ActivityLogDao;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.IPAddress;
 import model.UserAccountInfo;
 
 /**
@@ -36,6 +38,16 @@ public class RoleManageServlet extends HttpServlet {
          System.out.println("userID: " + Integer.parseInt(request.getParameter("userID")));
          System.out.println("roleChoice" + Integer.parseInt(request.getParameter("roleChoice")));
          Boolean isSuccess = user.roleUpdate(Integer.parseInt(request.getParameter("userID")), Integer.parseInt(request.getParameter("roleChoice")));
+         
+        //log role update activity
+        ActivityLogDao logDao = new ActivityLogDao();
+        IPAddress ipAddress = new IPAddress();        
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+        logDao.logUpdateActivity(ipAddr, sysSource, "role update", Integer.parseInt(request.getParameter("userID")));
+        
+        
          request.setAttribute("isSuccess", isSuccess);
           //forward server's request to jsp
         getServletContext().getRequestDispatcher("/roleManage.jsp").forward(request, response);  

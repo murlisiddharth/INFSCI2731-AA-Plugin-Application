@@ -6,6 +6,7 @@ package model;
  * @modified by Carol
  */
 
+import dataAccessObject.TimeStampDao;
 import dataAccessObject.UserDao;
 
 public class UserAccountInfo {
@@ -91,6 +92,11 @@ public class UserAccountInfo {
     public Boolean roleUpdate(int accountID, int roleID) {
        UserDao dao = new UserDao();
        Boolean res = dao.roleIDChange(accountID, roleID);
+       
+       //update timestamps associated with the user account
+        TimeStampDao timeStampDao = new TimeStampDao();
+        timeStampDao.updateTimestampOnProfileChange(accountID);
+        
        System.out.println("role change successful? " + res);
        return res;
     }
