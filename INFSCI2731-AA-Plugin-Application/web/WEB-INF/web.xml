@@ -4,6 +4,10 @@
         <servlet-name>Test</servlet-name>
         <servlet-class>controller.Test</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangeRole</servlet-name>
+        <servlet-class>controller.RoleManageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
         <url-pattern>/Test</url-pattern>
@@ -39,23 +43,23 @@
     <servlet-mapping>
         <servlet-name>AnswerQuestions</servlet-name>
         <url-pattern>/AnswerQuestions</url-pattern>
-    </servlet-mapping>        
+    </servlet-mapping>
     <servlet>
         <servlet-name>RegistrationServlet</servlet-name>
-        <servlet-class>controller.RegistrationServlet</servlet-class>       
+        <servlet-class>controller.RegistrationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegistrationServlet</servlet-name>
-        <url-pattern>/RegistrationServlet</url-pattern>       
+        <url-pattern>/RegistrationServlet</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>AuthenticationController</servlet-name>
         <servlet-class>controller.AuthenticationController</servlet-class>
-    </servlet>      
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticationController</servlet-name>
         <url-pattern>/AuthenticationController</url-pattern>
-    </servlet-mapping>   
+    </servlet-mapping>
     <servlet>
         <servlet-name>CheckEmailAvailability</servlet-name>
         <servlet-class>controller.CheckEmailAvailability</servlet-class>
@@ -71,6 +75,14 @@
     <servlet-mapping>
         <servlet-name>LogOut</servlet-name>
         <url-pattern>/LogOut</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RoleManageServlet</servlet-name>
+        <servlet-class>controller.RoleManageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RoleManageServlet</servlet-name>
+        <url-pattern>/RoleManageServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>
