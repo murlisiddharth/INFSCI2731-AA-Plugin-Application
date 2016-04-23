@@ -23,7 +23,7 @@
     //check whether the role ID of the user has priviledge for current page
     if(request.getSession().getAttribute("user") == null){
         //log no session activity
-        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on index.jsp");
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied to index.jsp");
             response.sendRedirect("login.jsp");
         }
         

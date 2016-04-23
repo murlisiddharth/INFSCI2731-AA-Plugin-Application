@@ -28,14 +28,14 @@
         if(!UserPool.contains(user.getAccess_role_id()))
         {
             //log access denied activity
-            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied on hostilelist.jsp", user.getId());
+            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied to hostilelist.jsp", user.getId());
             response.sendRedirect("index.jsp");
         }
          //log access successfully activity
-        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully on hostilelist.jsp", user.getId());
+        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully to hostilelist.jsp", user.getId());
     }else {
         //log no session activity
-        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on hostilelist.jsp");
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied to hostilelist.jsp");
             response.sendRedirect("login.jsp");
         }
         

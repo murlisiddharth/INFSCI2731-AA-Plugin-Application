@@ -27,14 +27,14 @@
         List<Integer> UserPool = accessControl.getRolebyPath("roleManage.jsp");
         if (!UserPool.contains(user.getAccess_role_id())) {
             //log access denied activity
-            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied on roleManage.jsp", user.getId());
+            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied to roleManage.jsp", user.getId());
             response.sendRedirect("index.jsp");
         }
         //log access successfully activity
-        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully on roleManage.jsp", user.getId());
+        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully to roleManage.jsp", user.getId());
     } else {
         //log no session activity
-        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on roleManage.jsp");
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied to roleManage.jsp");
         response.sendRedirect("login.jsp");
     }
 
@@ -100,13 +100,10 @@
 
                 <form class="form-inline" action="RoleManageServlet" method="post">
                     <div class="form-group">
-                        <label for="userID">UserID</label>
-                        <input name="userID" type="text" class="form-control"  placeholder="1" value="">
+                        <label for="userEmail">User Email</label>
+                        <input name="userEmail" id="userEmail" type="text" class="form-control"  placeholder="john@example.com" maxlength="254" onkeyup="checkUserEmail(); return false;" required>
                     </div>
-                    
-                    <!--super admin cannot change himself-->
-                   
-                    
+
                     <select name="roleChoice" class="form-control">
                         <option value="1">User</option>
                         <option value ="2">Administrator</option>
@@ -117,10 +114,15 @@
                 <div class="message">
                     <!--show message when change role successfully-->
                     <%
-                        if(request.getAttribute("message")!= null && !request.getAttribute("message").equals("")){    
-                               out.print(request.getAttribute("message"));
+                        String StatusSymbol = "";
+                        if ((request.getAttribute("isSuccess")) != null && (Boolean) request.getAttribute("isSuccess") == true) {
+                            StatusSymbol = "Change the role successfully!";
+                        }else if((request.getAttribute("userNotExist")) != null && (Boolean) request.getAttribute("userNotExist") == true) {
+                            StatusSymbol = "User does not exist, please try again!";
                         }
-                    %> 
+                    %>
+                    <%=StatusSymbol %> 
+                    <div id="errEmailMsg" style="color: red;"></div>
                    
                 </div>
             </div><!--management area-->
@@ -141,6 +143,7 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
         </script>
+        <script src="js/formCheck.js" type="text/javascript"></script>
 
     </body>
 </html>

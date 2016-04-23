@@ -15,7 +15,7 @@
     String ipAddr = ipAddress.getClientIpAddress(request);
     if(session.getAttribute("resetPasswordObj") == null) {
         //log accesss attempt to this page without session attribute resetPasswordObj set
-        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute resetPasswordObj set up, access denied on qustions.jsp");
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute resetPasswordObj set up, access denied to qustions.jsp");
         
         response.sendRedirect("login.jsp");
     }

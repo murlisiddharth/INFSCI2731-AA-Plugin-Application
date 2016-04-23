@@ -3,6 +3,7 @@
     Created on : Apr 20, 2016, 6:05:11 PM
     Author     : shaoNPC
 --%>
+<%@page import="model.IPAddress"%>
 <%@page import="java.util.List"%>
 <%@page import="dataAccessObject.RBACDao"%>
 <%@page import="model.UserAccountInfo"%>
@@ -11,14 +12,27 @@
 <%@page import="java.sql.ResultSet"%>
 
 <%
+    //log RBAC activity
+        ActivityLogDao logDao = new ActivityLogDao();
+        IPAddress ipAddress = new IPAddress();        
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
+        
     if (request.getSession().getAttribute("user") != null) {
         UserAccountInfo user = (UserAccountInfo) session.getAttribute("user");
         RBACDao accessControl = new RBACDao();
         List<Integer> UserPool = accessControl.getRolebyPath("activitylog.jsp");
         if (!UserPool.contains(user.getAccess_role_id())) {
+            //log access denied activity
+            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied to activitylog.jsp", user.getId());
             response.sendRedirect("index.jsp");
         }
+        //log access successfully activity
+        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully to activitylog.jsp", user.getId());
     } else {
+        //log no session activity
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied to activitylog.jsp");
         response.sendRedirect("login.jsp");
     }
 %>

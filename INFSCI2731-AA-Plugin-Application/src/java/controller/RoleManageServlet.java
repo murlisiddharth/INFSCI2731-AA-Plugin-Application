@@ -6,6 +6,7 @@
 package controller;
 
 import dataAccessObject.ActivityLogDao;
+import dataAccessObject.UserDao;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,39 +33,35 @@ public class RoleManageServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        System.out.println("==in role manage servlet==");
-        
-        String message = "";
-        Boolean isSuccess = false;
-        
-         int userID = Integer.parseInt(request.getParameter("userID"));
-         System.out.println("userID: " + userID );
-         System.out.println("roleChoice" + Integer.parseInt(request.getParameter("roleChoice")));
-         
-         UserAccountInfo user = new UserAccountInfo();
-        user =(UserAccountInfo) request.getSession().getAttribute("user");
-        int currentID = user.getId();
-        
-        if(currentID == userID){
-            message = "You cannot change your own role!";
-        }else{
-            isSuccess= user.roleUpdate(Integer.parseInt(request.getParameter("userID")), Integer.parseInt(request.getParameter("roleChoice")));
-            if(isSuccess == true){
-                message = "Congratulations! You cange the role successfully!";
-            }else{
-                message = "Sorry! You didn't change the role successfully!";
-            }
-        }
-        request.setAttribute("message", message);
-       
-         
-        //log role update activity
+         //log role update activity
         ActivityLogDao logDao = new ActivityLogDao();
         IPAddress ipAddress = new IPAddress();        
         //get client ip addr and request URI for activity log
         String sysSource = request.getRequestURI();
         String ipAddr = ipAddress.getClientIpAddress(request);
-        logDao.logUpdateActivity(ipAddr, sysSource, "role update", Integer.parseInt(request.getParameter("userID")));
+        
+        
+        System.out.println("==in role manage servlet==");
+         
+        UserAccountInfo user = new UserAccountInfo();
+         System.out.println("userEmail: " +request.getParameter("userEmail"));
+         System.out.println("roleChoice" + Integer.parseInt(request.getParameter("roleChoice")));
+         
+         String email = request.getParameter("userEmail");
+         UserDao userDao = new UserDao();
+         int id = userDao.getUserIDByEmail(email);
+         if(id > 0) {
+             //user exist
+            Boolean isSuccess = user.roleUpdate(id, Integer.parseInt(request.getParameter("roleChoice")));
+            logDao.logUpdateActivity(ipAddr, sysSource, "role update", id);
+            request.setAttribute("isSuccess", isSuccess);   
+                       
+         }else if(id == 0) {
+             //user does not exist
+            logDao.logUpdateActivity(ipAddr, sysSource, "role update failed: user doesn't exist", id);
+            request.setAttribute("userNotExist", true);
+         }
+         
         
           //forward server's request to jsp
         getServletContext().getRequestDispatcher("/roleManage.jsp").forward(request, response);  

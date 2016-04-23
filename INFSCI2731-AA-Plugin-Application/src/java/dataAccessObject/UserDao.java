@@ -116,6 +116,44 @@ public class UserDao {
           return false;
         } 
     }
-        
+    
+    public int checkIfEmailExist(String email) {
+        try{   
+            sql = "SELECT COUNT(*) AS ROWCOUNT FROM INFSCI2731.account_info WHERE email_addr = ? ";
+            PreparedStatement ps = connection.prepareStatement(sql);  
+            ps.setString(1,email);    
+            rs = ps.executeQuery();
+
+            //check if query returns one valid result 
+            if(rs.next())
+                return rs.getInt("ROWCOUNT");
+            else
+                return 0;
+
+        }catch (Exception e) {
+                System.out.println(e.getMessage()) ;
+                return -1;
+        } 
+    }
+    
+    public int getUserIDByEmail(String email) {
+        try{   
+            sql = "SELECT id FROM INFSCI2731.account_info WHERE email_addr = ? ";
+            PreparedStatement ps = connection.prepareStatement(sql);  
+            ps.setString(1,email);    
+            rs = ps.executeQuery();
+
+            //check if query returns one valid result 
+            if(rs.next())
+                return rs.getInt("id");
+            else
+                return 0;
+
+        }catch (Exception e) {
+                System.out.println(e.getMessage()) ;
+                return -1;
+        } 
+    }
+    
 }
 

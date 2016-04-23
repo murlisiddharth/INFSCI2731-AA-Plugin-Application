@@ -84,6 +84,14 @@
         <servlet-name>RoleManageServlet</servlet-name>
         <url-pattern>/RoleManageServlet</url-pattern>
     </servlet-mapping>
+        <servlet>
+        <servlet-name>Hostile</servlet-name>
+        <servlet-class>controller.Hostile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Hostile</servlet-name>
+        <url-pattern>/Hostile</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>
     </session-config>
