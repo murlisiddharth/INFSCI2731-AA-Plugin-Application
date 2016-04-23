@@ -31,12 +31,13 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
         
         <style>
-            .container { width:100%;}
-            table { border-collapse:collapse; padding-bottom:1em; }
-            tr.columnname { border-bottom:1px #000 solid; }
-            tr.columnname td { text-align:center; }
-            td { border: 1px #000 solid; padding:0 1em 0 1em; white-space:nowrap; }
-            td.center { text-align:center; }
+            .container.table-div { width:100%;}
+            .table { display:table; border-collapse:collapse; padding-bottom:1em; }
+            .table-row { display:table-row; }
+            .table-row.columnname { border-bottom:1px #000 solid; }
+            .table-row.columnname .table-cell { text-align:center; }
+            .table-cell { display:table-cell; border: 1px #000 solid; padding:0 1em 0 1em; white-space:nowrap; }
+            .table-cell.center { text-align:center; }
             .header{margin-top:70px}
         </style>
         <title>Activity Log</title>
@@ -82,7 +83,7 @@
         
         
         
-        <div class="container">
+        <div class="container table-div">
             <div class="header">
             <h1>Activity Log</h1>
             </div>
@@ -157,31 +158,31 @@
                     <a type="button" href="#" id="btnSearchLog" class="btn btn-default" onclick="resetLog();">Reset</a>
                 </div>
             </div>
-            <table class="data-table">
-                <tr class="columnname">
+            <div class="table">
+                <div class="table-row columnname">
             <%
                     for(int i = 1; i < rsmd.getColumnCount() + 1; i++) {
                         %>
-                        <td><%=rsmd.getColumnName(i)%></td>
+                        <div class='table-cell'><%=rsmd.getColumnName(i)%></div>
                         <%
                     }
             %>
 
-                </tr>
+                </div>
             <%
                     while(rs.next()) {
 
             %>
-                        <tr>
-                            <td class="center"><%=rs.getInt("id")%></td>
-                            <td><%=rs.getString("ip_addr")%></td>
-                            <td><%=rs.getString("system_source")%></td>
-                            <td class="center"><%=rs.getInt("activity_count")%></td>
-                            <td><%=rs.getString("description")%></td>
-                            <td class="center"><%=rs.getInt("account_info_id")%></td>
-                            <td><%=rs.getTimestamp("create_time")%></td>
-                            <td><%=rs.getTimestamp("update_time")%></td>
-                        </tr>
+                        <div style="display:table-row;">
+                            <div class="table-cell center"><%=rs.getInt("id")%></div>
+                            <div class="table-cell"><%=rs.getString("ip_addr")%></div>
+                            <div class="table-cell"><%=rs.getString("system_source")%></div>
+                            <div class="table-cell center"><%=rs.getInt("activity_count")%></div>
+                            <div class="table-cell"><%=rs.getString("description")%></div>
+                            <div class="table-cell center"><%=rs.getInt("account_info_id")%></div>
+                            <div class="table-cell"><%=rs.getTimestamp("create_time")%></div>
+                            <div class="table-cell"><%=rs.getTimestamp("update_time")%></div>
+                        </div>
             <%
 
                     }
@@ -195,7 +196,7 @@
                 <%
             }
             %>
-            </table>
+            </div>
             <!-- FOOTER -->
             <br/>
 	<div class="container marketing">
