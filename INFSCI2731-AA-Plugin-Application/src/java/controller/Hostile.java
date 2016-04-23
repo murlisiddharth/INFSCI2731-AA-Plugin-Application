@@ -78,61 +78,62 @@ public class Hostile extends HttpServlet {
             int count2 = Integer.parseInt(countString);
 
             hostileDao.WriteHostileToDB(count2, IPaddress, SystemValue);
+             response.sendRedirect("activitylog.jsp");
 
 
 
         }
 
-        String action = request.getParameter("action");
-
-        boolean i2 = action.equalsIgnoreCase("getHostile");
-
-        
-        if (action.equalsIgnoreCase("getHostile")) {
-            HostileList = hostileDao.GetHostileFromLogDB();
-
-            response.setContentType("text/html;charset=UTF-8");
-            try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<!DOCTYPE html>");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>Hostile entry list</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<h1>TEST</h1>");
-
-                for (HostileStructure tempHostile : HostileList) {
-
-                    out.println("<p>IPAddress: " + tempHostile.getIPAddress() + "</p>");
-                    out.println("<p>System Source: " + tempHostile.getSYSTEM_SOURCE() + "</p>");
-
-                }
-
-                out.println("</body>");
-                out.println("</html>");
-
-            }
-        }
+//       String action = request.getParameter("action");
+//
+////        boolean i2 = action.equalsIgnoreCase("getHostile");
+//
+//        
+//        if (action.equalsIgnoreCase("getHostile")) {
+//            HostileList = hostileDao.GetHostileFromLogDB();
+//
+//            response.setContentType("text/html;charset=UTF-8");
+////            try (PrintWriter out = response.getWriter()) {
+////                /* TODO output your page here. You may use following sample code. */
+////                out.println("<!DOCTYPE html>");
+////                out.println("<html>");
+////                out.println("<head>");
+////                out.println("<title>Hostile entry list</title>");
+////                out.println("</head>");
+////                out.println("<body>");
+////                out.println("<h1>TEST</h1>");
+////
+////                for (HostileStructure tempHostile : HostileList) {
+////
+////                    out.println("<p>IPAddress: " + tempHostile.getIPAddress() + "</p>");
+////                    out.println("<p>System Source: " + tempHostile.getSYSTEM_SOURCE() + "</p>");
+////
+////                }
+////
+////                out.println("</body>");
+////                out.println("</html>");
+////
+////            }
+//        }
 
     }
 
     public void redirectHostile(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Hostile Redirect</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Hostile Redirect Example Page</h1>");
-            out.println("</body>");
-            out.println("</html>");
-
-        }
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Hostile Redirect</title>");
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Hostile Redirect Example Page</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//
+//        }
 
     }
 

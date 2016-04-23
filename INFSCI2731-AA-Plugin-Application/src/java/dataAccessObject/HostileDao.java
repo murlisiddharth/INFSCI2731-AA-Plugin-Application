@@ -110,7 +110,7 @@ public class HostileDao {
             preparedStatement.setString(2, SYSTEM_SOURCE);
             preparedStatement.setInt(3, countAttempts);
             preparedStatement.setLong(4, timeStampsID);
-            preparedStatement.setString(5, "");
+            preparedStatement.setString(5, "[Hostile]");
             preparedStatement.setInt(6, -1);
             preparedStatement.executeUpdate();
 
