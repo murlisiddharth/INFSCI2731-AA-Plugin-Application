@@ -6,14 +6,24 @@
 --%>
 
 
+<%@page import="model.IPAddress"%>
+<%@page import="dataAccessObject.ActivityLogDao"%>
 <%@page import="model.UserAccountInfo"%>
 <%@page import="java.util.List"%>
 <%@ page import="controller.RBAC" %> 
 <%@ page import="dataAccessObject.RBACDao" %> 
 
 <%
+    //log access denied activity
+        ActivityLogDao logDao = new ActivityLogDao();
+        IPAddress ipAddress = new IPAddress();        
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
     //check whether the role ID of the user has priviledge for current page
     if(request.getSession().getAttribute("user") == null){
+        //log no session activity
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on index.jsp");
             response.sendRedirect("login.jsp");
         }
         

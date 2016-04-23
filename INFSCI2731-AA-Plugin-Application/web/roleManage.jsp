@@ -6,21 +6,35 @@
 
 
 
+<%@page import="model.IPAddress"%>
+<%@page import="dataAccessObject.ActivityLogDao"%>
 <%@page import="model.UserAccountInfo"%>
 <%@page import="java.util.List"%>
 <%@ page import="controller.RBAC" %> 
 <%@ page import="dataAccessObject.RBACDao" %> 
 
 <%
+    //log RBAC activity
+        ActivityLogDao logDao = new ActivityLogDao();
+        IPAddress ipAddress = new IPAddress();        
+        //get client ip addr and request URI for activity log
+        String sysSource = request.getRequestURI();
+        String ipAddr = ipAddress.getClientIpAddress(request);
     //check whether the role ID of the user has priviledge for current page
     if (request.getSession().getAttribute("user") != null) {
         UserAccountInfo user = (UserAccountInfo) session.getAttribute("user");
         RBACDao accessControl = new RBACDao();
         List<Integer> UserPool = accessControl.getRolebyPath("roleManage.jsp");
         if (!UserPool.contains(user.getAccess_role_id())) {
+            //log access denied activity
+            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied on roleManage.jsp", user.getId());
             response.sendRedirect("index.jsp");
         }
+        //log access successfully activity
+        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully on roleManage.jsp", user.getId());
     } else {
+        //log no session activity
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on roleManage.jsp");
         response.sendRedirect("login.jsp");
     }
 

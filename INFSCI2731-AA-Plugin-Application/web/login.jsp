@@ -91,7 +91,13 @@
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 			    	if (xhttp.readyState == 4 && xhttp.status == 200) {
-			    		document.getElementById("wrongCrendials").innerHTML = xhttp.responseText;
+                                    var response = xhttp.responseText;
+                                    if( response.toString()==="Success"){
+                                        
+                                            window.location.href("index.jsp");
+                                    }else{
+                                        document.getElementById("wrongCrendials").innerHTML = response;   
+                                    }  		
 			    	}
 			  	};
 			  	var username = document.forms["loginForm"]["username"].value;
