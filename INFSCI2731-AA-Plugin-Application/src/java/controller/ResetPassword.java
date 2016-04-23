@@ -16,8 +16,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.IPAddress;
 import model.Nonce;
+import model.UserAccountInfo;
 
 /**
  *
@@ -37,6 +39,7 @@ public class ResetPassword extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        HttpSession session = request.getSession();
         String nonce = request.getParameter("token");
         boolean passwordMismatch = Boolean.parseBoolean(request.getParameter("pmm"));
         boolean passwordUsedBefore = Boolean.parseBoolean(request.getParameter("pub"));
@@ -48,13 +51,21 @@ public class ResetPassword extends HttpServlet {
         //get client ip addr and request URI for activity log
         String sysSource = request.getRequestURI();
         String ipAddr = ipAddress.getClientIpAddress(request);
-
+        
+        
+        UserAccountInfo loginUser = null;
+        if (session.getAttribute("user") != null) {
+            loginUser = (UserAccountInfo)session.getAttribute("user");
+        }
+        
         
         if (nonce != null && !nonce.equals("")) {
             timestamp = nonceDao.getNonceCreatetime(nonce);
             if (CheckDateTime.isValid(timestamp)) {
                 printPasswordForm(request, response, nonce, passwordMismatch, passwordUsedBefore);
             }
+        } else if (loginUser != null) {
+            printPasswordForm(request, response, "userLogged", passwordMismatch, passwordUsedBefore);
         }
         
         //log activity of expired link on reset pw, and update previoud reset pw record description
@@ -89,10 +100,10 @@ public class ResetPassword extends HttpServlet {
             if (passwordUsedBefore) {
                 out.println("<p>Choose a password you haven't previously used with this account.</p>");
             }
-            out.println("<input type=\"hidden\" name=\"token\" value=\"" + nonce +  " \">");
-            out.println("Enter your new password: <input name=\"password\" type=\"password\" autofocus/>");
+            out.println("<input type=\"hidden\" name=\"token\" value=\"" + nonce +  "\">");
+            out.println("Enter your new password: <input name=\"password\" type=\"password\" autofocus pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\" title=\"Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters\"/>");
             out.println("<br/><br/>");
-            out.println("Confirm your new password: <input name=\"confirm_password\" type=\"password\"/><br/><br/><input type=\"submit\"></form>");
+            out.println("Confirm your new password: <input name=\"confirm_password\" type=\"password\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\" title=\"Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters\"/><br/><br/><input type=\"submit\"></form>");
             out.println("</body>");
             out.println("</html>");
         }
