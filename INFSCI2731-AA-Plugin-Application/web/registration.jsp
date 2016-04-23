@@ -3,6 +3,10 @@
     Created on : Apr 11, 2016, 11:10:07 AM
     Author     : Hanwei
 --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.sql.ResultSetMetaData"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="dataAccessObject.SecurityQuestionDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -53,7 +57,18 @@
 
 	<body>
 		 
-
+            <%
+                SecurityQuestionDao sd = new SecurityQuestionDao();
+                ResultSet rs = sd.getSecurityQuestions();
+                
+                ArrayList<Integer> seqIds = new ArrayList<>();
+                ArrayList<String> seqStrings = new ArrayList<>();
+                
+                while(rs.next()){
+                    seqIds.add(rs.getInt("id"));
+                    seqStrings.add(rs.getString("question"));
+                }
+            %>
 		<!-- container -->
 	    <div class="container">
 			<!--inner container-->
@@ -108,16 +123,13 @@
 					<div>
 					<label class="control-label">Security Question 1</label>
 						<select id="Question1" name="secQue1" class="form-control" onblur="checkSecQuestionNotSame(); return false;" required>
-							<option value="1">What is the name of your favorite book as a child?</option>
-							<option value="2">What is the name of your 1st grade teacher?</option>
-							<option value="3">What was the color of the first car you owned?</option>
-							<option value="4">What was the name of the first pet you owned?</option>
-							<option value="5">What is the name of the city where you got lost?</option>
-							<option value="6">Where were you New Year's 2000?</option>
-							<option value="7">Who was your childhood role model?</option>
-							<option value="8">When you were young, what did you want to be be when you grew up?</option>
-							<option value="9">What is the street name you lived in as a child?</option>
-							<option value="10">In what town/city did your mother and father meet?</option>
+                                                <%
+                                                    for(int i = 0; i < seqIds.size(); i++) {
+                                                        %>
+                                                        <option value="<%=seqIds.get(i)%>"><%=seqStrings.get(i)%></option>
+                                                        <%
+                                                    }
+                                                %>
 						</select>
 					</div>
 
@@ -133,16 +145,13 @@
 					<div class="dropdown">
 					<label class="control-label">Security Question 2</label>
 						<select id="Question2" name="secQue2" class="form-control" onblur="checkSecQuestionNotSame(); return false;" required>
-							<option value="1">What is the name of your favorite book as a child?</option>
-							<option value="2">What is the name of your 1st grade teacher?</option>
-							<option value="3">What was the color of the first car you owned?</option>
-							<option value="4">What was the name of the first pet you owned?</option>
-							<option value="5">What is the name of the city where you got lost?</option>
-							<option value="6">Where were you New Year's 2000?</option>
-							<option value="7">Who was your childhood role model?</option>
-							<option value="8">When you were young, what did you want to be be when you grew up?</option>
-							<option value="9">What is the street name you lived in as a child?</option>
-							<option value="10">In what town/city did your mother and father meet?</option>
+							<%
+                                                    for(int i = 0; i < seqIds.size(); i++) {
+                                                        %>
+                                                        <option value="<%=seqIds.get(i)%>"><%=seqStrings.get(i)%></option>
+                                                        <%
+                                                    }
+                                                %>
 						</select>
 					</div>
 					
@@ -157,16 +166,13 @@
 					<div class="dropdown">
 					<label class="control-label">Security Question 3</label>
 						<select id="Question3" name="secQue3" class="form-control" onblur="checkSecQuestionNotSame(); return false;" required>
-							<option value="1">What is the name of your favorite book as a child?</option>
-							<option value="2">What is the name of your 1st grade teacher?</option>
-							<option value="3">What was the color of the first car you owned?</option>
-							<option value="4">What was the name of the first pet you owned?</option>
-							<option value="5">What is the name of the city where you got lost?</option>
-							<option value="6">Where were you New Year's 2000?</option>
-							<option value="7">Who was your childhood role model?</option>
-							<option value="8">When you were young, what did you want to be be when you grew up?</option>
-							<option value="9">What is the street name you lived in as a child?</option>
-							<option value="10">In what town/city did your mother and father meet?</option>
+							<%
+                                                    for(int i = 0; i < seqIds.size(); i++) {
+                                                        %>
+                                                        <option value="<%=seqIds.get(i)%>"><%=seqStrings.get(i)%></option>
+                                                        <%
+                                                    }
+                                                %>
 						</select>
 					</div>
 
