@@ -42,25 +42,42 @@ public class RoleManageServlet extends HttpServlet {
         
         
         System.out.println("==in role manage servlet==");
-         
-        UserAccountInfo user = new UserAccountInfo();
+        
+        String message = "";
+        Boolean isSuccess = false;
+        
          System.out.println("userEmail: " +request.getParameter("userEmail"));
          System.out.println("roleChoice" + Integer.parseInt(request.getParameter("roleChoice")));
          
+         //get the id of current user from session
+         UserAccountInfo user = new UserAccountInfo();
+         user =(UserAccountInfo) request.getSession().getAttribute("user");
+         int currentID = user.getId();
+         
+         //get the id for whose role is going to change
          String email = request.getParameter("userEmail");
          UserDao userDao = new UserDao();
          int id = userDao.getUserIDByEmail(email);
-         if(id > 0) {
+        
+         //check whether the current user is changing his own role
+         if(currentID == id){
+            message = "You cannot change your own role!";
+         }else if(id > 0) {
              //user exist
-            Boolean isSuccess = user.roleUpdate(id, Integer.parseInt(request.getParameter("roleChoice")));
+            isSuccess = user.roleUpdate(id, Integer.parseInt(request.getParameter("roleChoice")));
             logDao.logUpdateActivity(ipAddr, sysSource, "role update", id);
-            request.setAttribute("isSuccess", isSuccess);   
-                       
+            if(isSuccess == true){
+                message = "Congratulations! You cange the role successfully!";
+            }else{
+                message = "Sorry! You didn't change the role successfully!";
+            }
          }else if(id == 0) {
              //user does not exist
             logDao.logUpdateActivity(ipAddr, sysSource, "role update failed: user doesn't exist", id);
-            request.setAttribute("userNotExist", true);
+            message ="Sorry! The user dosen't exist";
          }
+         
+         request.setAttribute("message", message);
          
         
           //forward server's request to jsp

@@ -114,14 +114,10 @@
                 <div class="message">
                     <!--show message when change role successfully-->
                     <%
-                        String StatusSymbol = "";
-                        if ((request.getAttribute("isSuccess")) != null && (Boolean) request.getAttribute("isSuccess") == true) {
-                            StatusSymbol = "Change the role successfully!";
-                        }else if((request.getAttribute("userNotExist")) != null && (Boolean) request.getAttribute("userNotExist") == true) {
-                            StatusSymbol = "User does not exist, please try again!";
+                        if(request.getAttribute("message")!= null && !request.getAttribute("message").equals("")){    
+                               out.print(request.getAttribute("message"));
                         }
                     %>
-                    <%=StatusSymbol %> 
                     <div id="errEmailMsg" style="color: red;"></div>
                    
                 </div>
