@@ -61,8 +61,8 @@
                 SecurityQuestionDao sd = new SecurityQuestionDao();
                 ResultSet rs = sd.getSecurityQuestions();
                 
-                ArrayList<Integer> seqIds = new ArrayList<>();
-                ArrayList<String> seqStrings = new ArrayList<>();
+                ArrayList seqIds = new ArrayList();
+                ArrayList seqStrings = new ArrayList();
                 
                 while(rs.next()){
                     seqIds.add(rs.getInt("id"));
