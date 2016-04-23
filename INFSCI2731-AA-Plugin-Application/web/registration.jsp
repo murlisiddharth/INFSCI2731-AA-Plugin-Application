@@ -85,34 +85,34 @@
 		    			<!--firstname-->
 			    		<div class="col-md-6 input-group" style="padding-right:2px">
 				        	<span class="input-group-addon" id="firstName">First Name</span>
-					        <input type="text" name="firstname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="carol"/>
+					        <input type="text" name="firstname" class="form-control" placeholder="" aria-describedby="basic-addon1" value=""/>
 				      	</div>
 						
 					<!--lastname-->
 				      	<div class="col-md-6 input-group" style="padding-left:2px">
 				        	<span class="input-group-addon" id="lastName">Last Name</span>
-					        <input type="text" name="lastname" class="form-control" placeholder="" aria-describedby="basic-addon1" value="cheng"/>
+					        <input type="text" name="lastname" class="form-control" placeholder="" aria-describedby="basic-addon1" value=""/>
 				      	</div>
 				</div> <!-- row -->
 
 			      	<!--email-->
 			      	<div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Email</span>
-                                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="john@gmail.com" autofocus aria-describedby="basic-addon1" value="carolcheng124@gmail.com" maxlength="254" onkeyup="checkEmail(); return false;" required>
+                                        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="john@gmail.com" autofocus aria-describedby="basic-addon1" value="" maxlength="254" onkeyup="checkEmail(); return false;" required>
 					</div>
                                         <div id="emailMsg"></div>
 
 				<!--password-->
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon1">Password</span>
-					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"  value="111" onblur="checkStrongOfPassword(); return false;" required>
+					<input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"  value="" onblur="checkStrongOfPassword(); return false;" required>
 				</div>
                                 <div id="errStrongLevel" class="errMsg"></div>
                                 
                                 <!--upgrade role-->
                                 <div class="input-group">
 					<span class="input-group-addon" id="basic-addon1">Re-type Password</span>
-					<input type="password" id="inputRetypePassword" name="retypepassword" class="form-control" placeholder="Password" value="111" onblur="comfirmRetypePassword(); return false;" required>
+					<input type="password" id="inputRetypePassword" name="retypepassword" class="form-control" placeholder="Password" value="" onblur="comfirmRetypePassword(); return false;" required>
 				</div>
                                         <div id="errRetypePw" class="errMsg"></div>
                                         
@@ -136,7 +136,7 @@
 					<!-- answer 1-->
 					<div class="form-group">
 						<label class="control-label">Answer 1:</label>
-						<input type="text" name="answer1" class="form-control"  required placeholder="Input your answer for question 1" value="1">
+						<input type="text" name="answer1" class="form-control"  required placeholder="Input your answer for question 1" value="">
 					</div>
 
 
@@ -158,7 +158,7 @@
 					<!-- answer 2-->
 					<div class="form-group">
 						<label class="control-label">Answer 2:</label>
-						<input type="text" name="answer2" class="form-control" required placeholder="Input your answer for question 2" value="2">
+						<input type="text" name="answer2" class="form-control" required placeholder="Input your answer for question 2" value="">
 					</div>
 
 					
@@ -179,7 +179,7 @@
 					<!-- answer 3-->
 					<div class="form-group">
 						<label class="control-label">Answer 3:</label>
-						<input type="text" name="answer3" class="form-control"  required placeholder="Input your answer for question 3" value="3"  required>
+						<input type="text" name="answer3" class="form-control"  required placeholder="Input your answer for question 3" value=""  required>
 					</div>
                                         
                                         <div id="errQuestionChooseSame" class="errMsg"></div>
