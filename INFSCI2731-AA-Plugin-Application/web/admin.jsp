@@ -26,14 +26,14 @@
          List<Integer> UserPool = accessControl.getRolebyPath("admin.jsp");
         if(!UserPool.contains(user.getAccess_role_id()))
         {//log access denied activity
-            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied on admin.jsp", user.getId());
+            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied to admin.jsp", user.getId());
             response.sendRedirect("index.jsp");
         }
         //log access successfully activity
-        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully on admin.jsp", user.getId());
+        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully to admin.jsp", user.getId());
     }else {
         //log no session activity
-        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on admin.jsp");
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied to admin.jsp");
             response.sendRedirect("login.jsp");
         }
         

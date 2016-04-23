@@ -7,6 +7,7 @@ package controller;
 
 import DbConnect.DbConnection;
 import dataAccessObject.ActivityLogDao;
+import dataAccessObject.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -37,30 +38,11 @@ public class CheckEmailAvailability extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       //connect to database and select the record
-       Connection connection = DbConnection.getConnection();
-       ResultSet rs = null;
               
-       String sql = "";
        String email = request.getParameter("email").trim();
-       int count;
-
-       try{   
-            sql = "SELECT COUNT(*) AS ROWCOUNT FROM INFSCI2731.account_info WHERE email_addr = ? ";
-            PreparedStatement ps = connection.prepareStatement(sql);  
-            ps.setString(1,email);    
-            rs = ps.executeQuery();
-
-            //check if query returns one valid result 
-            if(rs.next())
-                count= rs.getInt("ROWCOUNT");
-            else
-                count = 0;
-
-        }catch (Exception e) {
-                System.out.println(e.getMessage()) ;
-                count = -1;
-        } 
+       
+       UserDao userDao = new UserDao();
+       int count = userDao.checkIfEmailExist(email);
        
        //get client ip addr and request URI for activity log
         String sysSource = request.getRequestURI();

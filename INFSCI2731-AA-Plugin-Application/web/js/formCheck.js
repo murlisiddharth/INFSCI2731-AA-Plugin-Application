@@ -11,6 +11,23 @@ var checkSecQuestionNotSame_true=0;
 var checkStrongOfPassword_true=0;
 var comfirmRetypePassword_true=0;
 
+function checkUserEmail() {
+    var email = $.trim($("#userEmail").val());
+    $("#errEmailMsg").text("");
+    $("#userEmail").parent().removeClass("has-error");
+    
+    if (email.length >= 1) {
+        var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!pattern.test(email)) {
+            $("#errEmailMsg").html("Please enter a valid email address.");           
+            $("#userEmail").parent().addClass("has-error");
+            
+        } 
+    } else {
+        $("#userEmail").parent().addClass("has-error");       
+        $("#errEmailMsg").html("Email address cannot be empty.");
+    }
+}
 
 function checkEmail() {
     var email = $.trim($("#inputEmail").val());

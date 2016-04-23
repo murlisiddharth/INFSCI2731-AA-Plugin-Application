@@ -28,14 +28,14 @@
         if(!UserPool.contains(user.getAccess_role_id()))
         {
             //log access denied activity
-            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied on RBACtest.jsp", user.getId());
+            logDao.logRBPCheck(ipAddr, sysSource, "RBAC access denied to RBACtest.jsp", user.getId());
             response.sendRedirect("index.jsp");
         }
         //log access successfully activity
-        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully on RBACtest.jsp", user.getId());
+        logDao.logRBPCheck(ipAddr, sysSource, "RBAC access successfully to RBACtest.jsp", user.getId());
     }else {
         //log no session activity
-        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied on RBACtest.jsp");
+        logDao.logAccessAttempt(ipAddr, sysSource, "no session attribute user set up, access denied to RBACtest.jsp");
             response.sendRedirect("login.jsp");
         }
         
