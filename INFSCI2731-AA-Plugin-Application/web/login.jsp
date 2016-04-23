@@ -94,7 +94,7 @@
                                     var response = xhttp.responseText;
                                     if( response.toString()==="Success"){
                                         
-                                            window.location.href("index.jsp");
+                                            window.location = "index.jsp";
                                     }else{
                                         document.getElementById("wrongCrendials").innerHTML = response;   
                                     }  		
