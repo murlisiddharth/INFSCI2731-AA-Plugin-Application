@@ -139,5 +139,25 @@ public class SecurityQuestionDao {
                 return "error";
         }    
     }
+    
+    public ResultSet getSecurityQuestions() {
+         try{
+            //prepare and execute search query
+            sql = "SELECT * FROM INFSCI2731.security_question"; 
+            PreparedStatement ps = connection.prepareStatement(sql);            
+                rs = ps.executeQuery() ;
+
+            if (rs.next()) { 
+                rs.beforeFirst();
+                return rs;                    
+            }else
+                return null;
+         
+        } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+        }   
+        
+    }
 
 }
