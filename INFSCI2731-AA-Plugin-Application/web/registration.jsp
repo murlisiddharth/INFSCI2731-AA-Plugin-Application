@@ -59,7 +59,7 @@
 			<!--inner container-->
 	    	<div class="jumbotron col-md-8 col-md-offset-2">
 
-		    	<h3 class="form-signin-heading">Sign Up</h3>
+		    	<h3 class="form-signin-heading">Registration</h3>
 		    	<hr>
 	    		<!-- <div class="col-md-6 col-md-offset-3"style="padding:0"> -->
 	    		<!--form-->

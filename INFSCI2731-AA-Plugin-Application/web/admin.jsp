@@ -54,6 +54,7 @@
           <ul class="nav navbar-nav">
             <li><a href="index.jsp">Home</a></li>
             <li><a href="hostilelist.jsp">Hostile</a></li>
+            <li><a href="activitylog.jsp">Activity Log</a></li>
             <li><a href="roleManage.jsp">Role Management</a></li>
             <li class="active"><a href="admin.jsp">Admin Page</a></li>
             <li><a href="RBACtest.jsp">RBAC Test</a></li>
