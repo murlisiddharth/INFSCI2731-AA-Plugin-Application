@@ -29,6 +29,7 @@ public class SavePasswordDao {
         //update old pw timestamps
         TimeStampDao timeStampDao = new TimeStampDao();
         timeStampDao.updateOldPasswordTimestamp(account_info_id);
+        timeStampDao.updateTimestampOnProfileChange(account_info_id);
         deleteOldPasswords(account_info_id);
         return setNewPassword(account_info_id, password);
     }

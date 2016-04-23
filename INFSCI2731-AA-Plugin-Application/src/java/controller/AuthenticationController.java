@@ -77,13 +77,12 @@ public class AuthenticationController extends HttpServlet {
             //by Hanwei
             UserDao dao = new UserDao();
             UserAccountInfo loginUser = new UserAccountInfo();
-           loginUser = dao.retrieveUserInfo(account_id);
-           System.out.println("==retrieve user email by account_id: " + loginUser.getEmailAddress());
+            loginUser = dao.retrieveUserInfo(account_id);
+            System.out.println("==retrieve user email by account_id: " + loginUser.getEmailAddress());
             session.setAttribute("user", loginUser);
+            resp.setContentType("text/xml");  
+            out.write("Success");
             //end 
-            
-            RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
-            rd.forward(req, resp);
 
         } else {
             //log failed login attempt according to the returned value of validateUser                    
@@ -103,6 +102,7 @@ public class AuthenticationController extends HttpServlet {
 
             // authentication failed
             out.println("Username Or Password Is Incorrect");
+            
             if (lastAttempt == null) {
                 lastAttempt = 1; //if first failed login attempt
                 session.setAttribute("lastAttempt", lastAttempt);
