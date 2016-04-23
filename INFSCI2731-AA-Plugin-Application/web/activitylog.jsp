@@ -3,28 +3,89 @@
     Created on : Apr 20, 2016, 6:05:11 PM
     Author     : shaoNPC
 --%>
+<%@page import="java.util.List"%>
+<%@page import="dataAccessObject.RBACDao"%>
+<%@page import="model.UserAccountInfo"%>
 <%@page import="dataAccessObject.ActivityLogDao"%>
 <%@page import="java.sql.ResultSetMetaData"%>
 <%@page import="java.sql.ResultSet"%>
+
+<%
+    if (request.getSession().getAttribute("user") != null) {
+        UserAccountInfo user = (UserAccountInfo) session.getAttribute("user");
+        RBACDao accessControl = new RBACDao();
+        List<Integer> UserPool = accessControl.getRolebyPath("activitylog.jsp");
+        if (!UserPool.contains(user.getAccess_role_id())) {
+            response.sendRedirect("index.jsp");
+        }
+    } else {
+        response.sendRedirect("login.jsp");
+    }
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        
         <style>
-            .container { width:100%; }
+            .container { width:100%;}
             table { border-collapse:collapse; padding-bottom:1em; }
             tr.columnname { border-bottom:1px #000 solid; }
             tr.columnname td { text-align:center; }
             td { border: 1px #000 solid; padding:0 1em 0 1em; white-space:nowrap; }
             td.center { text-align:center; }
+            .header{margin-top:70px}
         </style>
         <title>Activity Log</title>
     </head>
     <body>
+         <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">IS2731</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.jsp">Home</a></li>
+            <li><a href="hostilelist.jsp">Hostile</a></li>
+            <li  class="active"><a href="activitylog.jsp">Activity Log</a></li>
+            <li><a href="roleManage.jsp">Role Management</a></li>
+            <li><a href="admin.jsp">Admin Page</a></li>
+            <li><a href="RBACtest.jsp">RBAC Test</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!--put the name on the navigation bar-->
+                <br>
+                        <% 
+                                if(request.getSession().getAttribute("user")!=null){
+                                   UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
+                                 out.print("<a href='#'>" + user.getFirstName() + user.getLastName() +"</a>");
+                                 out.print("&nbsp;&nbsp;|&nbsp;&nbsp;");
+                                 out.print("<a href='LogOut'>Log Out</a>");
+                                }
+                        %>
+                  
+            </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+        
+        
+        
         <div class="container">
+            <div class="header">
             <h1>Activity Log</h1>
+            </div>
             <%
                 String queryterm = request.getParameter("term"); 
                 String querycolumn = request.getParameter("column"); 
@@ -165,5 +226,11 @@
                     window.location = "activitylog.jsp";
                 }
             </script>
+            
+            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+        </script>
     </body>
 </html>

@@ -56,7 +56,7 @@
                         <div id="registerDiv">
                             <br/>
                             <br/>
-                           New user? Register <a href="signup.jsp">here</a>.
+                           New user? Register <a href="registration.jsp">here</a>.
                         </div>
 		</div>
 	</div>

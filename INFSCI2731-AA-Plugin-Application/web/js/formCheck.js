@@ -6,11 +6,18 @@
  * check availability of user entered email 
  * @returns {undefined}
  */
+var checkEmail_true = 0;
+var checkSecQuestionNotSame_true=0;
+var checkStrongOfPassword_true=0;
+var comfirmRetypePassword_true=0;
+
+
 function checkEmail() {
     var email = $.trim($("#inputEmail").val());
     $("#emailMsg").removeClass("errMsg");
     $("#emailMsg").removeClass("avaliable");
     $("#inputEmail").parent().removeClass("has-error");
+   
     if (email.length >= 1) {
 
         var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -18,6 +25,10 @@ function checkEmail() {
             $("#emailMsg").html("Please enter a valid email address.");
             $("#emailMsg").addClass("errMsg");
             $("#inputEmail").parent().addClass("has-error");
+            $('input[type="submit"]').attr('disabled','disabled');
+            // add a logic:  first make the submit button unavaliable, if all the function have be check ok, make the submit avaliable
+            // return 0 means this function has error, not to make the submit button avaliable.
+            return 0;
         } else {
             $("#inputEmail").parent().removeClass("has-error");
             $("#emailMsg").text("");
@@ -32,9 +43,21 @@ function checkEmail() {
                         $("#emailMsg").html("Sorry, " + email + " is not available.");
                         $("#emailMsg").addClass("errMsg");
                         $("#inputEmail").parent().addClass("has-error");
+                        //$('input[type="submit"]').attr('disabled','disabled');
+                        return 0;
                     } else if (data === "available") {
                         $("#emailMsg").html(email + " is available.");
                         $("#emailMsg").addClass("avaliable");
+                        //if other 3 check whether input has error function return true, we should make the submit button avaliable because this fuction also is true.
+                        checkEmail_true = 1;
+                        if(checkEmail_true&&checkSecQuestionNotSame_true&&checkStrongOfPassword_true&&comfirmRetypePassword_true){
+                            //remove the disable attribute of submit
+                             $('input[type="submit"]').removeAttr('disabled');
+                        }
+                        
+                        // return 1 means all the function avaliavle
+                        return 1;
+                      
                     }
                 }
             });
@@ -43,6 +66,8 @@ function checkEmail() {
         $("#inputEmail").parent().addClass("has-error");
         $("#emailMsg").addClass("formErrorMsg");
         $("#emailMsg").html("Email address cannot be empty.");
+        $('input[type="submit"]').attr('disabled','disabled');
+        return 0;
     }
 }
 
@@ -55,22 +80,35 @@ function comfirmRetypePassword() {
     var inputRetypePassword = $("#inputRetypePassword").val();
     $("#errRetypePw").parent().removeClass("has-error");
     $("#errRetypePw").text("");
+   
 
     if ($("#inputPassword").parent().hasClass("has-error") || inputPassword === "") {
         $("#inputRetypePassword").parent().addClass("has-error");
         $("#errRetypePw").html("Please enter a valid password first!");
+        return 0;
     } else {
         if(inputRetypePassword.length >=1) {
             if (inputRetypePassword === inputPassword) {
                 $("#inputRetypePassword").parent().removeClass("has-error");
                 $("#errRetypePw").text("");
+                comfirmRetypePassword_true=1;
+                if(checkEmail_true&&checkSecQuestionNotSame_true&&checkStrongOfPassword_true&&comfirmRetypePassword_true){
+                            //remove the disable attribute of submit
+                             $('input[type="submit"]').removeAttr('disabled');
+                        }
+                return 1;
+           
             } else {
                 $("#inputRetypePassword").parent().addClass("has-error");
                 $("#errRetypePw").text("Password doesn't match!");
+                $('input[type="submit"]').attr('disabled','disabled');
+                return 0;
             }           
         }else {
             $("#inputRetypePassword").parent().addClass("has-error");
             $("#errRetypePw").text("Please type your password again.");
+            $('input[type="submit"]').attr('disabled','disabled');
+            return 0;
             
         }
 
@@ -90,6 +128,7 @@ function checkStrongOfPassword() {
     {
         $("#inputPassword").parent().addClass("has-error");
         $("#errStrongLevel").html("Password must have 8 characters or more!");
+         $('input[type="submit"]').attr('disabled','disabled');
         return 0;
     }
     if (/\d/.test(inputPassword))
@@ -107,20 +146,67 @@ function checkStrongOfPassword() {
         case 0:
             $("#inputPassword").parent().addClass("has-error");
             $("#errStrongLevel").html("Password must have 8 characters or more!");
+            $('input[type="submit"]').attr('disabled','disabled');
+            return 0;
         case 1:
         case 2:
             $("#inputPassword").parent().addClass("has-error");
             $("#errStrongLevel").html("Password must have 3 types of Uppercase, Lowercase, number, Special Character");
-            //return 1;
+            $('input[type="submit"]').attr('disabled','disabled');
+            return 0;
             break;
+            
         case 3:
         case 4:
             $("#inputPassword").parent().removeClass("has-error");
             $("#errStrongLevel").text("");
-            //return 3;
+            checkStrongOfPassword_true=1;
+            if(checkEmail_true&&checkSecQuestionNotSame_true&&checkStrongOfPassword_true&&comfirmRetypePassword_true){
+                            //remove the disable attribute of submit
+                             $('input[type="submit"]').removeAttr('disabled');
+                        }
+         
+            return 1;
             break;
 
     }
 }
 
 
+//////////////////////////////////////////////////////////////////////
+// check whether the security question is the same in signup.jsp
+//////////////////////////////////////////////////////////////////////
+function checkSecQuestionNotSame(){
+
+      var SecQ1 =  $("#Question1").val();
+      var SecQ2 =  $("#Question2").val();
+      var SecQ3 =  $("#Question3").val();
+      
+      if((SecQ1 == SecQ2) || (SecQ2 == SecQ3) || (SecQ1 == SecQ3))
+      {
+           $("#Question3").addClass("has-error");
+            $("#errQuestionChooseSame").html("Security Question could not be the same!");
+            $('input[type="submit"]').attr('disabled','disabled');
+            return 0;
+      }
+      else{
+          $("#Question3").removeClass("has-error");
+            $("#errQuestionChooseSame").text("");
+            checkSecQuestionNotSame_true=1;
+            if(checkEmail_true&&checkSecQuestionNotSame_true&&checkStrongOfPassword_true&&comfirmRetypePassword_true){
+                            //remove the disable attribute of submit
+                             $('input[type="submit"]').removeAttr('disabled');
+                        }
+
+            return 1;
+      }
+      
+}
+
+/////////////////////
+///add function to disable the submit button, enable it only all the problem is solved
+$(document).ready(function() {
+//    if ( $('#abc').length ) //If checking if the element exists, use .length
+//        alert("yes");
+    $('input[type="submit"]').attr('disabled','disabled');
+});

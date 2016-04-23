@@ -67,6 +67,7 @@ public class UserDao {
                //System.out.println(ps);
 
                 rs = ps.executeQuery(sql);
+                int id = 0;
                 String firstName = "";
                 String lastName = "";
                 String emailAddress = "";
@@ -75,13 +76,14 @@ public class UserDao {
                 
                 while(rs.next()) {
                     //Retrieve by column name
-                    int id = rs.getInt("id");
+                    id = rs.getInt("id");
                     firstName = rs.getString("first_name");
                     lastName = rs.getString("last_name");
                     emailAddress = rs.getString("email_addr");
                     accessRole = rs.getInt("access_role_id");
                 }
                 UserAccountInfo user = new UserAccountInfo();
+                    user.setId(id);
                     user.setFirstName(firstName);
                     user.setLastName(lastName);
                     user.setEmailAddress(emailAddress);
