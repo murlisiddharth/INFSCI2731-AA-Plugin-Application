@@ -101,13 +101,15 @@
                 <form class="form-inline" action="RoleManageServlet" method="post">
                     <div class="form-group">
                         <label for="userID">UserID</label>
-                        <input name="userID" type="text" class="form-control"  placeholder="1" value="1">
+                        <input name="userID" type="text" class="form-control"  placeholder="1" value="">
                     </div>
-
+                    
+                    <!--super admin cannot change himself-->
+                   
+                    
                     <select name="roleChoice" class="form-control">
                         <option value="1">User</option>
                         <option value ="2">Administrator</option>
-                        <option value ="3">Super Administrator</option>
                     </select>
 
                     <button type="submit" class="btn btn-default">Change</button>
@@ -115,12 +117,10 @@
                 <div class="message">
                     <!--show message when change role successfully-->
                     <%
-                        String StatusSymbol = "";
-                        if ((request.getAttribute("isSuccess")) != null && (Boolean) request.getAttribute("isSuccess") == true) {
-                            StatusSymbol = "Change the role successfully!";
+                        if(request.getAttribute("message")!= null && !request.getAttribute("message").equals("")){    
+                               out.print(request.getAttribute("message"));
                         }
-                    %>
-                    <%=StatusSymbol %>  
+                    %> 
                    
                 </div>
             </div><!--management area-->

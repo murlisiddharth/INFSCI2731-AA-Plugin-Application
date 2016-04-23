@@ -33,11 +33,30 @@ public class RoleManageServlet extends HttpServlet {
             throws ServletException, IOException {
         
         System.out.println("==in role manage servlet==");
-         
-        UserAccountInfo user = new UserAccountInfo();
-         System.out.println("userID: " + Integer.parseInt(request.getParameter("userID")));
+        
+        String message = "";
+        Boolean isSuccess = false;
+        
+         int userID = Integer.parseInt(request.getParameter("userID"));
+         System.out.println("userID: " + userID );
          System.out.println("roleChoice" + Integer.parseInt(request.getParameter("roleChoice")));
-         Boolean isSuccess = user.roleUpdate(Integer.parseInt(request.getParameter("userID")), Integer.parseInt(request.getParameter("roleChoice")));
+         
+         UserAccountInfo user = new UserAccountInfo();
+        user =(UserAccountInfo) request.getSession().getAttribute("user");
+        int currentID = user.getId();
+        
+        if(currentID == userID){
+            message = "You cannot change your own role!";
+        }else{
+            isSuccess= user.roleUpdate(Integer.parseInt(request.getParameter("userID")), Integer.parseInt(request.getParameter("roleChoice")));
+            if(isSuccess == true){
+                message = "Congratulations! You cange the role successfully!";
+            }else{
+                message = "Sorry! You didn't change the role successfully!";
+            }
+        }
+        request.setAttribute("message", message);
+       
          
         //log role update activity
         ActivityLogDao logDao = new ActivityLogDao();
@@ -47,8 +66,6 @@ public class RoleManageServlet extends HttpServlet {
         String ipAddr = ipAddress.getClientIpAddress(request);
         logDao.logUpdateActivity(ipAddr, sysSource, "role update", Integer.parseInt(request.getParameter("userID")));
         
-        
-         request.setAttribute("isSuccess", isSuccess);
           //forward server's request to jsp
         getServletContext().getRequestDispatcher("/roleManage.jsp").forward(request, response);  
         

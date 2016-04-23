@@ -42,10 +42,10 @@ public class RegistrationServlet extends HttpServlet {
 //        request.setAttribute("user", user); 
 
         //create a normal user
-//        int accountId = newUser.register(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), 1); //modified by Siwei in order to get the new generated account id
+        int accountId = newUser.register(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), 1); //modified by Siwei in order to get the new generated account id
         
         //create a Super Admin user
-        int accountId = newUser.register(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), 3);
+//        int accountId = newUser.register(request.getParameter("firstname"), request.getParameter("lastname"), request.getParameter("email"), 3);
         
 
         //create a session and put user object in session
