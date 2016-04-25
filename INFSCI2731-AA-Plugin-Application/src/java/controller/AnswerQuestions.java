@@ -73,49 +73,45 @@ public class AnswerQuestions extends HttpServlet {
         String ipAddr = ipAddress.getClientIpAddress(request);
 
         if (questionAttempts > MAX_QUESTION_ATTEMPTS) {
-//            String ipAddress = request.getHeader("X-FORWARDED-FOR");
-//            // if ip behind proxy
-//            if (ipAddress == null) {  
-//                    ipAddress = request.getRemoteAddr();  
-//            }
-            //hostile(questionAttempts, ipAddress, SYSTEM_SOURCE);
-//            Hostile hostile = new Hostile(questionAttempts, ipAddr, SYSTEM_SOURCE);
-//            hostile.redirectHostile(request, response);
             HostileDao hostileDao = new HostileDao();
             hostileDao.WriteHostileToDB(questionAttempts, ipAddr, SYSTEM_SOURCE);
         } else {
-            String securityAnswer = request.getParameter("security_answer");
-            ResetPasswordObj resetPasswordObj = (ResetPasswordObj) session.getAttribute("resetPasswordObj");
-            String checkUserID = checkValidAnswerDB(securityAnswer, resetPasswordObj.securityAnswerID);
+            try {
+                String securityAnswer = request.getParameter("security_answer");
+                ResetPasswordObj resetPasswordObj = (ResetPasswordObj) session.getAttribute("resetPasswordObj");
+                String checkUserID = checkValidAnswerDB(securityAnswer, resetPasswordObj.securityAnswerID);
 
-            if (resetPasswordObj.userID.equals(checkUserID)) {
-                NonceDao nonce = new NonceDao();
-                String userNonce = nonce.getNewNonce(Integer.parseInt(resetPasswordObj.userID));
-                if (!userNonce.equals("error") && !userNonce.equals("")) {
-                    //check if previous sent link record exist, if it does, update the record description
-                    int logID = logDao.checkResetPwSentLink(Integer.parseInt(resetPasswordObj.userID));
-                    if (logID > 0) {
-                        logDao.updatePreResetPwRecord("new link generated", logID);
+                if (resetPasswordObj.userID.equals(checkUserID)) {
+                    NonceDao nonce = new NonceDao();
+                    String userNonce = nonce.getNewNonce(Integer.parseInt(resetPasswordObj.userID));
+                    if (!userNonce.equals("error") && !userNonce.equals("")) {
+                        //check if previous sent link record exist, if it does, update the record description
+                        int logID = logDao.checkResetPwSentLink(Integer.parseInt(resetPasswordObj.userID));
+                        if (logID > 0) {
+                            logDao.updatePreResetPwRecord("new link generated", logID);
+                        }
+                        //log pre reset pw activity, once user reset pw successfully, or reset link has expired or a new link generated, will also update this record description
+                        logDao.logPreResetPwOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
+
+                        printEmail(request, response, userNonce, getUserNameDB(resetPasswordObj.userID));
                     }
-                    //log pre reset pw activity, once user reset pw successfully, or reset link has expired or a new link generated, will also update this record description
-                    logDao.logPreResetPwOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
+                    session.invalidate();
+                } else {
+                    questionAttempts++;
+                    questionString += securityAnswer + ":" + SYSTEM_SOURCE + ";";
 
-                    printEmail(request, response, userNonce, getUserNameDB(resetPasswordObj.userID));
+                    //log answer security question failed activity on forgot pw
+                    logDao.logAnswerSecurQuestFailedOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
+
+                    session.setAttribute("questionAttempts", questionAttempts);
+                    session.setAttribute("questionString", questionString);
+                    request.setAttribute("question_string", resetPasswordObj.securityQuestion);
+
+                    RequestDispatcher rd = request.getRequestDispatcher("questions");
+                    rd.forward(request, response);
                 }
-                session.invalidate();
-            } else {
-                questionAttempts++;
-                questionString += securityAnswer + ":" + SYSTEM_SOURCE + ";";
-
-                //log answer security question failed activity on forgot pw
-                logDao.logAnswerSecurQuestFailedOnForgotPw(ipAddr, sysSource, Integer.parseInt(resetPasswordObj.userID));
-
-                session.setAttribute("questionAttempts", questionAttempts);
-                session.setAttribute("questionString", questionString);
-                request.setAttribute("question_string", resetPasswordObj.securityQuestion);
-
-                RequestDispatcher rd = request.getRequestDispatcher("questions");
-                rd.forward(request, response);
+            } catch (NullPointerException e) {
+                
             }
         }
 

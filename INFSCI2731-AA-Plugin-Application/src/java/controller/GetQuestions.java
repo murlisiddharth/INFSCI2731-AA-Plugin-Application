@@ -73,26 +73,8 @@ public class GetQuestions extends HttpServlet {
             
         
         if(emailAttempts > MAX_EMAIL_ATTEMPTS) {
-//            String ipAddress = request.getHeader("X-FORWARDED-FOR");
-//            // if ip behind proxy
-//            if (ipAddress == null) {  
-//                    ipAddress = request.getRemoteAddr();  
-//            }
-                       
-            //Hostile module redirect or object
-
-//            Hostile hostile = new Hostile(emailAttempts, ipAddr, SYSTEM_SOURCE);
-//            hostile.redirectHostile(request, response);
-//              request.setAttribute("EmailAttempts", emailAttempts);
-//              request.setAttribute("IPAddr", ipAddr );
-//              request.setAttribute("SystemResource",SYSTEM_SOURCE);
-////              response.sendRedirect("Hostile");
             HostileDao hostileDao = new HostileDao();
             hostileDao.WriteHostileToDB(emailAttempts, ipAddr, SYSTEM_SOURCE);
-            
-            
-                      
-    
         } else {
             String email = request.getParameter("email");
             //Check if email exists
@@ -111,19 +93,35 @@ public class GetQuestions extends HttpServlet {
                 
                 response.sendRedirect("forgotpassword");
             } else {
-                String[] questions = getQuestionsFromIDDB(account_info_id);
-                if (questions != null) {
-                    // reset the session on success
-                    session.invalidate();
-                    session = request.getSession();
-                    ResetPasswordObj resetPasswordObj = new ResetPasswordObj(account_info_id, questions[0], questions[1]);
+                String previousEmail = "";
+                
+                if(session.getAttribute("previousEmail") != null) {
+                    previousEmail = session.getAttribute("previousEmail").toString();
+                }
+                
+                if (session.getAttribute("resetPasswordObj") == null || !email.equals(previousEmail)) {
+                    String[] questions = getQuestionsFromIDDB(account_info_id);
+                    if (questions != null) {
+                        // reset the session on success
+                        session.invalidate();
+                        session = request.getSession();
+                        ResetPasswordObj resetPasswordObj = new ResetPasswordObj(account_info_id, questions[0], questions[1]);
+                        session.setAttribute("previousEmail", email);
+                        session.setAttribute("resetPasswordObj", resetPasswordObj);
+                        request.setAttribute("question_string", questions[1]);
+                        RequestDispatcher rd = request.getRequestDispatcher("questions");
+                        rd.forward(request, response);
+                    } else {
+                        //error
+                    }
+                } else {
+                    ResetPasswordObj resetPasswordObj = (ResetPasswordObj)session.getAttribute("resetPasswordObj");
                     session.setAttribute("resetPasswordObj", resetPasswordObj);
-                    request.setAttribute("question_string", questions[1]);
+                    request.setAttribute("question_string", resetPasswordObj.securityQuestion);
                     RequestDispatcher rd = request.getRequestDispatcher("questions");
                     rd.forward(request, response);
-                } else {
-                    //error
                 }
+                
             }  
         }
     

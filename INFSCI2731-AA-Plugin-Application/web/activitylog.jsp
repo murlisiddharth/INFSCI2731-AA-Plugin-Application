@@ -3,6 +3,7 @@
     Created on : Apr 20, 2016, 6:05:11 PM
     Author     : shaoNPC
 --%>
+<%@page import="utilities.CheckCharacters"%>
 <%@page import="model.IPAddress"%>
 <%@page import="java.util.List"%>
 <%@page import="dataAccessObject.RBACDao"%>
@@ -45,7 +46,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
         
         <style>
-            .container { width:100%;}
+            .container-page { margin: 0 auto; padding:0 1em 0 1em; }
             table { border-collapse:collapse; padding-bottom:1em; }
             tr.columnname { border-bottom:1px #000 solid; }
             tr.columnname td { text-align:center; }
@@ -96,7 +97,7 @@
         
         
         
-        <div class="container">
+        <div class="container-page">
             <div class="header">
             <h1>Activity Log</h1>
             </div>
@@ -112,7 +113,8 @@
                 
                 ResultSet rs;
                 ActivityLogDao ald = new ActivityLogDao();
-                if (queryterm == null || queryterm.equals("") || querycolumn == null || querycolumn.equals("") || querysort == null || querysort.equals("") || querylimit == null || querylimit.equals("")) {
+                if (queryterm == null || queryterm.equals("") || querycolumn == null || querycolumn.equals("") || querysort == null || querysort.equals("") || querylimit == null || querylimit.equals("")
+                        || CheckCharacters.checkSpecialCharExist2(queryterm) || CheckCharacters.checkSpecialCharExist2(querycolumn) || CheckCharacters.checkSpecialCharExist(querysort) || CheckCharacters.checkSpecialCharExist(querylimit)) {
                     if(querylimit != null) {
                         try {
                             limit = Integer.parseInt(querylimit);

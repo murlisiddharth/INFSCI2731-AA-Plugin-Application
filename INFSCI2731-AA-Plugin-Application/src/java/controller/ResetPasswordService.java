@@ -10,7 +10,6 @@ import dataAccessObject.NonceDao;
 import dataAccessObject.SavePasswordDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,7 +53,7 @@ public class ResetPasswordService extends HttpServlet {
         String ipAddr = ipAddress.getClientIpAddress(request);
 
         
-        boolean passwordMatch = password.equals(confirmPassword);
+        boolean passwordMatch = (password.equals(confirmPassword) && !password.equals(""));
         boolean tokenValid = false;
         boolean passwordUsedBefore = false;
         boolean loggedIn = false;
@@ -115,16 +114,32 @@ public class ResetPasswordService extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Reset Password Success</title>");
+            out.println("<title>Reset Password</title>");
+            out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Reset Password Success</h1>");
-            out.println("<p>You have successfully changed your password.</p>");
+            out.println("<nav class=\"navbar navbar-default\">\n" +
+                "            <div class=\"container\">\n" +
+                "                <div class=\"navbar-header\">\n" +
+                "                    <a class=\"navbar-brand\" href=\"login.jsp\">IS2731</a>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </nav>");
+            out.println("<div class=\"container\"><div class=\"jumbotron\">");
+            out.println("<h2>Reset Password</h2>");
+            out.println("<div class=\"alert alert-success\">You have successfully changed your password.</div>");
             if (loggedIn) {
-                out.println("<p><a href=\"\">Click here</a> to return to the account page.</p>");
+                out.println("<div><a href=\"\">Click here</a> to return to the account page.</div>");
             } else {
-                out.println("<p><a href=\"login.jsp\">Click here</a> to return to the login page.</p>");
+                out.println("<div><a href=\"login.jsp\">Click here</a> to return to the login page.</div>");
             }
+            out.println("</div></div>");
+            out.println("<footer class=\"footer\">\n" +
+                "            <div class=\"container\">\n" +
+                "                <p class=\"text-muted\">&copy; 2016 E-Commerce Security &middot; <a href=\"#\">Privacy</a>\n" +
+                "                    &middot; <a href=\"#\">Terms</a></p>\n" +
+                "            </div>\n" +
+                "        </footer>");
             out.println("</body>");
             out.println("</html>");
         }

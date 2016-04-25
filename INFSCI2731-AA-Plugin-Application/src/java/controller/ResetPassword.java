@@ -63,6 +63,8 @@ public class ResetPassword extends HttpServlet {
             timestamp = nonceDao.getNonceCreatetime(nonce);
             if (CheckDateTime.isValid(timestamp)) {
                 printPasswordForm(request, response, nonce, passwordMismatch, passwordUsedBefore);
+            } else {
+                printExpired(request, response);
             }
         } else if (loginUser != null) {
             printPasswordForm(request, response, "userLogged", passwordMismatch, passwordUsedBefore);
@@ -78,7 +80,7 @@ public class ResetPassword extends HttpServlet {
         }
                
         
-        printError(request, response);
+        response.sendRedirect("error");
         
     } 
     
@@ -89,39 +91,76 @@ public class ResetPassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Reset Password</title>");            
+            out.println("<title>Reset Password</title>");
+            out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" />");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>ResetPassword</h1>");
+            out.println("<nav class=\"navbar navbar-default\">\n" +
+                "            <div class=\"container\">\n" +
+                "                <div class=\"navbar-header\">\n" +
+                "                    <a class=\"navbar-brand\" href=\"login.jsp\">IS2731</a>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "        </nav>");
+            out.println("<div class=\"container\"><div class=\"jumbotron\">");
+            out.println("<h2>ResetPassword</h2>");
             out.println("<form name=\"resetform-password\" method=\"POST\" action=\"resetpasswordservice\">");
+            out.println("<div class=\"alert alert-info\">Passwords must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</div>");
             if (passwordMismatch) {
-                out.println("<p>Your passwords do not match, please re-enter your new password.</p>");
+                out.println("<div class=\"alert alert-warning\">Your passwords do not match, please re-enter your new password.</div>");
             }
             if (passwordUsedBefore) {
-                out.println("<p>Choose a password you haven't previously used with this account.</p>");
+                out.println("<div class=\"alert alert-warning\">Choose a password you haven't previously used with this account.</div>");
             }
             out.println("<input type=\"hidden\" name=\"token\" value=\"" + nonce +  "\">");
             out.println("Enter your new password: <input name=\"password\" type=\"password\" autofocus pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\" title=\"Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters\"/>");
             out.println("<br/><br/>");
             out.println("Confirm your new password: <input name=\"confirm_password\" type=\"password\" pattern=\"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\" title=\"Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters\"/><br/><br/><input type=\"submit\"></form>");
+            out.println("</div></div>");
+            out.println("<footer class=\"footer\">\n" +
+                "            <div class=\"container\">\n" +
+                "                <p class=\"text-muted\">&copy; 2016 E-Commerce Security &middot; <a href=\"#\">Privacy</a>\n" +
+                "                    &middot; <a href=\"#\">Terms</a></p>\n" +
+                "            </div>\n" +
+                "        </footer>");
             out.println("</body>");
             out.println("</html>");
         }
     }
     
-    protected void printError(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void printExpired(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Error</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Error</h1>");
-            out.println("<p>This link has expired.</p>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<html>\n" +
+                        "    <head>\n" +
+                        "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                        "        <title>Error</title>\n" +
+                        "        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" />\n" +
+                        "    </head>\n" +
+                        "    <body>\n" +
+                        "        <nav class=\"navbar navbar-default\">\n" +
+                        "            <div class=\"container\">\n" +
+                        "                <div class=\"navbar-header\">\n" +
+                        "                    <a class=\"navbar-brand\" href=\"login.jsp\">IS2731</a>\n" +
+                        "                </div>\n" +
+                        "            </div>\n" +
+                        "        </nav>\n" +
+                        "        <div class=\"container\">\n" +
+                        "            <div class=\"jumbotron\">\n" +
+                        "                <h2>Oops!</h2>\n" +
+                        "                    <div class=\"alert alert-warning\">The requested link has expired.</div>\n" +
+                        "                    <div><a href=\"login.jsp\">Click here</a> to return to the login page.</div>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <footer class=\"footer\">\n" +
+                        "            <div class=\"container\">\n" +
+                        "                <p class=\"text-muted\">&copy; 2016 E-Commerce Security &middot; <a href=\"#\">Privacy</a>\n" +
+                        "                    &middot; <a href=\"#\">Terms</a></p>\n" +
+                        "            </div>\n" +
+                        "        </footer>\n" +
+                        "    </body>\n" +
+                        "</html>");
         }
     }
 
