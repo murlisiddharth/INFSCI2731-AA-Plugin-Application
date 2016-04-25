@@ -63,10 +63,11 @@
                 
                 ArrayList seqIds = new ArrayList();
                 ArrayList seqStrings = new ArrayList();
-                
-                while(rs.next()){
-                    seqIds.add(rs.getInt("id"));
-                    seqStrings.add(rs.getString("question"));
+                if (rs != null) {
+                    while(rs.next()){
+                        seqIds.add(rs.getInt("id"));
+                        seqStrings.add(rs.getString("question"));
+                    }
                 }
             %>
 		<!-- container -->
