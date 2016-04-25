@@ -12,17 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import DbConnect.DbConnection;
 import dataAccessObject.HostileDao;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpSession;
 
 import model.HostileStructure;
-import dataAccessObject.TimeStampDao;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +52,7 @@ public class Hostile extends HttpServlet {
 //
     public Hostile(int countAttempts, String IPAddress, String SYSTEM_SOURCE) {
         super();
-  
+
         hostileDao.WriteHostileToDB(countAttempts, IPAddress, SYSTEM_SOURCE);
     }
 
@@ -78,46 +70,73 @@ public class Hostile extends HttpServlet {
             int count2 = Integer.parseInt(countString);
 
             hostileDao.WriteHostileToDB(count2, IPaddress, SystemValue);
-             response.sendRedirect("activitylog.jsp");
 
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            try {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Servlet RBAC</title>");
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Add a record to database successful </h1>");
+                out.println("</body>");
+                out.println("</html>");
+            } finally {
+                out.close();
+                // response.sendRedirect("activitylog.jsp");
 
-
+            }
         }
 
-//       String action = request.getParameter("action");
-//
-////        boolean i2 = action.equalsIgnoreCase("getHostile");
+        String action = request.getParameter("action");
+
+//        boolean i2 = action.equalsIgnoreCase("getHostile");
 //
 //        
-//        if (action.equalsIgnoreCase("getHostile")) {
-//            HostileList = hostileDao.GetHostileFromLogDB();
+        if (action.equalsIgnoreCase("getHostile")) {
+            HostileList = hostileDao.GetHostileFromLogDB();
 //
-//            response.setContentType("text/html;charset=UTF-8");
-////            try (PrintWriter out = response.getWriter()) {
-////                /* TODO output your page here. You may use following sample code. */
-////                out.println("<!DOCTYPE html>");
-////                out.println("<html>");
-////                out.println("<head>");
-////                out.println("<title>Hostile entry list</title>");
-////                out.println("</head>");
-////                out.println("<body>");
-////                out.println("<h1>TEST</h1>");
-////
-////                for (HostileStructure tempHostile : HostileList) {
-////
-////                    out.println("<p>IPAddress: " + tempHostile.getIPAddress() + "</p>");
-////                    out.println("<p>System Source: " + tempHostile.getSYSTEM_SOURCE() + "</p>");
-////
-////                }
-////
-////                out.println("</body>");
-////                out.println("</html>");
-////
-////            }
-//        }
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            try {
+                /* TODO output your page here. You may use following sample code. */
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Send hostile list to admin by Email</title>");
+                out.println("</head>");
+                out.println("<body>");
+                out.println("<h1>Send hostile list to admin by Email </h1>");
+                out.println("<p><strong>Hi " + "Administrator" + ",</strong></p>");
+                out.println("<p>You're receiving this email because here are many hostile actions.  "
+                        + "</p>");
+                out.println("<p>We list the hostile actions like worng with 5 times attempts of login, reset passwords and some other actions</p>");
+                for (HostileStructure tempHostile : HostileList) {
 
+                    out.println("<p>IPAddress: " + tempHostile.getIPAddress() + "</p>");
+                    out.println("<p>System Source: " + tempHostile.getSYSTEM_SOURCE() + "</p>");
+
+                }
+                out.println("</body>");
+                out.println("</html>");
+            } finally {
+                out.close();
+                // response.sendRedirect("activitylog.jsp");
+
+            }
+        }
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     public void redirectHostile(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
