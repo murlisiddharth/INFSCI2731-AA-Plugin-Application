@@ -57,11 +57,12 @@ public class HostileDao {
         try {
             connection = DbConnection.getConnection();
 
-            String sql = "SELECT * FROM infsci2731.activity_log WHERE system_source = ?";
+            String sql = "SELECT * FROM infsci2731.activity_log where description = '[hostile]'";
 
             preparedStatement = connection.prepareStatement(sql);
             //here should have 3 variables to distinguish where are the entry from( security question, login ,reset password....)
-            preparedStatement.setString(1, "from_security_question");
+//            String SysSource = "[hostile]";
+//            preparedStatement.setString(1, SysSource);
 
             ResultSet rs = preparedStatement.executeQuery();
 
