@@ -2,10 +2,7 @@
  *  @author Siwei Jiao
  */
 
-/**
- * check availability of user entered email 
- * @returns {undefined}
- */
+
 var checkEmail_true = 0;
 var checkSecQuestionNotSame_true=0;
 var checkStrongOfPassword_true=0;
@@ -29,6 +26,43 @@ function checkUserEmail() {
     }
 }
 
+function checkFirstName() {
+    var fname = $.trim($("#firstname").val());
+    if (fname.length >= 1) {
+        if (/[^a-zA-Z]/.test(fname)) {
+            $("#errFname").html("First name may only contain letters and max length is 30 charaters without spaces.");
+             $("#firstname").parent().addClass("has-error"); 
+        } else {
+             $("#firstname").parent().removeClass("has-error");
+             $("#errFname").text("");
+        }
+    } else {
+            $("#firstname").parent().addClass("has-error");                      
+            $("#errFname").html("First name cannot be empty."); 
+    }
+}
+
+
+function checkLastName() {
+    var lname = $.trim($("#lastname").val());
+    if (lname.length >= 1) {
+        if (/[^a-zA-Z]/.test(lname)) {
+            $("#errLname").html("Last name may only contain letters and max length is 30 charaters without spaces.");
+             $("#lastname").parent().addClass("has-error");                      
+        } else {
+             $("#lastname").parent().removeClass("has-error");
+             $("#errLname").text("");
+        }
+    } else {
+            $("#lastname").parent().addClass("has-error");                      
+            $("#errLname").html("Last name cannot be empty.");                 
+    }
+}
+
+/**
+ * check availability of user entered email 
+ * @returns {undefined}
+ */
 function checkEmail() {
     var email = $.trim($("#inputEmail").val());
     $("#emailMsg").removeClass("errMsg");
@@ -81,9 +115,9 @@ function checkEmail() {
         }
     } else {
         $("#inputEmail").parent().addClass("has-error");
-        $("#emailMsg").addClass("formErrorMsg");
+        $("#emailMsg").addClass("errMsg");
         $("#emailMsg").html("Email address cannot be empty.");
-        $('input[type="submit"]').attr('disabled','disabled');
+//        $('input[type="submit"]').attr('disabled','disabled');
         return 0;
     }
 }
@@ -118,13 +152,13 @@ function comfirmRetypePassword() {
             } else {
                 $("#inputRetypePassword").parent().addClass("has-error");
                 $("#errRetypePw").text("Password doesn't match!");
-                $('input[type="submit"]').attr('disabled','disabled');
+//                $('input[type="submit"]').attr('disabled','disabled');
                 return 0;
             }           
         }else {
             $("#inputRetypePassword").parent().addClass("has-error");
             $("#errRetypePw").text("Please type your password again.");
-            $('input[type="submit"]').attr('disabled','disabled');
+//            $('input[type="submit"]').attr('disabled','disabled');
             return 0;
             
         }
@@ -145,7 +179,7 @@ function checkStrongOfPassword() {
     {
         $("#inputPassword").parent().addClass("has-error");
         $("#errStrongLevel").html("Password must have 8 characters or more!");
-         $('input[type="submit"]').attr('disabled','disabled');
+//         $('input[type="submit"]').attr('disabled','disabled');
         return 0;
     }
     if (/\d/.test(inputPassword))
@@ -220,10 +254,33 @@ function checkSecQuestionNotSame(){
       
 }
 
+
+function validateRegisterForm() {    
+    checkFirstName();
+    checkLastName();
+    checkEmail();
+    checkStrongOfPassword();
+    comfirmRetypePassword();
+    checkSecQuestionNotSame();
+    
+          
+    if($("#firstname").parent().hasClass("has-error") || $("#lastname").parent().hasClass("has-error") 
+        || $("#inputEmail").parent().hasClass("has-error") || $("#inputPassword").parent().hasClass("has-error")
+        || $("#inputRetypePassword").parent().hasClass("has-error") || $("#Question1").parent().hasClass("has-error") 
+        || $("#Question2").parent().hasClass("has-error") || $("#Question3").parent().hasClass("has-error")) {
+            $("#errForm").text("Please correct this form first.");                
+            return false;
+    }else {
+         return true;
+    }
+    
+}
+
+
 /////////////////////
 ///add function to disable the submit button, enable it only all the problem is solved
 $(document).ready(function() {
 //    if ( $('#abc').length ) //If checking if the element exists, use .length
 //        alert("yes");
-    $('input[type="submit"]').attr('disabled','disabled');
+//    $('input[type="submit"]').attr('disabled','disabled');
 });

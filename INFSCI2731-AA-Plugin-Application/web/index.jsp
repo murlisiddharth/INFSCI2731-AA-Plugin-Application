@@ -69,7 +69,7 @@
                         <% 
                                 if(request.getSession().getAttribute("user")!=null){
                                    UserAccountInfo user = (UserAccountInfo)session.getAttribute("user");
-                                 out.print("<a href='#'>" + user.getFirstName() + user.getLastName() +"</a>");
+                                 out.print("<a href='#'>" + user.getFirstName() + " " +user.getLastName() +"</a>");
                                  out.print("&nbsp;&nbsp;|&nbsp;&nbsp;");
                                  out.print("<a href='LogOut'>Log Out</a>");
                                 }
@@ -81,11 +81,6 @@
     </nav>
    
                
-                    
-                    
-                    
-
-
 
     
     <!-- Begin page content -->
