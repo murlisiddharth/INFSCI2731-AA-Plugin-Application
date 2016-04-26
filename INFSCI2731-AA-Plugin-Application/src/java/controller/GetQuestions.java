@@ -75,6 +75,7 @@ public class GetQuestions extends HttpServlet {
         if(emailAttempts > MAX_EMAIL_ATTEMPTS) {
             HostileDao hostileDao = new HostileDao();
             hostileDao.WriteHostileToDB(emailAttempts, ipAddr, SYSTEM_SOURCE);
+            response.sendRedirect("error");
         } else {
             String email = request.getParameter("email");
             //Check if email exists

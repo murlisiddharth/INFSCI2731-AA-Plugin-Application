@@ -75,6 +75,7 @@ public class AnswerQuestions extends HttpServlet {
         if (questionAttempts > MAX_QUESTION_ATTEMPTS) {
             HostileDao hostileDao = new HostileDao();
             hostileDao.WriteHostileToDB(questionAttempts, ipAddr, SYSTEM_SOURCE);
+            response.sendRedirect("error");
         } else {
             try {
                 String securityAnswer = request.getParameter("security_answer");
