@@ -65,9 +65,9 @@ public class RoleManageServlet extends HttpServlet {
          }else if(id > 0) {
              //user exist
             isSuccess = user.roleUpdate(id, Integer.parseInt(request.getParameter("roleChoice")));
-            logDao.logUpdateActivity(ipAddr, sysSource, "role update", id);
             if(isSuccess == true){
-                message = "Congratulations! You cange the role successfully!";
+                logDao.logUpdateActivity(ipAddr, sysSource, "role update successfully", id);
+                message = "Congratulations! You change the role successfully!";
             }else{
                 message = "Sorry! You didn't change the role successfully!";
             }

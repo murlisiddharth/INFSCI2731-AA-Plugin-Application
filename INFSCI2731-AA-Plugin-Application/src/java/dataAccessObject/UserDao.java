@@ -101,7 +101,7 @@ public class UserDao {
     //this method is to change the ID of role for user
     public boolean roleIDChange(int accountID, int roleID){
         try {
-                sql = "UPDATE INFSCI2731.account_info SET access_role_id = ? WHERE email_addr = ?";  
+                sql = "UPDATE INFSCI2731.account_info SET access_role_id = ? WHERE id = ?";  
         
                 System.out.println("Account: " + accountID);
                 System.out.println("required role id:" + roleID);
